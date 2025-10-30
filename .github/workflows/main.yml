@@ -6,7 +6,8 @@ jobs:
   buildAndroid:
     runs-on: macos-15 #Use mac os for lower compiling time (this matters if you're not compiling the project on local too)
 
-    - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
       - name: Retrieve Cache
         uses: actions/cache@v4
         with:
@@ -15,7 +16,6 @@ jobs:
             export/release/android/obj
           key: ${{ runner.os }}-cache
 
-    steps:
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.6
