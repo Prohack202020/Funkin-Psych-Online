@@ -1,4 +1,5 @@
-name: Release
+name: Build PsychExtended + Release
+run-name: PsychExtended v1.0.2 Beta 2 BugFix
 on: workflow_dispatch
 
 permissions:
@@ -6,7 +7,8 @@ permissions:
   discussions: write
 
 env:
-  PROJECT_NAME: PsychOnline
+  PROJECT_NAME: PsychEngine
+  REPO_PATH: https://github.com/PsychExtendedThings/Psych-Extended-ReBase
 
 jobs:
   build:
@@ -15,52 +17,61 @@ jobs:
       matrix:
         include:
           - name: Android
-            os: macos-15
-            buildArgs: "android -ONLY_ARM64 -final -D officialBuild"
+            os: ubuntu-24.04
+            buildArgs: "android -D officialBuild -final" 
+            setupCommand: sh ./setup/unix.sh
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: iOS
-            os: macos-15
-            buildArgs: "ios -final -nosign -D officialBuild"
-            artifactName: iOSBuild
-            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+            system: Android
+          - name: Windows
+            os: windows-2022
+            buildArgs: "windows -D officialBuild -final"
+            setupCommand: .\"setup/windows.bat"
+            artifactName: windowsBuild-x86_64
+            artifactPath: export\release\windows\bin\*
+            system: Windows
     uses: ./.github/workflows/build.yml
     with:
         name: ${{ matrix.name }}
         os: ${{ matrix.os }}
+        setupCommand: ${{ matrix.setupCommand }}
         buildArgs: ${{ matrix.buildArgs }}
         artifactName: ${{ matrix.artifactName }}
         artifactPath: ${{ matrix.artifactPath }}
+        system: ${{ matrix.system }}
 
   Releaser:
-    needs: [build]
+    needs: build
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
       - name: Download Android Build
         uses: actions/download-artifact@main
         with:
-          name: androidBuild
-          path: /home/runner
+           name: androidBuild
+           path: /home/runner
 
       - name: Move Android File
-        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/${{ env.PROJECT_NAME }}-ASTC-Android.apk
+        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/PsychExtended-v102-Beta2-Update.apk
 
-      - name: Download iOS Build
+      - name: Download Windows x86_64 Build
         uses: actions/download-artifact@main
         with:
-          name: iOSBuild
-          path: ${{ github.workspace }}
+          name: windowsBuild-x86_64
+          path: /home/runner/windowsBuild-x86_64
 
-      - name: Move iOS File
-        run: mv ${{ github.workspace }}/${{ env.PROJECT_NAME }}.ipa /home/runner/${{ env.PROJECT_NAME }}-ASTC-iOS.ipa
+      - name: Zip Windows x86_64 Build For Release
+        run: |
+          cd /home/runner/windowsBuild-x86_64
+          zip -r "/home/runner/windowsBuild-x86_64.zip" .
 
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Release"
-          tag_name: "release"
-          prerelease: false
+          name: "V1.0.2 Beta 2 BugFix"
+          tag_name: "1.0.2-beta2-bugfix"
+          prerelease: true
           files: |
             /home/runner/*.apk
-            /home/runner/*.ipa
+            /home/runner/*.zip
+            /home/runner/*.tar

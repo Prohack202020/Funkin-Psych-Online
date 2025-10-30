@@ -1,4 +1,4 @@
-name: Main
+name: Build Psych Extended
 
 on: workflow_dispatch
 
@@ -8,15 +8,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Android
-            os: macos-15
-            buildArgs: "android -final -ONLY_ARM64"
-            artifactName: androidBuild
+          - name: Android-Arm64
+            os: ubuntu-24.04
+            buildArgs: "android -ONLY_ARM64 -final"
+            setupCommand: sh ./setup/unix.sh
+            artifactName: androidBuild-Arm64
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+            system: Android
     uses: ./.github/workflows/build.yml
     with:
         name: ${{ matrix.name }}
         os: ${{ matrix.os }}
         buildArgs: ${{ matrix.buildArgs }}
+        setupCommand: ${{ matrix.setupCommand }}
         artifactName: ${{ matrix.artifactName }}
         artifactPath: ${{ matrix.artifactPath }}
+        system: ${{ matrix.system }}

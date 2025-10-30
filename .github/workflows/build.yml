@@ -9,6 +9,9 @@ on:
       os:
         required: true
         type: string
+      setupCommand:
+        required: true
+        type: string
       buildArgs:
         required: true
         type: string
@@ -18,10 +21,13 @@ on:
       artifactPath:
         required: true
         type: string
+      system:
+        required: true
+        type: string
 
 env:
-  HAXE_VERSION: 4.3.7
-  PROJECT_NAME: PsychOnline
+  HAXE_VERSION: 4.3.6
+  PROJECT_NAME: PsychEngine
 
 jobs:
   build:
@@ -32,25 +38,12 @@ jobs:
         uses: actions/checkout@main
 
       - name: Setup Haxe
-        if: inputs.name != 'Linux ARM64'
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
-      - name: Setup Haxe (Linux ARM)
-        if: inputs.name == 'Linux ARM64'
-        run: |
-          sudo add-apt-repository ppa:haxe/releases -y
-          sudo apt update
-          sudo apt-get install -y haxe neko
-          haxelib setup ~/haxelib
-
-      - name: Install libVLC
-        if: contains(inputs.name, 'Linux')
-        run: sudo apt install libvlc-dev libvlccore-dev
-
       - name: Setup Android NDK
-        if: inputs.name == 'Android'
+        if: inputs.system == 'Android'
         id: setup-ndk
         uses: nttld/setup-ndk@main
         with:
@@ -58,30 +51,33 @@ jobs:
           add-to-path: false
 
       - name: Install Libraries
-        run: |
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
+        run: ${{ inputs.setupCommand }}
 
       - name: Configure Android
-        if: inputs.name == 'Android'
+        if: inputs.system == 'Android'
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
           haxelib run lime config ANDROID_SETUP true
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
-      - name: Make IPA
-        if: inputs.name == 'iOS'
+      - name: Make IPA For iOS Simulator
+        if: inputs.system == 'iOS-Sim'
         run: |
-          brew install ldid
-          cd export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.app
-          ldid -S../../../${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.entitlements ${{ env.PROJECT_NAME }}
-          cd ..
+          cd export/release/ios/build/Release-iphonesimulator
           mkdir Payload
-          mv ${{ env.PROJECT_NAME }}.app Payload
+          mv *.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+      - name: Make IPA For iOS
+        if: inputs.system == 'iOS'
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
 
       - name: Upload Artifact
