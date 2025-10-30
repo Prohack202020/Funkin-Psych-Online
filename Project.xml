@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
+	<!-- ___ Build with spesific libraries ___ -->
+	<architecture exclude="armv7" if="ONLY_ARM64" />
+	<architecture exclude="armeabi-v7a" if="ONLY_ARM64" />
+	<architecture exclude="arm64" if="ONLY_ARMV7" />
+	<architecture exclude="arm64-v8a" if="ONLY_ARMV7" />
+	<define name="debugBuild" if="termux" />
 
 	<app title="Friday Night Funkin': Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 
