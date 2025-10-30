@@ -104,8 +104,10 @@ class Main extends Sprite
 		super();
 		#if mobile
 		#if android
+		CoolUtil.showPopUp("Started", "Test");
 		StorageUtil.requestPermissions();
 		#end
+		CoolUtil.showPopUp("Storage Setting", "Test");
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
 		backend.CrashHandler.init();

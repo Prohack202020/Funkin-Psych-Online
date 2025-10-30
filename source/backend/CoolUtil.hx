@@ -152,7 +152,7 @@ class CoolUtil
 	public static function showPopUp(message:String, title:String):Void
 	{
 		#if android
-		AndroidTools.showAlertDialog(title, message, {name: "OK", func: null}, null);
+		lime.app.Application.current.window.alert(title, message);
 		#else
 		FlxG.stage.window.alert(message, title);
 		#end

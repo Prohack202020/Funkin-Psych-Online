@@ -64,9 +64,6 @@ class StorageUtil
 			if (line.startsWith(curStorageType) && (line != '' || line != null)) {
 				var dat = line.split("|");
 				daPath = dat[1];
-				//trace('our line: ${line}');
-				//trace('our dat: ${dat}');
-				//trace('our daPath: ${daPath}');
 			}
 		}
 
@@ -98,6 +95,7 @@ class StorageUtil
 
 	public static function requestPermissions():Void
 	{
+		CoolUtil.showPopUp("Test 1", "Test");
 		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU)
 			AndroidPermissions.requestPermissions([
 				'READ_MEDIA_IMAGES',
@@ -108,9 +106,11 @@ class StorageUtil
 		else
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
 
+		CoolUtil.showPopUp("Test 2", "Test");
 		if (!AndroidEnvironment.isExternalStorageManager())
 			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 
+		CoolUtil.showPopUp("Test 3", "Test");
 		if ((AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU
 			&& !AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_MEDIA_IMAGES'))
 			|| (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU
@@ -119,12 +119,17 @@ class StorageUtil
 
 		try
 		{
+			CoolUtil.showPopUp("Test 4", "Test");
 			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
 				FileSystem.createDirectory(StorageUtil.getStorageDirectory());
+
+			CoolUtil.showPopUp("Test 5", "Test");
 		}
 		catch (e:Dynamic)
 		{
+			CoolUtil.showPopUp("Test 6", "Test");
 			CoolUtil.showPopUp('Please create directory to\n${StorageUtil.getStorageDirectory()}\nPress OK to close the game', "Error!");
+			CoolUtil.showPopUp("Test 7", "Test");
 			lime.system.System.exit(1);
 		}
 
@@ -132,15 +137,6 @@ class StorageUtil
 		{
 			if (!FileSystem.exists(StorageUtil.getExternalStorageDirectory() + 'mods'))
 				FileSystem.createDirectory(StorageUtil.getExternalStorageDirectory() + 'mods');
-			#if MODPACK_ALLOWED
-			if (!FileSystem.exists(StorageUtil.getExternalStorageDirectory() + 'modpack'))
-				FileSystem.createDirectory(StorageUtil.getExternalStorageDirectory() + 'modpack');
-			#end
-			#if SCRIPTING_ALLOWED
-			//Add this because other peoples are idiot
-			if (!FileSystem.exists(StorageUtil.getExternalStorageDirectory() + 'scripting'))
-				FileSystem.createDirectory(StorageUtil.getExternalStorageDirectory() + 'scripting');
-			#end
 		}
 		catch (e:Dynamic)
 		{
