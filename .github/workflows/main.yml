@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.6
+          haxe-version: 4.3.2
 
       - name: Setup Android NDK
         id: setup-ndk
@@ -16,16 +16,23 @@ jobs:
         with:
           ndk-version: r27c
 
-      - name: Install Haxelib
+      - name: Install Libraries
         run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib run hmm install --quiet
+
+      - name: Configure Android
+        if: inputs.name == 'Android'
+        run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
+
+      - name: Install Libraries
+        run: |
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
 
       - name: Compile
         run: haxelib run lime build android -D ONLY_ARM64
