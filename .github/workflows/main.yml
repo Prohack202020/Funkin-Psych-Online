@@ -9,18 +9,12 @@ jobs:
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.6
-    
-      - name: Setup Java JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: '17'
 
       - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
         id: setup-ndk
+        uses: nttld/setup-ndk@main
         with:
-          ndk-version: r29-beta1
+          ndk-version: r27c
 
       - name: Install Haxelib
         run: |
