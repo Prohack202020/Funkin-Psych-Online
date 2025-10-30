@@ -6,16 +6,6 @@ jobs:
   buildAndroid:
     runs-on: macos-15 #Use mac os for lower compiling time (this matters if you're not compiling the project on local too)
     steps:
-      - uses: actions/checkout@v2
-    
-      - name: Retrieve Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            export/release/android/haxe
-            export/release/android/obj
-          key: ${{ runner.os }}-cache
-
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.6
@@ -23,7 +13,7 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '17'
 
       - name: Setup Android NDK
@@ -34,15 +24,13 @@ jobs:
 
       - name: Install Haxelib
         run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-          haxelib run lime config JAVA_HOME $JAVA_HOME
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
 
       - name: Setup HXCPP Tools
@@ -50,11 +38,13 @@ jobs:
           cd .haxelib/hxcpp/git/tools/hxcpp
           haxe compile.hxml
           cd ../../../../..
+          
       - name: Compile
         run: haxelib run lime build Project.xml android -D ONLY_ARM64 -D HXCPP_M64
+        
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
-          name: androidBuild (experimental)
+          name: androidBuild
           path: 'export/release/android/bin/app/build/outputs/apk/release/*.apk'
           if-no-files-found: error
