@@ -101,7 +101,7 @@ class FPS extends TextField
 			text = "FPS: " + currentFPS;
 			
 			#if cpp
-			text += '\nRAM: ${flixel.util.FlxStringUtil.formatBytes(external.memory.Memory.getCurrentUsage())}';
+			text += '\nRAM: ${flixel.util.FlxStringUtil.formatBytes(cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE))}';
 			#end
 
 			#if !HACKER
