@@ -1,6 +1,7 @@
 name: Build Psych Online For Android
 
-workflow_dispatch:
+on: workflow_dispatch
+
 jobs:
   buildAndroid:
     runs-on: macos-15 #Use mac os for lower compiling time (this matters if you're not compiling the project on local too)
