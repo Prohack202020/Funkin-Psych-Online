@@ -75,12 +75,6 @@ class Assets
 	public static function exists(id:String, type:AssetType = null):Bool
 	{
 		#if lime
-		/*if (id != null && StringTools.endsWith(id, 'png') && type == null || type == IMAGE)
-		{
-			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'astc', BINARY)) return true;
-			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'ktx', BINARY)) return true;
-			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'ktx2', BINARY)) return true;
-		}*/
 		return LimeAssets.exists(id, cast type);
 		#else
 		return false;
@@ -105,31 +99,6 @@ class Assets
 			{
 				return bitmapData;
 			}
-		}
-
-		for (ext in ['astc', 'ktx', 'ktx2'])
-		{
-			final textureName:String = haxe.io.Path.withoutExtension(id) + '.$ext';
-
-			if (!Assets.exists('$textureName'))
-				continue;
-
-			final texture = switch (ext)
-			{
-				case 'astc': openfl.Lib.current.stage.context3D.createASTCTexture(Assets.getBytes(textureName));
-				// case 's3tc', 'ktx2': openfl.Lib.current.stage.context3D.createS3TCTexture(Assets.getBytes(textureName));
-				case 'ktx': openfl.Lib.current.stage.context3D.createETC2Texture(Assets.getBytes(textureName));
-				default: throw 'Unsupported texture format: $ext';
-			}
-
-			final bitmapData:BitmapData = BitmapData.fromTexture(texture);
-
-			if (useCache && cache.enabled)
-			{
-				cache.setBitmapData(id, bitmapData);
-			}
-
-			return bitmapData;
 		}
 
 		var image = LimeAssets.getImage(id, false);

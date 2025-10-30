@@ -360,7 +360,7 @@ class Main extends Sprite
 				});
 			}
 		});
-		end
+		#end
 
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
