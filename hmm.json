@@ -8,8 +8,8 @@
     {
       "name": "lime",
       "type": "git",
-      "ref": "int-delta",
-      "url": "https://github.com/Prohack101010/lime"
+      "ref": "main",
+      "url": "https://github.com/PsychExtendedThings/lime"
     },
     {
       "name": "openfl",
