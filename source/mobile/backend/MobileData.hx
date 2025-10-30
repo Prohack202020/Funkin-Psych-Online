@@ -40,7 +40,7 @@ class MobileData
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
 
 		#if MODS_ALLOWED if (FileSystem.exists(folder)) #end
-		for (file in Paths.readDirectory(folder))
+		for (file in readDirectoryPlus(folder))
 		{
 			var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
 			if (Path.extension(fileWithNoLib) == 'json')
@@ -52,6 +52,27 @@ class MobileData
 				map.set(mapKey, json);
 			}
 		}
+	}
+
+	static function readDirectoryPlus(directory:String):Array<String>
+	{
+		#if MODS_ALLOWED
+		return FileSystem.readDirectory(directory);
+		#else
+		var dirs:Array<String> = [];
+		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))
+		{
+			@:privateAccess
+			for(library in lime.utils.Assets.libraries.keys())
+			{
+				if(library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
+					dirs.push('$library:$dir');
+				else if(Assets.exists(dir) && !dirs.contains(dir))
+					dirs.push(dir);
+			}
+		}
+		return dirs;
+		#end
 	}
 }
 

@@ -50,7 +50,7 @@ class MusicBeatState extends FlxUIState
 		}
 	}
 
-	public function addMobileControls(?mode:String) {
+	public function addMobileControls(?mode:String, defaultDrawTarget:Bool = false) {
 		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
 		else hitbox = new Hitbox();
 
