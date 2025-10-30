@@ -222,8 +222,6 @@ class Main extends Sprite
 		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
-		Application.current.window.vsync = ClientPrefs.data.vsync;
-
 		// shader coords fix
 		FlxG.signals.gameResized.add(function (w, h) {
 			if(fpsVar != null)
