@@ -1,0 +1,2 @@
+Name: EXTERNAL_NF Folder: /storage/emulated/0/.NF Engine
+Name: EXTERNAL_ONLINE Folder: /storage/emulated/0/.PsychOnline

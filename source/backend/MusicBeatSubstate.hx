@@ -4,8 +4,12 @@ import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
 {
+	public static var instance:MusicBeatSubstate;
+
 	public function new()
 	{
+		instance = this;
+		//controls.isInSubstate = true;
 		super();
 	}
 
@@ -24,6 +28,80 @@ class MusicBeatSubstate extends FlxSubState
 
 	inline function get_controls():Controls
 		return Controls.instance;
+
+	public var mobilePad:MobilePad;
+	public var mobilePadCam:FlxCamera;
+	public var hitbox:Hitbox;
+	public var hitboxCam:FlxCamera;
+
+	public function addMobilePad(DPad:String, Action:String)
+	{
+		mobilePad = new MobilePad(DPad, Action);
+		add(mobilePad);
+	}
+
+	public function removeMobilePad()
+	{
+		if (mobilePad != null)
+		{
+			remove(mobilePad);
+			mobilePad = FlxDestroyUtil.destroy(mobilePad);
+		}
+
+		if(mobilePadCam != null)
+		{
+			FlxG.cameras.remove(mobilePadCam);
+			mobilePadCam = FlxDestroyUtil.destroy(mobilePadCam);
+		}
+	}
+
+	public function addMobileControls(?mode:String) {
+		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
+		else hitbox = new Hitbox();
+
+		hitboxCam = new FlxCamera();
+		hitboxCam.bgColor.alpha = 0;
+		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
+		hitbox.cameras = [hitboxCam];
+
+		add(hitbox);
+	}
+
+	public function removeMobileControls()
+	{
+		if (hitbox != null)
+		{
+			remove(hitbox);
+			hitbox = FlxDestroyUtil.destroy(hitbox);
+			hitbox = null;
+		}
+
+		if (hitboxCam != null)
+		{
+			FlxG.cameras.remove(hitboxCam);
+			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
+		}
+	}
+
+	public function addMobilePadCamera(defaultDrawTarget:Bool = false):Void
+	{
+		if (mobilePad != null)
+		{
+			mobilePadCam = new FlxCamera();
+			mobilePadCam.bgColor.alpha = 0;
+			FlxG.cameras.add(mobilePadCam, defaultDrawTarget);
+			mobilePad.cameras = [mobilePadCam];
+		}
+	}
+
+	override function destroy()
+	{
+		//controls.isInSubstate = false;
+		removeMobilePad();
+		removeMobileControls();
+
+		super.destroy();
+	}
 
 	override function update(elapsed:Float)
 	{

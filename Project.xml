@@ -2,12 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Psych Online" file="PsychEngine" main="Main" version="0.6.0" />
-	<app if="desktop" packageName="com.shadowmario.psychengine"
-		package="com.shadowmario.psychengine" company="ShadowMario" />
-	<!-- leaving mobile stuff here, if someone manages to compile this project to android then i'll be willing to merge that  -->
-	<app if="mobile" title='Psych Online' packageName="snirozu.psychonline"
-		package="snirozu.psychonline" company="Snirozu" />
+	<app title="Friday Night Funkin': Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -44,11 +39,11 @@
 	<window if="html5" resizable="true" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0"
-		resizable="false" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true"
+		require-shaders="true" allow-high-dpi="true" />
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0"
@@ -104,8 +99,17 @@
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false' />
 	</section>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<assets path='art/readme.txt' rename='do NOT readme.txt' unless="mobile" />
 	<assets path='art/run-server.bat' rename='run-server.bat' if="windows" />
+
+	<!-- || Mobile Defines || -->
+	<define name="TOUCH_CONTROLS" if="mobile" />
+	<!-- Crash Handler Shit (Idk what it does, If you ask me it doesn't do anything) -->
+	<define name="CRASH_HANDLER" if="desktop || mobile" />
+	<section if="TOUCH_CONTROLS">
+		<assets path="mobile"         rename="assets/mobile"        exclude="*.ogg" if="web"/>
+		<assets path="mobile"         rename="assets/mobile"        exclude="*.mp3" unless="web"/>
+	</section>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -209,6 +213,12 @@
 		<haxeflag name="--macro" value="addGlobalMetadata('psychlua', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('llua', '@:build(online.backend.MonitorMacro.build())')" />
 	</section>
+
+	<!-- Allow Write Access to EXTERNAL_DATA Directory -->
+	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+	
+	<!-- Do whatever you want I'm tired uninstall and install everytime -->
+	<certificate path="key.keystore" password="psychengine" alias="psychport" alias-password="psychengine" if="android" unless="debug" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

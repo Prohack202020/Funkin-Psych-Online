@@ -6,6 +6,8 @@ import flixel.FlxState;
 
 class MusicBeatState extends FlxUIState
 {
+	public static var instance:MusicBeatState;
+
 	private var theWorld:Bool = false;
 
 	private var curSection:Int = 0;
@@ -22,9 +24,83 @@ class MusicBeatState extends FlxUIState
 		return Controls.instance;
 	}
 
+	public var mobilePad:MobilePad;
+	public var mobilePadCam:FlxCamera;
+	public var hitbox:Hitbox;
+	public var hitboxCam:FlxCamera;
+
+	public function addMobilePad(DPad:String, Action:String)
+	{
+		mobilePad = new MobilePad(DPad, Action);
+		add(mobilePad);
+	}
+
+	public function removeMobilePad()
+	{
+		if (mobilePad != null)
+		{
+			remove(mobilePad);
+			mobilePad = FlxDestroyUtil.destroy(mobilePad);
+		}
+
+		if(mobilePadCam != null)
+		{
+			FlxG.cameras.remove(mobilePadCam);
+			mobilePadCam = FlxDestroyUtil.destroy(mobilePadCam);
+		}
+	}
+
+	public function addMobileControls(?mode:String) {
+		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
+		else hitbox = new Hitbox();
+
+		hitboxCam = new FlxCamera();
+		hitboxCam.bgColor.alpha = 0;
+		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
+		hitbox.cameras = [hitboxCam];
+
+		add(hitbox);
+	}
+
+	public function removeMobileControls()
+	{
+		if (hitbox != null)
+		{
+			remove(hitbox);
+			hitbox = FlxDestroyUtil.destroy(hitbox);
+			hitbox = null;
+		}
+
+		if (hitboxCam != null)
+		{
+			FlxG.cameras.remove(hitboxCam);
+			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
+		}
+	}
+
+	public function addMobilePadCamera(defaultDrawTarget:Bool = false):Void
+	{
+		if (mobilePad != null)
+		{
+			mobilePadCam = new FlxCamera();
+			mobilePadCam.bgColor.alpha = 0;
+			FlxG.cameras.add(mobilePadCam, defaultDrawTarget);
+			mobilePad.cameras = [mobilePadCam];
+		}
+	}
+
+	override function destroy()
+	{
+		removeMobilePad();
+		removeMobileControls();
+		
+		super.destroy();
+	}
+
 	public static var camBeat:FlxCamera;
 
 	override function create() {
+		instance = this;
 		camBeat = FlxG.camera;
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end

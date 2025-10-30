@@ -12,51 +12,72 @@ import flixel.addons.ui.FlxUIDropDownMenu;
  */
 class FlxScrollableDropDownMenu extends FlxUIDropDownMenu  {
 
-    private var currentScroll:Int = 0; //Handles the scrolling
-    public var canScroll:Bool = true;
+	private var currentScroll:Int = 0; //Handles the scrolling
+	public var canScroll:Bool = true;
 
 	public function new(X:Float = 0, Y:Float = 0, DataList:Array<flixel.addons.ui.StrNameLabel>, ?Callback:String -> Void, ?Header:FlxUIDropDownHeader, ?DropPanel:flixel.addons.ui.FlxUI9SliceSprite, ?ButtonList:Array<FlxUIButton>, ?UIControlCallback:(Bool, FlxUIDropDownMenu) -> Void) {
 		super(X, Y, DataList, Callback, Header, DropPanel, ButtonList, UIControlCallback);
 		dropDirection = Down;
 	}
-    
-    override private function set_dropDirection(dropDirection):FlxUIDropDownMenuDropDirection
-        {
-            this.dropDirection = Down;
-            updateButtonPositions();
-            return dropDirection;
-        }
+	
+	override private function set_dropDirection(dropDirection):FlxUIDropDownMenuDropDirection
+		{
+			this.dropDirection = Down;
+			updateButtonPositions();
+			return dropDirection;
+		}
 
-    override public function update(elapsed:Float) {
-        super.update(elapsed);
-        #if FLX_MOUSE
+	override public function update(elapsed:Float) {
+		super.update(elapsed);
+		#if (FLX_MOUSE || FLX_TOUCH)
 		if (dropPanel.visible)
 		{
-			if(list.length > 1 && canScroll) {
-				if(FlxG.mouse.wheel > 0 || FlxG.keys.justPressed.UP) {
-					// Go up
-					--currentScroll;
-					if(currentScroll < 0) currentScroll = 0;
-					updateButtonPositions();
+			if (Controls.instance.mobileControls) {
+				if(list.length > 1 && canScroll) {
+					for (swipe in FlxG.swipes) {
+						var f = swipe.startPosition.x - swipe.endPosition.x;
+						var g = swipe.startPosition.y - swipe.endPosition.y;
+						if (25 <= Math.sqrt(f * f + g * g)) {
+							if ((-45 <= swipe.startPosition.degreesBetween(swipe.endPosition) && 45 >= swipe.startPosition.degreesBetween(swipe.endPosition))) {
+								// Go down
+								currentScroll++;
+								if(currentScroll >= list.length) currentScroll = list.length-1;
+									updateButtonPositions();
+							}
+							else if (-180 <= swipe.startPosition.degreesBetween(swipe.endPosition) && -135 >= swipe.startPosition.degreesBetween(swipe.endPosition) || (135 <= swipe.startPosition.degreesBetween(swipe.endPosition) && 180 >= swipe.startPosition.degreesBetween(swipe.endPosition))) {
+								// Go up
+								--currentScroll;
+								if(currentScroll < 0) currentScroll = 0;
+								updateButtonPositions();
+							}
+						}
+					}
 				}
-				else if (FlxG.mouse.wheel < 0 || FlxG.keys.justPressed.DOWN) {
-					// Go down
-					currentScroll++;
-					if(currentScroll >= list.length) currentScroll = list.length-1;
-					updateButtonPositions();
+			} else {
+				if(list.length > 1 && canScroll) {
+					var lastScroll:Int = currentScroll;
+					if(FlxG.mouse.wheel > 0 || FlxG.keys.justPressed.UP) {
+						// Go up
+						--currentScroll;
+						if(currentScroll < 0) currentScroll = 0;
+					}
+					else if (FlxG.mouse.wheel < 0 || FlxG.keys.justPressed.DOWN) {
+						// Go down
+						currentScroll++;
+						if(currentScroll >= list.length) currentScroll = list.length-1;
+					}
+					if(lastScroll != currentScroll) updateButtonPositions();
 				}
-			}
 
-			if (FlxG.mouse.justPressed && !FlxG.mouse.overlaps(this, this.camera))
-			{
-				showList(false);
+				if (FlxG.mouse.justPressed && !FlxG.mouse.overlaps(this,camera))
+					showList(false);
 			}
 		}
 		#end
-    }
-    override function updateButtonPositions():Void{
-        super.updateButtonPositions();
-        var buttonHeight = header.background.height;
+	}
+	override function updateButtonPositions():Void{
+		super.updateButtonPositions();
+		var buttonHeight = header.background.height;
 		dropPanel.y = header.background.y;
 		if (dropsUp())
 			dropPanel.y -= getPanelHeight();
@@ -64,7 +85,7 @@ class FlxScrollableDropDownMenu extends FlxUIDropDownMenu  {
 			dropPanel.y += buttonHeight;
 
 		var offset = dropPanel.y;
-        for (i in 0...currentScroll) { //Hides buttons that goes before the current scroll
+		for (i in 0...currentScroll) { //Hides buttons that goes before the current scroll
 			var button:FlxUIButton = list[i];
 			if(button != null) {
 				button.y = -99999;
@@ -78,7 +99,7 @@ class FlxScrollableDropDownMenu extends FlxUIDropDownMenu  {
 				offset += buttonHeight;
 			}
 		}
-    }
+	}
 
 	/**
 	 * Helper function to easily create a data list for a dropdown menu from an array of strings.

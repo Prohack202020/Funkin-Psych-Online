@@ -78,15 +78,6 @@ class TitleState extends MusicBeatState
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
-		#if LUA_ALLOWED
-		Mods.pushGlobalMods();
-		#end
-		Mods.loadTopMod();
-
-		FlxG.fixedTimestep = false;
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.keys.preventDefaultKeys = [TAB];
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		super.create();
@@ -129,6 +120,7 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
+			MobileData.init();
 		}
 
 		if (FlxG.save.data.weekCompleted != null)
@@ -149,6 +141,7 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(() -> new ChartingState());
 		#else
 		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
+			controls.isInSubstate = false;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			FlxG.switchState(() -> new FlashingState());
@@ -363,7 +356,7 @@ class TitleState extends MusicBeatState
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT || FlxG.mouse.justPressed;
 
-		#if mobile
+		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.justPressed)

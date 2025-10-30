@@ -11,7 +11,45 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import states.TitleState;
 
 // Add a variable here and it will get automatically saved
-class SaveVariables {
+:structInit class SaveVariables {
+	/* Mobile */
+	public var wideScreen:Bool = false;
+	#if android public var storageType:String = "EXTERNAL_DATA"; #end
+
+	/* Mobile Controls */
+	#if TOUCH_CONTROLS
+	/* Bool Options */
+	public var pauseButton:Bool = true;
+	public var hitboxhint:Bool = false;
+	public var coloredvpad:Bool = true;
+
+	/* Int/Float Options */
+	public var extraKeys:Int = 2;
+	public var hitboxalpha:Float = #if mobile 0.7 #else 0 #end;
+	public var mobilePadAlpha:Float = #if mobile 0.6 #else 0 #end;
+
+	/* String Options */
+	public var hitboxtype:String = 'Gradient';
+	public var hitboxLocation:String = 'Bottom';
+	public var mobilePadSkin:String = 'original';
+	public var hitboxmode:String = 'Normal (New)';
+	public var mobilePadTexture:String = "VirtualPad";
+
+	public var extraKeyReturn1:String = 'SHIFT';
+	public var extraKeyReturn2:String = 'SPACE';
+	public var extraKeyReturn3:String = 'Q';
+	public var extraKeyReturn4:String = 'E';
+	public var extraKeyReturn5:String = 'W';
+	public var extraKeyReturn6:String = 'A';
+	public var extraKeyReturn7:String = 'S';
+	public var extraKeyReturn8:String = 'D';
+	#end
+
+	// Mobile Releated
+	public var screensaver:Bool = false;
+	public var vsync:Bool = false;
+	public var disableOnlineShaders:Bool = false;
+
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
@@ -115,8 +153,8 @@ class SaveVariables {
 }
 
 class ClientPrefs {
-	public static var data:SaveVariables = null;
-	public static var defaultData:SaveVariables = null;
+	public static var data:SaveVariables = {};
+	public static var defaultData:SaveVariables = {};
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -165,6 +203,25 @@ class ClientPrefs {
 		'sidebar'		=> [],
 		'fav'			=> [Y]
 	];
+	//This is only way to make work controls on new psych versions
+	public static var mobileBinds:Map<String, Array<MobileInputID>> = [
+		'note_up'		=> [NOTE_UP],
+		'note_left'		=> [NOTE_LEFT],
+		'note_down'		=> [NOTE_DOWN],
+		'note_right'	=> [NOTE_RIGHT],
+
+		'ui_up'			=> [UP],
+		'ui_left'		=> [LEFT],
+		'ui_down'		=> [DOWN],
+		'ui_right'		=> [RIGHT],
+
+		'accept'		=> [A],
+		'back'			=> [B],
+		'pause'			=> [#if android NONE #else P #end],
+		'reset'			=> [NONE],
+		'taunt'			=> [T]
+	];
+	public static var defaultMobileBinds:Map<String, Array<MobileInputID>> = null;
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
 	public static var defaultButtons:Map<String, Array<FlxGamepadInputID>> = null;
 
@@ -191,13 +248,16 @@ class ClientPrefs {
 	public static function clearInvalidKeys(key:String) {
 		var keyBind:Array<FlxKey> = keyBinds.get(key);
 		var gamepadBind:Array<FlxGamepadInputID> = gamepadBinds.get(key);
+		var mobileBind:Array<MobileInputID> = mobileBinds.get(key);
 		while(keyBind != null && keyBind.contains(NONE)) keyBind.remove(NONE);
 		while(gamepadBind != null && gamepadBind.contains(NONE)) gamepadBind.remove(NONE);
+		while(mobileBind != null && mobileBind.contains(NONE)) mobileBind.remove(NONE);
 	}
 
 	public static function loadDefaultKeys() {
 		defaultKeys = keyBinds.copy();
 		defaultButtons = gamepadBinds.copy();
+		defaultMobileBinds = mobileBinds.copy();
 	}
 
 	public static function saveSettings() {
@@ -213,14 +273,12 @@ class ClientPrefs {
 		save.bind('controls_v3', CoolUtil.getSavePath());
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
+		save.data.mobile = mobileBinds;
 		save.flush();
 		FlxG.log.add("Settings saved!");
 	}
 
 	public static function loadPrefs() {
-		if(data == null) data = new SaveVariables();
-		if(defaultData == null) defaultData = new SaveVariables();
-
 		for (key in Reflect.fields(data)) {
 			if (key != 'gameplaySettings' && Reflect.hasField(FlxG.save.data, key)) {
 				//trace('loaded variable: $key');
@@ -284,6 +342,11 @@ class ClientPrefs {
 					if(gamepadBinds.exists(control)) gamepadBinds.set(control, keys);
 				}
 			}
+			if(save.data.mobile != null) {
+				var loadedControls:Map<String, Array<MobileInputID>> = save.data.mobile;
+				for (control => keys in loadedControls)
+					if(mobileBinds.exists(control)) mobileBinds.set(control, keys);
+			}
 			reloadVolumeKeys();
 		}
 
@@ -305,8 +368,8 @@ class ClientPrefs {
 		TitleState.volumeUpKeys = keyBinds.get('volume_up').copy();
 		toggleVolumeKeys(true);
 	}
-	public static function toggleVolumeKeys(turnOn:Bool) {
-		if(turnOn)
+	public static function toggleVolumeKeys(?turnOn:Bool = true) {
+		if(!Controls.instance.mobileControls && turnOn)
 		{
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;

@@ -12,6 +12,9 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
+#if cpp
+@:cppFileCode('#include <thread>')
+#end
 class CoolUtil
 {
 	inline public static function quantize(f:Float, snap:Float){
@@ -144,5 +147,24 @@ class CoolUtil
 			haxArr[i] = thing;
 		}
 		return haxArr;
+	}
+
+	public static function showPopUp(message:String, title:String):Void
+	{
+		/*#if android
+		AndroidTools.showAlertDialog(title, message, {name: "OK", func: null}, null);
+		#else*/
+		FlxG.stage.window.alert(message, title);
+		//#end
+	}
+
+	#if cpp
+	@:functionCode('
+		return std::thread::hardware_concurrency();
+	')
+	#end
+	public static function getCPUThreadsCount():Int
+	{
+		return 1;
 	}
 }
