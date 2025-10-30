@@ -7,9 +7,8 @@
     },
     {
       "name": "lime",
-      "type": "git",
-      "ref": "int-delta",
-      "url": "https://github.com/Prohack101010/lime"
+      "type": "haxelib",
+      "version": "8.1.3"
     },
     {
       "name": "openfl",
@@ -83,6 +82,11 @@
     },
     {
       "name": "away3d",
+      "type": "haxelib",
+      "version": "5.0.9"
+    },
+    {
+      "name": "away3d",
       "type": "git",
       "dir": null,
       "ref": "master",
@@ -114,6 +118,16 @@
       "name": "actuate",
       "type": "haxelib",
       "version": "1.9.0"
+    },
+    {
+      "name": "format",
+      "type": "haxelib",
+      "version": "3.5.0"
+    },
+    {
+      "name": "hxp",
+      "type": "haxelib",
+      "version": "1.3.0"
     },
     {
       "name": "compiletime",
@@ -148,6 +162,11 @@
       "dir": null,
       "ref": "1966f8fbbbc509ed90d4b520f3c49c084fc92fd6",
       "url": "https://github.com/FunkinCrew/funkVis"
+    },
+    {
+      "name": "extension-androidtools",
+      "type": "haxelib",
+      "version": "2.2.2"
     }
   ]
 }

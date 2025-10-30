@@ -20,7 +20,7 @@ class StorageUtil
 	public static final rootDir:String = LimeSystem.applicationStorageDirectory;
 
 	// package name, I know I can app's package name but I really don't want to do it for now
-	public static var packageName:String = 'com.kraloyuncu.psychextendedrebase' #if debugBuild + 'debug' #end;
+	public static var packageName:String = 'com.snirozu.psychonline' #if debugBuild + 'debug' #end;
 
 	public static function getStorageDirectory():String
 		return #if android haxe.io.Path.addTrailingSlash(AndroidContext.getExternalFilesDir()) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
@@ -73,7 +73,7 @@ class StorageUtil
 		/* Hardcoded Storage Types, these types cannot be changed by Custom Type */
 		switch(curStorageType) {
 			case 'EXTERNAL':
-				daPath = '/storage/emulated/0/.Psych Extended';
+				daPath = '/storage/emulated/0/.Psych Online';
 			case 'EXTERNAL_PE':
 				daPath = '/storage/emulated/0/.PsychEngine';
 			case 'EXTERNAL_OBB':
@@ -83,7 +83,7 @@ class StorageUtil
 			case 'EXTERNAL_DATA':
 				daPath = '/storage/emulated/0/Android/data/${packageName}/files';
 			default:
-				daPath = getExternalDirectory(curStorageType) + '.Psych Extended';
+				daPath = getExternalDirectory(curStorageType) + '.Psych Online';
 		}
 
 		daPath = Path.addTrailingSlash(daPath);
