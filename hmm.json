@@ -8,8 +8,7 @@
     {
       "name": "lime",
       "type": "git",
-      "dir": null,
-      "ref": "29a69fd018a32a8c845cabd82ec3974e94f4aa4d",
+      "ref": "5b283ecd229c71a07a650b1d28f15691edf5c1ab",
       "url": "https://github.com/Prohack101010/lime"
     },
     {
@@ -40,9 +39,8 @@
     {
       "name": "hxcpp",
       "type": "git",
-      "dir": null,
-      "ref": "master",
-      "url": "https://github.com/beihu235/hxcpp"
+      "ref": "5a0dc3f644dc676a4a092b7e6c8edc8be941f024",
+      "url": "https://github.com/FunkinCrew/hxcpp"
     },
     {
       "name": "tjson",
