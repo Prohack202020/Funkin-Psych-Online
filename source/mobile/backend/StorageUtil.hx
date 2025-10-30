@@ -4,8 +4,8 @@ import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
 #if android
-import extension.androidtools.Tools;
-import extension.androidtools.callback.CallBack;
+import android.Tools;
+import android.callback.CallBack;
 #end
 
 /**
@@ -95,7 +95,7 @@ class StorageUtil
 
 	public static function requestPermissions():Void
 	{
-		CoolUtil.showPopUp("Test 1", "Test");
+		//CoolUtil.showPopUp("Test 1", "Test");
 		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU)
 			AndroidPermissions.requestPermissions([
 				'READ_MEDIA_IMAGES',
@@ -106,11 +106,11 @@ class StorageUtil
 		else
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
 
-		CoolUtil.showPopUp("Test 2", "Test");
+		//CoolUtil.showPopUp("Test 2", "Test");
 		if (!AndroidEnvironment.isExternalStorageManager())
 			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 
-		CoolUtil.showPopUp("Test 3", "Test");
+		//CoolUtil.showPopUp("Test 3", "Test");
 		if ((AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU
 			&& !AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_MEDIA_IMAGES'))
 			|| (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU
@@ -119,17 +119,17 @@ class StorageUtil
 
 		try
 		{
-			CoolUtil.showPopUp("Test 4", "Test");
+			//CoolUtil.showPopUp("Test 4", "Test");
 			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
 				FileSystem.createDirectory(StorageUtil.getStorageDirectory());
 
-			CoolUtil.showPopUp("Test 5", "Test");
+			//CoolUtil.showPopUp("Test 5", "Test");
 		}
 		catch (e:Dynamic)
 		{
-			CoolUtil.showPopUp("Test 6", "Test");
+			//CoolUtil.showPopUp("Test 6", "Test");
 			CoolUtil.showPopUp('Please create directory to\n${StorageUtil.getStorageDirectory()}\nPress OK to close the game', "Error!");
-			CoolUtil.showPopUp("Test 7", "Test");
+			//CoolUtil.showPopUp("Test 7", "Test");
 			lime.system.System.exit(1);
 		}
 
