@@ -4,8 +4,8 @@ import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
 #if android
-import android.Tools;
-import android.callback.CallBack;
+import extension.androidtools.Tools;
+import extension.androidtools.callback.CallBack;
 #end
 
 /**
