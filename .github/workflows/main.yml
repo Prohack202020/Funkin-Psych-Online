@@ -11,7 +11,7 @@ jobs:
           - name: Android-Arm64
             os: ubuntu-24.04
             buildArgs: "android -ONLY_ARM64 -final"
-            setupCommand: sh ./setup/unix.sh
+            setupCommand: haxelib install hmm --quiet && haxelib run hmm install --quiet
             artifactName: androidBuild-Arm64
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
             system: Android
