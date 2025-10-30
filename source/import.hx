@@ -4,6 +4,13 @@
 import backend.Discord;
 #end
 
+#if sys
+import sys.*;
+import sys.io.*;
+#elseif js
+import js.html.*;
+#end
+
 //Psych
 #if LUA_ALLOWED
 import llua.*;
@@ -59,7 +66,9 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.math.FlxPoint;
 import shaders.flixel.system.FlxShader;
+import haxe.ds.StringMap;
 import online.backend.Deflection;
 
 // Mobile Controls
