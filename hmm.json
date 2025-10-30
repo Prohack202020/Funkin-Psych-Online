@@ -36,15 +36,17 @@
     },
     {
       "name": "flixel-ui",
-      "type": "haxelib",
-      "version": "2.6.4"
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/FNF-SE/flixel-ui"
     },
     {
       "name": "hxcpp",
       "type": "git",
       "dir": null,
-      "ref": "master",
-      "url": "https://github.com/beihu235/hxcpp"
+      "ref": null,
+      "url": "https://github.com/HomuHomu833-haxelibs/hxcpp"
     },
     {
       "name": "tjson",
