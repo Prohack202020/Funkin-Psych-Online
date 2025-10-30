@@ -136,7 +136,7 @@
 	<haxelib name="json2object" />
 	<haxelib name="hxjsonast" />
 	<haxelib name="flxanimate" />
-	<haxelib name="lumod" />
+	<haxelib name="lumod" unless="mobile" />
 	<haxelib name="actuate" />
 	<haxelib name="compiletime" />
 	<haxelib name="funkin.vis" />
@@ -226,14 +226,29 @@
 	<!-- Do whatever you want I'm tired uninstall and install everytime -->
 	<certificate path="key.keystore" password="psychengine" alias="psychport" alias-password="psychengine" if="android" unless="debug" />
 
+	<!-- Android stuffs -->
+	<section if='android'>
+		<haxelib name="extension-androidtools" />
+		<config:android minimum-sdk-version="28" />
+		<config:android target-sdk-version="30" />
+		<config:android permission="android.permission.READ_PHONE_STATE" />
+		<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" />
+		<config:android permission="android.permission.ACCESS_NETWORK_STATE" />
+		<config:android permission="android.permission.INTERNET" />
+	</section>
+
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 
 	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
 	
-	<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>
-	<icon path="art/iconOG.png" />
+	<icon path="art/thumb-rect.png" if="mobile" />
+
+	<section unless="mobile">
+		<icon path="art/icon16.png" size='16'/>
+		<icon path="art/icon32.png" size='32'/>
+		<icon path="art/icon64.png" size='64'/>
+		<icon path="art/iconOG.png" />
+	</section>
 </project>
