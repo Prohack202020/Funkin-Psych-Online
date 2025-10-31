@@ -15,6 +15,6 @@ interface IMobileControls
 	public var buttonExtra1:MobileButton; //same as the buttonExtra
 	public var buttonExtra2:MobileButton;
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<MobileButton->Void>;
-	public var onButtonUp:FlxTypedSignal<MobileButton->Void>;
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
 }

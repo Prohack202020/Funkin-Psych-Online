@@ -37,7 +37,7 @@ class SkinsState extends MusicBeatState {
 
 	static var flipped:Bool = false;
 
-	final accept:String = (Controls.instance.mobileC) ? "A" : "ACCEPT";
+	final accept:String = (Controls.instance.mobileControls) ? "A" : "ACCEPT";
 
 	static var backClass:Class<Dynamic>;
 
@@ -283,7 +283,7 @@ class SkinsState extends MusicBeatState {
 				if (FileSystem.exists(characters)) {
 					for (file in FileSystem.readDirectory(characters)) {
 						var path = Path.join([characters, file]);
-						if (!backend.io.PsychFileSystem.isDirectory(path) && file.endsWith('.json')) {
+						if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
 							var character:String = file.substr(0, file.length - 5);
 							if (!flipped ? character.endsWith("-player") : !character.endsWith("-player")) {
 								continue;

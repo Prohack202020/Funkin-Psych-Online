@@ -30,8 +30,8 @@ class Hitbox extends MobileInputManager implements IMobileControls
 	public var extraKey4 = ClientPrefs.data.extraKeyReturn4.toUpperCase();
 
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
-	public var onButtonUp:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
@@ -206,6 +206,8 @@ class Hitbox extends MobileInputManager implements IMobileControls
 	override function destroy():Void
 	{
 		super.destroy();
+		onButtonUp.destroy();
+		onButtonDown.destroy();
 
 		buttonLeft = null;
 		buttonDown = null;
@@ -292,8 +294,8 @@ class HitboxOld extends MobileInputManager implements IMobileControls {
 	public var buttonExtra2:MobileButton = new MobileButton(0, 0);
 
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
-	public var onButtonUp:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
@@ -366,6 +368,8 @@ class HitboxOld extends MobileInputManager implements IMobileControls {
 
 	override public function destroy():Void {
 		super.destroy();
+		onButtonUp.destroy();
+		onButtonDown.destroy();
 
 		buttonLeft = null;
 		buttonDown = null;

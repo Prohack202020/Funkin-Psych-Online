@@ -553,8 +553,10 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 	var elapsedShit = 3.;
 	var lastFocused = false;
 
-    override function update(elapsed:Float) {
+	override function update(elapsed:Float) {
 		super.update(elapsed);
+
+		mobilePad.buttonLeft.visible = mobilePad.buttonRight.visible = mobilePad.buttonUp.visible = mobilePad.buttonDown.visible = mobilePad.buttonT.visible = mobilePad.buttonM.visible = mobilePad.buttonY.pressed;
 
 		if (FlxG.keys.justPressed.F11) {
 			GameClient.reconnect();
@@ -1115,8 +1117,6 @@ class LobbyCharacter extends FlxTypedGroup<FlxObject> {
 			character.alpha = 1;
 			remove(dlSkinTxt);
 		}
-
-		mobilePad.buttonLeft.visible = mobilePad.buttonRight.visible = mobilePad.buttonUp.visible = mobilePad.buttonDown.visible = mobilePad.buttonT.visible = mobilePad.buttonM.visible = mobilePad.buttonY.pressed;
 
 		danceLogic();
 	}
