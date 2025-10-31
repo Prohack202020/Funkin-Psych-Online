@@ -7,7 +7,7 @@ import options.Option;
 
 class MobileOptionsSubState extends BaseOptionsMenu {
 
-	var options:Option;
+	var option:Option;
 	var HitboxTypes:Array<String>;
 	public function new() {
 		title = 'Mobile Options';
