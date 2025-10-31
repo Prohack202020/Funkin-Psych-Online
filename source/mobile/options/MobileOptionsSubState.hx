@@ -32,7 +32,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 			'extraKeys',
 			'int');
 		option.scrollSpeed = 1;
-		option.minValue = 1;
+		option.minValue = 0;
 		option.maxValue = 4;
 		option.changeValue = 1;
 		option.decimals = 0;
@@ -73,6 +73,13 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		option.maxValue = 1;
 		option.changeValue = 0.1;
 		option.decimals = 1;
+		addOption(option);
+
+		option = new Option('Add Hitbox as Instance',
+			'for debug',
+			'debugThing',
+			'bool'
+		);
 		addOption(option);
 
 		#if mobile

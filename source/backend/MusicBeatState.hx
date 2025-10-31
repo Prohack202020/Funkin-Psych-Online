@@ -60,7 +60,8 @@ class MusicBeatState extends FlxUIState
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
 
-		add(hitbox);
+		if (ClientPrefs.data.debugThing) add(hitbox.instance);
+		else add(hitbox);
 		hitbox.instance.inState = true;
 	}
 
