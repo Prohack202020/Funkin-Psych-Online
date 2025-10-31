@@ -29,8 +29,8 @@ class MobilePad extends MobileInputManager implements IMobileControls {
 	public var createdButtons:Array<String> = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","SELECTOR","Left","Up","Right","Down","Left2","Up2","Right2","Down2"];
 
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
-	public var onButtonUp:FlxTypedSignal<MobileButton->Void> = new FlxTypedSignal<MobileButton->Void>();
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 	
 	/**
 	 * Create a gamepad.
@@ -111,8 +111,8 @@ class MobilePad extends MobileInputManager implements IMobileControls {
 
 		if (ColorS != -1) button.color = ColorS;
 
-		button.onDown.callback = () -> onButtonDown.dispatch(button);
-		button.onOut.callback = button.onUp.callback = () -> onButtonUp.dispatch(button);
+		button.onDown.callback = () -> onButtonDown.dispatch(button, IDs);
+		button.onOut.callback = button.onUp.callback = () -> onButtonUp.dispatch(button, IDs);
 		return button;
 	}
 

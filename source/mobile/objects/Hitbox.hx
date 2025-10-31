@@ -144,31 +144,6 @@ class Hitbox extends MobileInputManager implements IMobileControls
 					if (customReturn == null && buttonData.button == 'buttonExtra${i}') customReturn = button.toUpperCase();
 				}
 
-				//HScript in Json (This allows to make hitboxes for any resolution)
-				//Custom Parser will be added later, because not every project using hscript
-				var parser = new Parser();
-				var interp = new Interp();
-				interp.variables.set("FlxG", FlxG);
-				interp.variables.set("MusicBeatState", MusicBeatState);
-				interp.variables.set("MusicBeatSubstate", MusicBeatSubstate);
-				interp.variables.set("CoolUtil", CoolUtil); //this should be funny
-				var bruhShit:Array<Dynamic> = [buttonXString, buttonYString, buttonWidthString, buttonHeightString];
-				for (i in 0...4) {
-					try {
-						if (bruhShit[i] != null) {
-							var expr = parser.parseString(bruhShit[i]);
-							var result:Dynamic = interp.execute(expr);
-							//Bruh
-							if (i == 0) buttonX = Std.parseFloat(result);
-							else if (i == 1) buttonY = Std.parseFloat(result);
-							else if (i == 2) buttonWidth = Std.int(result);
-							else if (i == 3) buttonHeight = Std.int(result);
-
-							trace(buttonData.button + ' || ' + result);
-						}
-					} catch (e:Dynamic) {}
-				}
-
 				if (ClientPrefs.data.extraKeys == 0 && buttonData.extraKeyMode == 0 ||
 				   ClientPrefs.data.extraKeys == 1 && buttonData.extraKeyMode == 1 ||
 				   ClientPrefs.data.extraKeys == 2 && buttonData.extraKeyMode == 2 ||
@@ -182,7 +157,7 @@ class Hitbox extends MobileInputManager implements IMobileControls
 
 				if (addButton) {
 					Reflect.setField(this, buttonData.button,
-						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn));
+						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button));
 					add(Reflect.field(this, buttonData.button));
 				}
 			}
@@ -256,7 +231,7 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		return bitmap;
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String):MobileButton
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String):MobileButton
 	{
 		var hint:MobileButton = new MobileButton(X, Y);
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
@@ -267,13 +242,13 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		hint.alpha = 0.00001;
 		hint.onDown.callback = function()
 		{
-			onButtonDown.dispatch(hint);
+			onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
 			if (hint.alpha != ClientPrefs.data.hitboxalpha)
 				hint.alpha = ClientPrefs.data.hitboxalpha;
 		}
 		hint.onOut.callback = hint.onUp.callback = function()
 		{
-			onButtonUp.dispatch(hint);
+			onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
 			if (hint.alpha != 0.00001)
 				hint.alpha = 0.00001;
 		}
@@ -304,18 +279,18 @@ class HitboxOld extends MobileInputManager implements IMobileControls {
 		super();
 
 		if (ClientPrefs.data.extraKeys == 0){
-			add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitbox"));
-			add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitbox"));
-			add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitbox"));
-			add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitbox"));
+			add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitbox", null, "buttonLeft"));
+			add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitbox", null, "buttonDown"));
+			add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitbox", null, "buttonUp"));
+			add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitbox", null, "buttonRight"));
 		}else{
 			if (ClientPrefs.data.hitboxLocation == 'Bottom') {
 				switch (ClientPrefs.data.extraKeys) {
 					case 2:
-						add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitboxBottom-2"));
+						add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitboxBottom-2", null, "buttonLeft"));
+						add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitboxBottom-2", null, "buttonDown"));
+						add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitboxBottom-2", null, "buttonUp"));
+						add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitboxBottom-2", null, "buttonRight"));
 						add(buttonExtra1 = createhitbox(0, 580, "extra1", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn1.toUpperCase()));
 						add(buttonExtra2 = createhitbox(640, 580, "extra2", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn2.toUpperCase()));
 				}
@@ -323,12 +298,12 @@ class HitboxOld extends MobileInputManager implements IMobileControls {
 			else if (ClientPrefs.data.hitboxLocation == 'Top') {
 				switch (ClientPrefs.data.extraKeys) {
 					case 2:
-						add(buttonLeft = createhitbox(0, 144, "left", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonDown = createhitbox(320, 144, "down", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonUp = createhitbox(640, 144, "up", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonRight = createhitbox(960, 144, "right", "mobile/Hitbox/hitboxBottom-2"));
-						add(buttonExtra1 = createhitbox(0, 0, "extra1", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn1.toUpperCase()));
-						add(buttonExtra2 = createhitbox(640, 0, "extra2", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn2.toUpperCase()));
+						add(buttonLeft = createhitbox(0, 144, "left", "mobile/Hitbox/hitboxBottom-2", null, "buttonLeft"));
+						add(buttonDown = createhitbox(320, 144, "down", "mobile/Hitbox/hitboxBottom-2", null, "buttonDown"));
+						add(buttonUp = createhitbox(640, 144, "up", "mobile/Hitbox/hitboxBottom-2", null, "buttonUp"));
+						add(buttonRight = createhitbox(960, 144, "right", "mobile/Hitbox/hitboxBottom-2", null, "buttonRight"));
+						add(buttonExtra1 = createhitbox(0, 0, "extra1", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn1.toUpperCase(), "buttonExtra1"));
+						add(buttonExtra2 = createhitbox(640, 0, "extra2", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn2.toUpperCase(), "buttonExtra2"));
 				}
 			}
 		}
@@ -341,20 +316,20 @@ class HitboxOld extends MobileInputManager implements IMobileControls {
 		*/
 	}
 
-	public function createhitbox(x:Float = 0, y:Float = 0, frames:String, ?texture:String, ?customReturn:String) {
+	public function createhitbox(x:Float = 0, y:Float = 0, frames:String, ?texture:String, ?customReturn:String, ?mapKey:String) {
 		var button = new MobileButton(x, y);
 		button.loadGraphic(FlxGraphic.fromFrame(getFrames(texture).getByName(frames)));
 		button.antialiasing = ClientPrefs.data.antialiasing;
 		button.alpha = 0.00001;
 		button.onDown.callback = function()
 		{
-			onButtonDown.dispatch(button);
+			onButtonDown.dispatch(button, storedButtonsIDs.get(mapKey));
 			if (button.alpha != 0.75)
 				button.alpha = 0.75;
 		}
 		button.onOut.callback = button.onUp.callback = function()
 		{
-			onButtonUp.dispatch(button);
+			onButtonUp.dispatch(button, storedButtonsIDs.get(mapKey));
 			if (button.alpha != 0.00001)
 				button.alpha = 0.00001;
 		}
