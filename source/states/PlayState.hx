@@ -1254,7 +1254,7 @@ class PlayState extends MusicBeatState
 
 		if (GameClient.isConnected()) {
 			preloadTasks.push(() -> {
-				waitReadySpr = new Alphabet(0, 0, controls.mobileC ? "TOUCH YOUR SCREEN TO START" : "PRESS ACCEPT TO START", true);
+				waitReadySpr = new Alphabet(0, 0, controls.mobileControls ? "TOUCH YOUR SCREEN TO START" : "PRESS ACCEPT TO START", true);
 				waitReadySpr.cameras = [camOther];
 				waitReadySpr.alignment = CENTERED;
 				waitReadySpr.x = FlxG.width / 2;
