@@ -126,7 +126,7 @@ class OnlineState extends MusicBeatState {
 		warp.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
 		warp.updateHitbox();
 		warp.screenCenter();
-		if (!ClientPrefs.data.lowQuality && ClientPrefs.data.shaders)
+		if (!ClientPrefs.data.lowQuality && !ClientPrefs.data.disableOnlineShaders)
 			add(new WarpEffect(warp));
 		warp.antialiasing = ClientPrefs.data.antialiasing;
 		add(warp);
@@ -179,8 +179,7 @@ class OnlineState extends MusicBeatState {
 		discord.x = 30;
 		discord.y = FlxG.height - discord.height - 30;
 		discord.alpha = 0.8;
-		if (!Main.UNOFFICIAL_BUILD)
-			add(discord);
+		add(discord);
 
 		github = new FlxSprite();
 		github.antialiasing = ClientPrefs.data.antialiasing;
@@ -193,8 +192,7 @@ class OnlineState extends MusicBeatState {
 		github.x = discord.x + discord.width + 20;
 		github.y = FlxG.height - github.height - 28;
 		github.alpha = 0.8;
-		if (!Main.UNOFFICIAL_BUILD)
-			add(github);
+		add(github);
 
 		if (twitterIsDead) {
 			bsky = new FlxSprite();
@@ -207,8 +205,7 @@ class OnlineState extends MusicBeatState {
 			bsky.x = github.x + github.width + 20;
 			bsky.y = FlxG.height - bsky.height - 28;
 			bsky.alpha = 0.8;
-			if (!Main.UNOFFICIAL_BUILD)
-				add(bsky);
+			add(bsky);
 		}
 		else {
 			twitter = new FlxSprite();
@@ -221,8 +218,7 @@ class OnlineState extends MusicBeatState {
 			twitter.x = github.x + github.width + 20;
 			twitter.y = FlxG.height - twitter.height - 28;
 			twitter.alpha = 0.8;
-			if (!Main.UNOFFICIAL_BUILD)
-				add(twitter);
+			add(twitter);
 		}
 		
 
@@ -302,7 +298,9 @@ class OnlineState extends MusicBeatState {
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 
 		FlxG.mouse.visible = true;
-    }
+
+		addMobilePad('NONE', 'B');
+	}
 
 	override function destroy() {
 		super.destroy();
@@ -354,6 +352,7 @@ class OnlineState extends MusicBeatState {
 			if (controls.ACCEPT || (FlxG.mouse.justPressed && mouseInItems)) {
 				switch (itms[curSelected].toLowerCase()) {
 					case "join":
+						FlxG.stage.window.textInputEnabled = true;
 						inputWait = true;
 					case "find":
 						disableInput = true;
@@ -578,6 +577,7 @@ class OnlineState extends MusicBeatState {
 			switch (itms[curSelected].toLowerCase()) {
 				case "join":
 					disableInput = true;
+					FlxG.stage.window.textInputEnabled = false;
 					if (daCoomCode.toLowerCase() == "adachi") {
 						FlxG.sound.playMusic(Paths.sound('cabbage'));
 						var image = new FlxSprite().loadGraphic(Paths.image('unnamed_file_from_google'));

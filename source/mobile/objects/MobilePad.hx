@@ -7,7 +7,7 @@ import openfl.display.BitmapData;
 import openfl.utils.Assets;
 
 //More button support (Some buttons doesn't have a texture)
-@:build(mobile.macros.ButtonMacro.createButtons(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","SELECTOR"]))
+@:build(mobile.macros.ButtonMacro.createButtons(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","TAUNT"]))
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //Psych Extended Allows to Create 30 Extra Button with Json for now
 
 @:access(mobile.objects.MobileButton)
@@ -94,26 +94,6 @@ class MobilePad extends MobileInputManager implements IMobileControls {
 			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(path));
 		else
 			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(Paths.getPreloadPath() + 'mobile/MobilePad/Textures/default.png'));
-
-		trace("=== DETAILED DEBUG/DETAYLI DEBUG ===");
-		trace("strName: " + strName);
-		trace("IDs: " + IDs);
-		trace("IDs.length: " + IDs.length);
-		trace("IDs != null: " + (IDs != null));
-		trace("IDs.length > 0: " + (IDs.length > 0));
-
-		var conditionResult = (IDs != null && IDs.length > 0);
-		trace("Condition result: " + conditionResult);
-
-		if (conditionResult) {
-			trace("IF BLOCK EXECUTED/IF BLOĞU ÇALIŞTI - Setting strName to null/strName null yapılıyor");
-			strName = null;
-		} else {
-			trace("ELSE BLOCK EXECUTED/ELSE BLOĞU ÇALIŞTI - strName remains unchanged/strName değişmeyecek");
-		}
-
-		trace("Final/SON strName: " + strName);
-		trace("=== DEBUG END/DEBUG SONU ===");
 
 		var button = new MobileButton(x, y, IDs, strName);
 		button.frames = FlxTileFrames.fromGraphic(frames, FlxPoint.get(Std.int(frames.width / 2), frames.height));

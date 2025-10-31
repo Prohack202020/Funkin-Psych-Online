@@ -489,6 +489,10 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 		GameClient.send("status", "In the Lobby");
 
+		addMobilePad('FULL', 'B_C_Y_T_M');
+		addMobilePadCamera();
+		mobilePad.y -= 300;
+
 		registerMessages();
 	}
 
@@ -669,18 +673,18 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 			// trace('playerHold = ' + playerHold + ', oppHold = ' + oppHold);
 
-			if (FlxG.keys.pressed.ALT) { // useless, but why not?
-				var suffix = FlxG.keys.pressed.CONTROL ? 'miss' : '';
-				if (controls.NOTE_LEFT_P) {
+			if (mobilePad.buttonY.pressed || FlxG.keys.pressed.ALT) { // useless, but why not?
+				var suffix = (mobilePad.buttonM.pressed || FlxG.keys.pressed.CONTROL) ? 'miss' : '';
+				if (mobilePad.buttonLeft.justPressed || controls.NOTE_LEFT_P) {
 					playerAnim('singLEFT' + suffix);
 				}
-				if (controls.NOTE_RIGHT_P) {
+				if (mobilePad.buttonRight.justPressed || controls.NOTE_RIGHT_P) {
 					playerAnim('singRIGHT' + suffix);
 				}
-				if (controls.NOTE_UP_P) {
+				if (mobilePad.buttonUp.justPressed || controls.NOTE_UP_P) {
 					playerAnim('singUP' + suffix);
 				}
-				if (controls.NOTE_DOWN_P) {
+				if (mobilePad.buttonDown.justPressed || controls.NOTE_DOWN_P) {
 					playerAnim('singDOWN' + suffix);
 				}
 				if (controls.TAUNT) {
@@ -710,7 +714,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 				}
 			}
 			
-			if ((!FlxG.keys.pressed.ALT && controls.ACCEPT) || FlxG.mouse.justPressed) {
+			if (((!FlxG.keys.pressed.ALT || !mobilePad.buttonY.pressed) && controls.ACCEPT) || FlxG.mouse.justPressed) {
 				switch (curSelected) {
 					case 0:
 						openSubState(new RoomSettingsSubstate());
@@ -866,7 +870,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 					Alert.alert("Mod couldn't be found!", "Host didn't specify the URL of this mod");
 				}
 				else if (Mods.getModDirectories().contains(GameClient.room.state.modDir)) {
-					Alert.alert("Mod couldn't be found!", "Expected mod data to exist in this path: " + (GameClient.room.state.modDir ?? "mods/"));
+					Alert.alert("Mod couldn't be found!", "Expected mod data to exist in this path: " + (GameClient.room.state.modDir ?? #if mobile Sys.getCwd() + #end "mods/"));
 				}
 				var sond = FlxG.sound.play(Paths.sound('badnoise' + FlxG.random.int(1, 3)));
 				sond.pitch = 1.1;
@@ -929,21 +933,26 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 		updateCharacters();
 
+		final settingsBind:String = !controls.mobileControls ? "\n\n(Keybind: SHIFT)" : "";
+		final chatBind:String = !controls.mobileControls ? "\n\n(Keybind: TAB)" : "";
+		final roomBind:String = !controls.mobileControls ? "\n\nACCEPT - Reveals the code and\ncopies it to your clipboard.\n\nCTRL + C - Copies the code without\nrevealing it on the screen." : "\n\nTOUCH - Reveals the code and\ncopies it to your clipboard.";
+		final modBind:String = !controls.mobileControls ? "\n\nRIGHT CLICK - Open Mod Downloader" : "\n\nTOUCH - Open Mod Downloader";
+		final lobbyBind:String = !controls.mobileControls ? "\nPress UI keybinds\nor use your mouse\nto select an option!" : "\nTouch UI keybinds\nto select an option!";
 		switch (curSelected) {
 			case 0:
-				itemTip.text = " - SETTINGS - \nOpens server settings.\n\n(Keybind: SHIFT)";
+				itemTip.text = " - SETTINGS - \nOpens server settings." + settingsBind;
 			case 1:
-				itemTip.text = " - CHAT - \nOpens chat.\n\n(Keybind: TAB)";
+				itemTip.text = " - CHAT - \nOpens chat." + chatBind;
 			case 2:
 				itemTip.text = " - START GAME/READY - \nToggles your READY status.\n\nPlayers also need to have the\ncurrently selected mod installed.\n\n(Both sides can only\nhave up to 2 players).";
 			case 3:
-				itemTip.text = " - ROOM CODE - \nUnique code of this room.\n\nACCEPT - Reveals the code and\ncopies it to your clipboard.\n\nCTRL + C - Copies the code without\nrevealing it on the screen.";
+				itemTip.text = " - ROOM CODE - \nUnique code of this room." + roomBind;
 			case 4:
 				itemTip.text = " - SELECT SONG - \nSelects the song.\n\n(Players with host permissions\ncan only do that)";
 			case 5:
-				itemTip.text = " - MOD - \nDownloads the currently selected mod\nif it isn't installed.\n\nAfter you install it\npress this button again!\n\nRIGHT CLICK - Open Mod Downloader";
+				itemTip.text = " - MOD - \nDownloads the currently selected mod\nif it isn't installed.\n\nAfter you install it\npress this button again!" + modBind;
 			default:
-				itemTip.text = " - LOBBY - \nPress UI keybinds\nor use your mouse\nto select an option!";
+				itemTip.text = " - LOBBY - " + lobbyBind;
 		}
 
 		itemTip.x = settingsIconBg.x + settingsIconBg.width - itemTip.width;
@@ -1099,6 +1108,9 @@ class LobbyCharacter extends FlxTypedGroup<FlxObject> {
 			if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(character, character.camera))
 				loadCharacter(true, true);
 		}
+
+		mobilePad.buttonLeft.visible = mobilePad.buttonRight.visible = mobilePad.buttonUp.visible = mobilePad.buttonDown.visible = mobilePad.buttonT.visible = mobilePad.buttonM.visible = mobilePad.buttonY.pressed;
+
 		else if (_changedNoSkin) {
 			character.colorTransform.redOffset = 0;
 			character.colorTransform.greenOffset = 0;

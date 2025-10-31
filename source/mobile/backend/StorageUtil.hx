@@ -8,6 +8,11 @@ import extension.androidtools.Tools;
 import extension.androidtools.callback.CallBack;
 #end
 
+import lime.system.System;
+import lime.app.Application;
+import openfl.Assets;
+import haxe.io.Bytes;
+
 /**
  * A storage class for mobile.
  * @author Mihai Alexandru (M.A. Jigsaw)

@@ -2,6 +2,7 @@ package online.replay;
 
 import states.FreeplayState;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.input.gamepad.FlxGamepad;
 import online.network.Leaderboard;
 import haxe.crypto.Md5;
 import backend.Song;
@@ -95,7 +96,29 @@ class ReplayRecorder extends FlxBasic {
 		}
 
 		state.add(this);
-        
+
+		var hitbox:Hitbox = state.controls.requestedHitbox;
+		if(hitbox != null)
+		{
+			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
+			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
+		}
+		else
+		{
+			trace("Tried to init replay recorder for mobile controls but failed.");
+		}
+
+		var mobilePad:MobilePad = state.controls.requestedInstance.mobilePad;
+		if(mobilePad != null)
+		{
+			mobilePad.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
+			mobilePad.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
+		}
+		else
+		{
+			trace("Tried to init replay recorder for mobile pad but failed.");
+		}
+
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
@@ -165,7 +188,36 @@ class ReplayRecorder extends FlxBasic {
 		}
 	}
 
-    public function save():Float {
+	function recordKeyMobileC(time:Float, IDs:Array<MobileInputID>, move:Int) {
+		if (IDs == null || IDs.length < 0)
+			return;
+
+		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
+		{
+			switch(IDs[0])
+			{
+				case EXTRA_1:
+					data.inputs.push([time, 'KEY:SPACE', move]);
+				case EXTRA_2:
+					data.inputs.push([time, 'KEY:SHIFT', move]);
+				default:
+					// nothing
+			}
+			return;
+		}
+
+		for (id in IDs)
+		{
+			var idName:String = id.toString().toLowerCase();
+
+			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
+				continue;
+
+			data.inputs.push([time, idName, move]);
+		}
+	}
+
+	public function save():Float {
 		if (!FileSystem.exists("replays/"))
 			FileSystem.createDirectory("replays/");
 

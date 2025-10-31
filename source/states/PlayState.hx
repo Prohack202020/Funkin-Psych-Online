@@ -4813,6 +4813,28 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
+	private function onButtonPress(button:MobileButton, ids:Array<MobileInputID>):Void
+	{
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
+
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonPressPre', [buttonCode]);
+		if (button.justPressed) keyPressed(buttonCode);
+		callOnScripts('onButtonPress', [buttonCode]);
+	}
+
+	private function onButtonRelease(button:MobileButton, ids:Array<MobileInputID>):Void
+	{
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
+
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonReleasePre', [buttonCode]);
+		if(buttonCode > -1) keyReleased(buttonCode);
+		callOnScripts('onButtonRelease', [buttonCode]);
+	}
+
 	// Hold notes
 	@:unreflective
 	private function keysCheck():Void
