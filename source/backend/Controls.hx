@@ -103,7 +103,11 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) == true || hitboxJustPressed(mobileBinds[key]) == true || mobilePadJustPressed(mobileBinds[key]) == true;
+		try {
+			return result || _myGamepadJustPressed(gamepadBinds[key]) == true || hitboxJustPressed(mobileBinds[key]) == true || mobilePadJustPressed(mobileBinds[key]) == true;
+		} catch (e:haxe.Exception) {
+				return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
+		}
 	}
 
 	public function pressed(key:String)
@@ -116,7 +120,11 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true || hitboxPressed(mobileBinds[key]) == true || mobilePadPressed(mobileBinds[key]) == true;
+		try {
+			return result || _myGamepadPressed(gamepadBinds[key]) == true || hitboxPressed(mobileBinds[key]) == true || mobilePadPressed(mobileBinds[key]) == true;
+		} catch (e:haxe.Exception) {
+				return result || _myGamepadPressed(gamepadBinds[key]) == true;
+		}
 	}
 
 	public function justReleased(key:String)
@@ -129,7 +137,11 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustReleased(gamepadBinds[key]) == true || hitboxJustReleased(mobileBinds[key]) == true || mobilePadJustReleased(mobileBinds[key]) == true;
+		try {
+			return result || _myGamepadJustReleased(gamepadBinds[key]) == true || hitboxJustReleased(mobileBinds[key]) == true || mobilePadJustReleased(mobileBinds[key]) == true;
+		} catch (e:haxe.Exception) {
+				return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
+		}
 	}
 
 	public var controllerMode:Bool = false;
