@@ -38,6 +38,7 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		mobilePad = new MobilePad(DPad, Action);
 		add(mobilePad);
+		mobilePad.inSubstate = true;
 	}
 
 	public function removeMobilePad()

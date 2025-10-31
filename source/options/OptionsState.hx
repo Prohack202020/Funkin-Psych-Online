@@ -120,7 +120,7 @@ class OptionsState extends MusicBeatState
 			}
 			else FlxG.switchState(() -> new MainMenuState());
 		}
-		else if (controls.ACCEPT || FlxG.mouse.justPressed) openSelectedSubstate(options[curSelected]);
+		else if (controls.ACCEPT #if desktop || FlxG.mouse.justPressed #end) openSelectedSubstate(options[curSelected]);
 	}
 	
 	function changeSelection(change:Int = 0) {

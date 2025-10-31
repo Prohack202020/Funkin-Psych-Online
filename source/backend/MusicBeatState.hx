@@ -33,6 +33,7 @@ class MusicBeatState extends FlxUIState
 	{
 		mobilePad = new MobilePad(DPad, Action);
 		add(mobilePad);
+		mobilePad.inState = true;
 	}
 
 	public function removeMobilePad()

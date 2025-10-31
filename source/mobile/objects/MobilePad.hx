@@ -77,6 +77,7 @@ class MobilePad extends MobileInputManager implements IMobileControls {
 
 		scrollFactor.set();
 		updateTrackedButtons();
+		alpha = ClientPrefs.data.mobilePadAlpha;
 
 		instance = this;
 	}
