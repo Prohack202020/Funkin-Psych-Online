@@ -1108,9 +1108,6 @@ class LobbyCharacter extends FlxTypedGroup<FlxObject> {
 			if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(character, character.camera))
 				loadCharacter(true, true);
 		}
-
-		mobilePad.buttonLeft.visible = mobilePad.buttonRight.visible = mobilePad.buttonUp.visible = mobilePad.buttonDown.visible = mobilePad.buttonT.visible = mobilePad.buttonM.visible = mobilePad.buttonY.pressed;
-
 		else if (_changedNoSkin) {
 			character.colorTransform.redOffset = 0;
 			character.colorTransform.greenOffset = 0;
@@ -1118,6 +1115,8 @@ class LobbyCharacter extends FlxTypedGroup<FlxObject> {
 			character.alpha = 1;
 			remove(dlSkinTxt);
 		}
+
+		mobilePad.buttonLeft.visible = mobilePad.buttonRight.visible = mobilePad.buttonUp.visible = mobilePad.buttonDown.visible = mobilePad.buttonT.visible = mobilePad.buttonM.visible = mobilePad.buttonY.pressed;
 
 		danceLogic();
 	}
