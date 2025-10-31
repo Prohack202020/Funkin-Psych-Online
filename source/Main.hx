@@ -112,6 +112,11 @@ class Main extends Sprite
 		#end
 		backend.CrashHandler.init();
 
+		// Assets folder
+		if (!StorageUtil.areAssetsCopied("assets/"))
+			StorageUtil.copyAssetsFromAPK("assets/");
+		#end
+
 		#if (cpp && windows)
 		backend.Native.fixScaling();
 		#end
@@ -185,7 +190,7 @@ class Main extends Sprite
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(game.width, game.height, #if (mobile && MODS_ALLOWED) CopyState.checkExistingFiles() ? game.initialState : CopyState #else game.initialState #end, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);

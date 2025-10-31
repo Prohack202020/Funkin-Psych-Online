@@ -47,7 +47,7 @@ enum abstract MobileInputID(Int) from Int to Int
 	var X = 27;
 	var Y = 28;
 	var Z = 29;
-	// Touch Pad Directional Buttons
+	// Mobile Pad Directional Buttons
 	var UP = 30;
 	var UP2 = 31;
 	var DOWN = 32;
@@ -64,7 +64,7 @@ enum abstract MobileInputID(Int) from Int to Int
 	// Extra Buttons (Not Needed)
 	var EXTRA_1 = 42;
 	var EXTRA_2 = 43;
-	var SELECTOR = 44;
+	var TAUNT = 44;
 
 	@:from
 	public static inline function fromString(s:String)

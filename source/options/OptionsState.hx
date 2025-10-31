@@ -74,6 +74,8 @@ class OptionsState extends MusicBeatState
 
 		super.create();
 
+		addMobilePad("UP_DOWN", "A_B");
+
 		online.GameClient.send("status", "In the Game Options");
 	}
 
