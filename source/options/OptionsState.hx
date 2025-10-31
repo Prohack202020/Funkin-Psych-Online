@@ -6,7 +6,8 @@ import backend.StageData;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics and Performance', 'Visuals and UI', 'Gameplay'];
+	//I'm feeling old
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics and Performance', 'Visuals and UI', 'Gameplay', 'Mobile Options'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -16,6 +17,10 @@ class OptionsState extends MusicBeatState
 	public static var loadedMod:String = '';
 
 	function openSelectedSubstate(label:String) {
+		if (label != "Adjust Delay and Combo"){
+			removeMobilePad();
+			persistentUpdate = false;
+		}
 		switch(label) {
 			case 'Note Colors':
 				openSubState(new options.NotesSubState());
@@ -27,6 +32,8 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.VisualsUISubState());
 			case 'Gameplay':
 				openSubState(new options.GameplaySettingsSubState());
+			case 'Mobile Options':
+				openSubState(new mobile.options.MobileOptionsSubState());
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(() -> new options.NoteOffsetState());
 		}
@@ -83,6 +90,10 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 		FlxG.mouse.visible = true;
 		ClientPrefs.saveSettings();
+		controls.isInSubstate = false;
+		removeMobilePad();
+		addMobilePad('UP_DOWN', 'A_B');
+		persistentUpdate = true;
 	}
 
 	override function update(elapsed:Float) {

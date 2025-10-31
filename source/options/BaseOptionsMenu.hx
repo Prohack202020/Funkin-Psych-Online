@@ -24,6 +24,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	public function new()
 	{
+		controls.isInSubstate = true;
 		super();
 
 		FlxG.mouse.visible = false;

@@ -60,7 +60,7 @@ class MusicBeatState extends FlxUIState
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
 
-		add(hitbox);
+		add(hitbox.instance);
 	}
 
 	public function removeMobileControls()

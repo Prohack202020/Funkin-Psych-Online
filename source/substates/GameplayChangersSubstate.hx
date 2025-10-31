@@ -102,6 +102,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 	public function new()
 	{
+		controls.isInSubstate = true;
 		super();
 		
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -159,7 +160,11 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		if (GameClient.isConnected()) {
 			GameClient.room.state.gameplaySettings.onChange(receiveChange);
+			MusicBeatState.getState().mobilePad.visible = false;
 		}
+
+		addMobilePad('FULL', 'A_B_C');
+		addMobilePadCamera();
 	}
 
 	function receiveChange(_:Dynamic, __:Dynamic) {
@@ -195,6 +200,9 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		}
 
 		if (controls.BACK) {
+			controls.isInSubstate = false;
+			if (GameClient.isConnected())
+				MusicBeatState.getState().mobilePad.visible = true;
 			close();
 			ClientPrefs.saveSettings();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -308,7 +316,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if(controls.RESET)
+			if(mobilePad.buttonC.justPressed || controls.RESET)
 			{
 				for (i in 0...optionsArray.length)
 				{

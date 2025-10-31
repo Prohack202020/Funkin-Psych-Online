@@ -13,6 +13,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 	var curSelectedID:Int = 0;
 
 	var blurFilter:BlurFilter;
+	var blackSprite:FlxSprite;
 	var coolCam:FlxCamera;
 
     //options
@@ -27,11 +28,18 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 	override function create() {
 		super.create();
 
-		blurFilter = new BlurFilter();
-		for (cam in FlxG.cameras.list) {
-			if (cam.filters == null)
-				cam.filters = [];
-			cam.filters.push(blurFilter);
+		if (!ClientPrefs.data.disableOnlineShaders) {
+			blurFilter = new BlurFilter();
+			for (cam in FlxG.cameras.list) {
+				if (cam.filters == null)
+					cam.filters = [];
+				cam.filters.push(blurFilter);
+			}
+		} else {
+			blackSprite = new FlxSprite();
+			blackSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			blackSprite.alpha = 0.75;
+			add(blackSprite);
 		}
 
 		coolCam = new FlxCamera();
@@ -155,6 +163,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 
 		items.add(skinSelect = new Option("Select Skin", "Select your Skin here!", () -> {
 			if (!GameClient.room.state.disableSkins) {
+				controls.isInSubstate = false;
 				LoadingState.loadAndSwitchState(new SkinsState());
 			}
 			else {
@@ -164,6 +173,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 		skinSelect.ID = i++;
 
 		items.add(gameOptions = new Option("Game Options", "Open your Game Options here!", () -> {
+			controls.isInSubstate = false;
 			LoadingState.loadAndSwitchState(new OptionsState());
 			OptionsState.onPlayState = false;
 			OptionsState.onOnlineRoom = true;
@@ -172,6 +182,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 
 		var mods:Option;
 		items.add(mods = new Option("Mods", "Check your installed Mods here!", () -> {
+			controls.isInSubstate = false;
 			LoadingState.loadAndSwitchState(new ModsMenuState());
 			ModsMenuState.onOnlineRoom = true;
 		}, null, 0, 80 * i, false, true));
@@ -184,10 +195,15 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 		coolCam.setScrollBounds(FlxG.width, FlxG.width, 0, lastItem.y + lastItem.height + 40 > FlxG.height ? lastItem.y + lastItem.height + 40 : FlxG.height);
 
 		GameClient.send("status", "In the Room Settings");
+
+		addMobilePad('NONE', 'B');
+		addMobilePadCamera();
+		controls.isInSubstate = true;
 	}
 
 	override function closeSubState() {
 		super.closeSubState();
+		controls.isInSubstate = true;
 
 		GameClient.send("status", "In the Room Settings");
 	}
@@ -195,15 +211,19 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 	override function destroy() {
 		super.destroy();
 
-		for (cam in FlxG.cameras.list) {
-			if (cam?.filters != null)
-				cam.filters.remove(blurFilter);
-		}
+		if (!ClientPrefs.data.disableOnlineShaders) {
+			for (cam in FlxG.cameras.list) {
+				if (cam?.filters != null)
+					cam.filters.remove(blurFilter);
+			}
+		} else
+			blackSprite.destroy();
 		FlxG.cameras.remove(coolCam);
 	}
 
     override function update(elapsed) {
         if (controls.BACK) {
+			controls.isInSubstate = false;
             close();
 			FlxG.mouse.visible = prevMouseVisibility;
         }
@@ -234,7 +254,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 				curSelectedID = option.ID;
             }
 
-			if (FlxG.mouse.overlaps(option, camera) && FlxG.mouse.justPressed) {
+			if (FlxG.mouse.overlaps(option, camera) && FlxG.mouse.justReleased) {
 				option.onClick();
 			}
 
