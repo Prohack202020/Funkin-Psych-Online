@@ -113,6 +113,7 @@ class Main extends Sprite
 		backend.CrashHandler.init();
 
 		// Assets folder
+		#if mobile
 		if (!StorageUtil.areAssetsCopied("assets/"))
 			StorageUtil.copyAssetsFromAPK("assets/");
 		#end
