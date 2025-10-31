@@ -4819,7 +4819,7 @@ class PlayState extends MusicBeatState
 		{
 			if (button != null && ids != null)
 			{
-				if (&& ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+				if (ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
 					return;
 
 				var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
