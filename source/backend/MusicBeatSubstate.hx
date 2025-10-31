@@ -65,7 +65,7 @@ class MusicBeatSubstate extends FlxSubState
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
 
-		add(hitbox.instance);
+		add(hitbox);
 		hitbox.instance.inSubstate = true;
 	}
 
