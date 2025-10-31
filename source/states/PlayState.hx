@@ -1254,7 +1254,7 @@ class PlayState extends MusicBeatState
 
 		if (GameClient.isConnected()) {
 			preloadTasks.push(() -> {
-				waitReadySpr = new Alphabet(0, 0, "PRESS ACCEPT TO START", true);
+				waitReadySpr = new Alphabet(0, 0, controls.mobileC ? "TOUCH YOUR SCREEN TO START" : "PRESS ACCEPT TO START", true);
 				waitReadySpr.cameras = [camOther];
 				waitReadySpr.alignment = CENTERED;
 				waitReadySpr.x = FlxG.width / 2;
@@ -1927,6 +1927,23 @@ class PlayState extends MusicBeatState
 			setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 			// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 		}
+
+		addMobileControls();
+		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? #if android 'X_Y' : 'T' #else 'P_X_Y' : 'P_T' #end);
+		addMobilePadCamera();
+		hitbox.onButtonDown.add(onButtonPress);
+		hitbox.onButtonUp.add(onButtonRelease);
+		if (replayData == null && !cpuControlled)
+			hitbox.visible = true;
+		hitbox.forEachAlive((button) ->
+		{
+			if (mobilePad.buttonT != null)
+				button.deadZones.push(mobilePad.buttonT);
+			if (mobilePad.buttonC != null)
+				button.deadZones.push(mobilePad.buttonC);
+			if (mobilePad.buttonP != null)
+				button.deadZones.push(mobilePad.buttonP);
+		});
 	}
 
 	public function startCountdown()
@@ -2838,7 +2855,7 @@ class PlayState extends MusicBeatState
 			// }
 
 			if (cpuControlled) {
-				var shiftMult = FlxG.keys.pressed.SHIFT ? 3 : 1;
+				var shiftMult = (mobilePad.buttonX.pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
 				if (controls.UI_LEFT) {
 					if (playbackRate - elapsed * 0.25 * shiftMult > 0)
 						playbackRate -= elapsed * 0.25 * shiftMult;
@@ -2854,7 +2871,7 @@ class PlayState extends MusicBeatState
 					}
 					botplayTxt.text = "BOTPLAY\n" + '(${CoolUtil.floorDecimal(playbackRate, 2)}x)';
 				}
-				else if (controls.RESET) {
+				else if (mobilePad.buttonY.justPressed || controls.RESET) {
 					playbackRate = 1;
 				}
 			}
@@ -2878,7 +2895,7 @@ class PlayState extends MusicBeatState
 			// 	endSong();
 			// }
 
-			if (!isReady && controls.ACCEPT && !inCutscene && canStart && canInput()) {
+			if (!isReady && (controls.mobileControls && FlxG.mouse.justPressed || controls.ACCEPT) && canInput()) {
 				isReady = true;
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.5);
 				if (ClientPrefs.data.flashing)
@@ -3270,7 +3287,7 @@ class PlayState extends MusicBeatState
 
 	function pause() {
 		FlxG.camera.followLerp = 0;
-		persistentUpdate = false;
+		mobilePad.visible = persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
 
@@ -3284,6 +3301,8 @@ class PlayState extends MusicBeatState
 	function resume() {
 		if (forcePause)
 			return;
+
+		mobilePad.visible = true;
 
 		if (FlxG.sound.music != null && !startingSong) {
 			resyncVocals();
@@ -3920,6 +3939,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
+		hitbox.visible = #if !android mobilePad.visible = #end false;
 		if (redditMod) {
 			health = 0;
 			doDeathCheck();
