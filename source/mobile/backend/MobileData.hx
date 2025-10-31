@@ -46,7 +46,6 @@ class MobileData
 			if (Path.extension(fileWithNoLib) == 'json')
 			{
 				file = Path.join([folder, Path.withoutDirectory(file)]);
-				CoolUtil.showPopUp("File is: " + file, "Trace:");
 				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
 				var json:MobileButtonsData = cast Json.parse(str);
 				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));

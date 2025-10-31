@@ -485,6 +485,7 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		}
 
+		#if desktop
 		if (controls.RESET) {
 			FlxG.sound.music.stop();
 			playFreakyMusic();
@@ -495,6 +496,7 @@ class TitleState extends MusicBeatState
 			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
 			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
 		}
+		#end
 
 		#if RESULTS_TEST
 		if (FlxG.keys.justPressed.F1) {
