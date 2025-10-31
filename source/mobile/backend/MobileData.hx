@@ -19,11 +19,11 @@ class MobileData
 		save = new FlxSave();
 		save.bind('MobileControls', CoolUtil.getSavePath());
 
-		readDirectory(Paths.getPreloadPath('mobile/MobileButton/DPadModes'), dpadModes);
+		readDirectory(Paths.getPreloadPath('mobile/MobilePad/DPadModes'), dpadModes);
 		readDirectory(Paths.getPreloadPath('mobile/Hitbox/HitboxModes'), hitboxModes);
-		readDirectory(Paths.getPreloadPath('mobile/MobileButton/ActionModes'), actionModes);
+		readDirectory(Paths.getPreloadPath('mobile/MobilePad/ActionModes'), actionModes);
 		#if MODS_ALLOWED
-		for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/MobileButton/'))
+		for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/MobilePad/'))
 		{
 			readDirectory(Path.join([folder, 'DPadModes']), dpadModes);
 			readDirectory(Path.join([folder, 'ActionModes']), actionModes);
@@ -46,6 +46,7 @@ class MobileData
 			if (Path.extension(fileWithNoLib) == 'json')
 			{
 				file = Path.join([folder, Path.withoutDirectory(file)]);
+				CoolUtil.showPopUp("File is: " + file, "Trace:");
 				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
 				var json:MobileButtonsData = cast Json.parse(str);
 				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));

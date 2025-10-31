@@ -84,15 +84,15 @@ class MobilePad extends MobileInputManager implements IMobileControls {
 	public function createVirtualButton(x:Float, y:Float, Frames:String, ?ColorS:Int = 0xFFFFFF, ?IDs:Array<MobileInputID>, ?strName:String):MobileButton {
 		var frames:FlxGraphic;
 
-		final path:String = Paths.getPreloadPath() + 'mobile/MobileButton/VirtualPad/original/$Frames.png';
+		final path:String = Paths.getPreloadPath() + 'mobile/MobilePad/Textures/$Frames.png';
 		#if MODS_ALLOWED
-		final modsPath:String = Paths.modFolders('mobile/MobileButton/VirtualPad/original/$Frames.png');
+		final modsPath:String = Paths.modFolders('mobile/MobilePad/Textures/$Frames.png');
 		if(sys.FileSystem.exists(modsPath))
 			frames = FlxGraphic.fromBitmapData(BitmapData.fromFile(modsPath));
 		else #end if(Assets.exists(path))
 			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(path));
 		else
-			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(Paths.getPreloadPath() + 'mobile/MobileButton/VirtualPad/original/default.png'));
+			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(Paths.getPreloadPath() + 'mobile/MobilePad/Textures/default.png'));
 
 		trace("=== DETAILED DEBUG/DETAYLI DEBUG ===");
 		trace("strName: " + strName);
