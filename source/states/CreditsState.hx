@@ -44,6 +44,9 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+			['Mobile Porters'],
+			['KralOyuncu 2010x',	 'KralOyuncuV3',	'Owner of Psych Extended',					'https://youtube.com/@kraloyuncurbx',		'378FC7'],
+			[''],
 			['Psych Online'],
 			['Snirozu', 'snirozu', 'Developer', 'https://sniro.boo', 'FFCC33'],
 			[''],
@@ -131,6 +134,7 @@ class CreditsState extends MusicBeatState
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
 		changeSelection();
+		addMobilePad('UP_DOWN', 'A_B');
 		super.create();
 	}
 
