@@ -749,6 +749,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		super.closeSubState();
+		mobilePad.visible = true;
 		removeMobilePad();
 		addMobilePad('FULL', (GameClient.isConnected()) ? 'FREEPLAY_ONLINE' : 'FREEPLAY');
 		addMobilePadCamera();
@@ -1131,6 +1132,7 @@ class FreeplayState extends MusicBeatState
 						if (!GameClient.isConnected()) {
 							persistentUpdate = false;
 							_substateIsModifiers = true;
+							mobilePad.visible = false;
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:

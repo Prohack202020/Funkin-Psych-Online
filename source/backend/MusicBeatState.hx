@@ -61,6 +61,7 @@ class MusicBeatState extends FlxUIState
 		hitbox.cameras = [hitboxCam];
 
 		add(hitbox.instance);
+		hitbox.instance.inState = true;
 	}
 
 	public function removeMobileControls()

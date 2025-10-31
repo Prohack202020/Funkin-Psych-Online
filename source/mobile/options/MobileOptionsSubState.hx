@@ -31,7 +31,6 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 			'Allow Extra Controls',
 			'extraKeys',
 			'int');
-		option.displayFormat = '%vs';
 		option.scrollSpeed = 1;
 		option.minValue = 1;
 		option.maxValue = 4;
