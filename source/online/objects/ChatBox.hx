@@ -241,12 +241,15 @@ class ChatBox extends FlxTypedSpriteGroup<FlxSprite> {
 
 		super.update(elapsed);
 
+		var buttonC_Pressed:Bool = false;
 		try {
-			if ((MusicBeatState.getState().mobilePad.buttonC != null && MusicBeatState.getState().mobilePad.buttonC.justPressed) || FlxG.keys.justPressed.TAB) {
-				focused = !focused;
-				#if !android FlxG.stage.window.textInputEnabled = focused; #end
-			}
+			buttonC_Pressed = (MusicBeatState.getState().mobilePad.buttonC != null && MusicBeatState.getState().mobilePad.buttonC.justPressed) ? true : false;
 		} catch (e:Dynamic) {}
+
+		if (buttonC_Pressed || FlxG.keys.justPressed.TAB) {
+			focused = !focused;
+			#if !android FlxG.stage.window.textInputEnabled = focused; #end
+		}
 
 		typeTextHint.visible = focused ? (typeText.text.length <= 0) : true;
 

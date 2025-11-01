@@ -338,11 +338,9 @@ class NoteSplashDebugState extends MusicBeatState
 		NoteSplash.configs.clear();
 		config = NoteSplash.precacheConfig(texturePath);
 		if(config == null) config = NoteSplash.precacheConfig(NoteSplash.defaultNoteSplash);
-		try {
-			nameInputText.text = config.anim;
-			stepperMinFps.value = config.minFps;
-			stepperMaxFps.value = config.maxFps;
-		} catch (e:Dynamic) {}
+		nameInputText.text = config.anim;
+		stepperMinFps.value = config.minFps;
+		stepperMaxFps.value = config.maxFps;
 		//
 
 		reloadAnims();
