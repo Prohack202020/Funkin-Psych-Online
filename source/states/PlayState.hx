@@ -4814,7 +4814,7 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
-	private function onButtonPress(button:TouchButton, ids:Array<MobileInputID>):Void
+	private function onButtonPress(button:MobileButton, ids:Array<MobileInputID>):Void
 	{
 		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
 			return;
@@ -4825,7 +4825,7 @@ class PlayState extends MusicBeatState
 		callOnScripts('onButtonPress', [buttonCode]);
 	}
 
-	private function onButtonRelease(button:TouchButton, ids:Array<MobileInputID>):Void
+	private function onButtonRelease(button:MobileButton, ids:Array<MobileInputID>):Void
 	{
 		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
 			return;
