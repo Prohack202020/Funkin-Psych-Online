@@ -80,6 +80,7 @@ import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
 import mobile.backend.TouchUtil;
 import mobile.backend.StorageUtil;
+import mobile.states.CopyState;
 //Android
 #if android
 import extension.androidtools.content.Context as AndroidContext;
