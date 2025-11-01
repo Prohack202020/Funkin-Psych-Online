@@ -575,6 +575,7 @@ class ResultsState extends MusicBeatState {
 		add(debugPoser);
 
 		addMobilePad('NONE', 'B_C_T');
+		addMobilePadCamera();
 	}
 
 	function registerMessages() {
