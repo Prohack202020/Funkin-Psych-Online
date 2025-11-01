@@ -63,7 +63,7 @@
       "name": "linc_luajit",
       "type": "git",
       "dir": null,
-      "ref": "master",
+      "ref": "main",
       "url": "https://github.com/th2l-devs/linc_luajit"
     },
     {
