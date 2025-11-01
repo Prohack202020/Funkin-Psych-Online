@@ -462,7 +462,7 @@ class Paths
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '') {
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if android StorageUtil.getExternalStorageDirectory() + #elseif mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	inline static public function modsFont(key:String) {
@@ -520,7 +520,7 @@ class Paths
 			if(FileSystem.exists(fileToCheck))
 				return fileToCheck;
 		}
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if android StorageUtil.getExternalStorageDirectory() + #elseif mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 	#end
 

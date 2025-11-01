@@ -63,6 +63,12 @@ class MusicBeatState extends FlxUIState
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
 
+		if (ClientPrefs.data.hitboxhint){
+			var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0).loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint'));
+			add(hitbox_hint);
+			hitbox_hint.cameras = [camcontrol];
+		}
+
 		add(hitbox);
 	}
 

@@ -64,7 +64,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/FNF-SE/linc_luajit"
+      "url": "https://github.com/th2l-devs/linc_luajit"
     },
     {
       "name": "colyseus",

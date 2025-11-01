@@ -303,6 +303,11 @@ class HitboxOld extends GlobalHitbox {
 			}
 		}
 
+		scrollFactor.set();
+		updateTrackedButtons();
+
+		instance = this;
+
 		/*
 		var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0).loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint'));
 		hitbox_hint.antialiasing = ClientPrefs.data.antialiasing;

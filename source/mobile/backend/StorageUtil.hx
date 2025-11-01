@@ -76,14 +76,12 @@ class StorageUtil
 		switch(curStorageType) {
 			case 'EXTERNAL':
 				daPath = '/storage/emulated/0/.Psych Online';
-			case 'EXTERNAL_PE':
-				daPath = '/storage/emulated/0/.PsychEngine';
 			case 'EXTERNAL_OBB':
-				daPath = '/storage/emulated/0/Android/obb/${packageName}';
+				daPath = '/storage/emulated/0/Android/obb/' + Application.current.meta.get('packageName');
 			case 'EXTERNAL_MEDIA':
-				daPath = '/storage/emulated/0/Android/media/' + lime.app.Application.current.meta.get('packageName');
+				daPath = '/storage/emulated/0/Android/media/' + Application.current.meta.get('packageName');
 			case 'EXTERNAL_DATA':
-				daPath = '/storage/emulated/0/Android/data/${packageName}/files';
+				daPath = AndroidContext.getExternalFilesDir();
 			default:
 				daPath = getExternalDirectory(curStorageType) + '.Psych Online';
 		}
@@ -236,16 +234,14 @@ class StorageUtil
 	 * @param sourcePath Path to the assets folder inside APK (usually "assets/")
 	 * @param targetPath Destination path (optional, uses Sys.getCwd() + "assets/" if not specified)
 	 */
-	public static function copyAssetsFromAPK(sourcePath:String = "assets/", targetPath:String = null):Void {
+	inline public static function copyAssetsFromAPK(sourcePath:String = "assets/", targetPath:String = null):Void {
 		#if mobile
-		if (targetPath == null) {
+		if (targetPath == null)
 			targetPath = Sys.getCwd() + "assets/";
-		}
 
 		try {
-			if (!FileSystem.exists(targetPath)) {
-					FileSystem.createDirectory(targetPath);
-			}
+			if (!FileSystem.exists(targetPath))
+				FileSystem.createDirectory(targetPath);
 
 			copyAssetsRecursively(sourcePath, targetPath);
 
@@ -260,13 +256,12 @@ class StorageUtil
 	/**
 	 * Helper function to copy assets recursively
 	 */
-	private static function copyAssetsRecursively(sourcePath:String, targetPath:String):Void {
-	#if mobile
-	try {
+	inline private static function copyAssetsRecursively(sourcePath:String, targetPath:String):Void {
+		#if mobile
+		try {
 			var cleanSourcePath = sourcePath;
-			if (StringTools.endsWith(cleanSourcePath, "/")) {
+			if (StringTools.endsWith(cleanSourcePath, "/"))
 				cleanSourcePath = cleanSourcePath.substring(0, cleanSourcePath.length - 1);
-			}
 
 			var assetList:Array<String> = Assets.list();
 
@@ -274,37 +269,35 @@ class StorageUtil
 				if (StringTools.startsWith(assetPath, cleanSourcePath)) {
 					var relativePath = assetPath;
 
-					if (StringTools.startsWith(relativePath, "assets/")) {
+					if (StringTools.startsWith(relativePath, "assets/"))
 						relativePath = relativePath.substring(7);
-					}
 
 					if (relativePath == "") continue;
 
 					var fullTargetPath = targetPath + relativePath;
 
 					var targetDir = haxe.io.Path.directory(fullTargetPath);
-					if (targetDir != "" && !FileSystem.exists(targetDir)) {
+					if (targetDir != "" && !FileSystem.exists(targetDir))
 						createDirectoryRecursive(targetDir);
-					}
 
 					try {
 						if (Assets.exists(assetPath)) {
 							var fileData:Bytes = Assets.getBytes(assetPath);
-								if (fileData != null) {
-									File.saveBytes(fullTargetPath, fileData);
-									trace('Copied: $assetPath -> $fullTargetPath');
-								} else {
-									var textData = Assets.getText(assetPath);
-									if (textData != null) {
-										File.saveContent(fullTargetPath, textData);
-										trace('Copied (text): $assetPath -> $fullTargetPath');
-									}
+							if (fileData != null) {
+								File.saveBytes(fullTargetPath, fileData);
+								trace('Copied: $assetPath -> $fullTargetPath');
+							} else {
+								var textData = Assets.getText(assetPath);
+								if (textData != null) {
+									File.saveContent(fullTargetPath, textData);
+									trace('Copied (text): $assetPath -> $fullTargetPath');
 								}
 							}
-						} catch (e:Dynamic) {
-							trace('Error copying file $assetPath: $e');
 						}
+					} catch (e:Dynamic) {
+						trace('Error copying file $assetPath: $e');
 					}
+				}
 			}
 		} catch (e:Dynamic) {
 			trace('Error in recursive copy: $e');
@@ -316,7 +309,7 @@ class StorageUtil
 	/**
 	 * Creates directories recursively
 	 */
-	private static function createDirectoryRecursive(path:String):Void {
+	inline private static function createDirectoryRecursive(path:String):Void {
 		#if mobile
 		if (FileSystem.exists(path)) return;
 
@@ -339,109 +332,25 @@ class StorageUtil
 	}
 
 	/**
-	 * Copies assets with progress (advanced version)
-	 * @param sourcePath Path to assets folder inside APK
-	 * @param targetPath Destination path
-	 * @param onProgress Optional callback for progress (current file, current count, total files)
-	 * @param onComplete Optional callback when finished
-	 */
-	public static function copyAssetsWithProgress(sourcePath:String = "assets/", targetPath:String = null, 
-		onProgress:String->Int->Int->Void = null, onComplete:Void->Void = null):Void {
-			#if mobile
-			if (targetPath == null) {
-				targetPath = Sys.getCwd() + "assets/";
-			}
-
-			try {
-				if (!FileSystem.exists(targetPath)) {
-					FileSystem.createDirectory(targetPath);
-				}
-
-				var totalFiles = countAssetsFiles(sourcePath);
-				var currentFile = 0;
-
-				trace('Starting copy of $totalFiles files...');
-
-				var cleanSourcePath = sourcePath;
-				if (StringTools.endsWith(cleanSourcePath, "/")) {
-					cleanSourcePath = cleanSourcePath.substring(0, cleanSourcePath.length - 1);
-				}
-
-				var assetList:Array<String> = Assets.list();
-
-				for (assetPath in assetList) {
-					if (StringTools.startsWith(assetPath, cleanSourcePath)) {
-						var relativePath = assetPath;
-
-						if (StringTools.startsWith(relativePath, "assets/")) {
-							relativePath = relativePath.substring(7);
-						}
-
-						if (relativePath == "") continue;
-
-						var fullTargetPath = targetPath + relativePath;
-
-						var targetDir = haxe.io.Path.directory(fullTargetPath);
-						if (targetDir != "" && !FileSystem.exists(targetDir)) {
-							createDirectoryRecursive(targetDir);
-						}
-
-						try {
-							if (Assets.exists(assetPath)) {
-								var fileData:Bytes = Assets.getBytes(assetPath);
-								if (fileData != null) {
-									File.saveBytes(fullTargetPath, fileData);
-								} else {
-									var textData = Assets.getText(assetPath);
-									if (textData != null) {
-										File.saveContent(fullTargetPath, textData);
-									}
-								}
-								currentFile++;
-								if (onProgress != null) {
-									onProgress(relativePath, currentFile, totalFiles);
-								}
-								trace('[$currentFile/$totalFiles] Copied: $relativePath');
-							}
-						} catch (e:Dynamic) {
-							trace('Error copying $assetPath: $e');
-						}
-					}
-				}
-				trace('Copy completed! $currentFile files copied.');
-				if (onComplete != null) {
-						onComplete();
-				}
-			} catch (e:Dynamic) {
-				trace('Error copying assets: $e');
-				CoolUtil.showPopUp('Error copying game files. Check storage permissions or re-open the game to see what happens.', 'Error');
-			}
-			#end
-	}
-
-	/**
 	 * Counts total number of asset files for progress
 	 */
-	private static function countAssetsFiles(sourcePath:String):Int {
+	inline private static function countAssetsFiles(sourcePath:String):Int {
 		#if mobile
 		var count = 0;
 		var cleanSourcePath = sourcePath;
-		if (StringTools.endsWith(cleanSourcePath, "/")) {
+		if (StringTools.endsWith(cleanSourcePath, "/"))
 			cleanSourcePath = cleanSourcePath.substring(0, cleanSourcePath.length - 1);
-		}
 		var assetList:Array<String> = Assets.list();
 
 		for (assetPath in assetList) {
 			if (StringTools.startsWith(assetPath, cleanSourcePath)) {
 				var relativePath = assetPath;
 
-				if (StringTools.startsWith(relativePath, "assets/")) {
+				if (StringTools.startsWith(relativePath, "assets/"))
 					relativePath = relativePath.substring(7);
-				}
 
-				if (relativePath != "") {
+				if (relativePath != "")
 					count++;
-				}
 			}
 		}
 
@@ -454,19 +363,17 @@ class StorageUtil
 	/**
 	 * Checks if assets have already been copied
 	 */
-	public static function areAssetsCopied(sourcePath:String = "assets/", targetPath:String = null):Bool {
+	inline public static function areAssetsCopied(sourcePath:String = "assets/", targetPath:String = null):Bool {
 		#if mobile
-		if (targetPath == null) {
-				targetPath = Sys.getCwd() + "assets/";
-		}
-		
-		if (!FileSystem.exists(targetPath)) {
-				return false;
-		}
-		
+		if (targetPath == null)
+			targetPath = Sys.getCwd() + "assets/";
+
+		if (!FileSystem.exists(targetPath))
+			return false;
+
 		var sourceCount = countAssetsFiles(sourcePath);
 		var targetCount = countFilesInDirectory(targetPath);
-		
+
 		return sourceCount > 0 && sourceCount == targetCount;
 		#else
 		return false;
@@ -476,7 +383,7 @@ class StorageUtil
 	/**
 	 * Counts files in a directory recursively
 	 */
-	private static function countFilesInDirectory(path:String):Int {
+	inline private static function countFilesInDirectory(path:String):Int {
 		#if mobile
 		if (!FileSystem.exists(path)) return 0;
 
@@ -485,11 +392,10 @@ class StorageUtil
 
 		for (item in items) {
 			var fullPath = path + "/" + item;
-			if (FileSystem.isDirectory(fullPath)) {
+			if (FileSystem.isDirectory(fullPath))
 				count += countFilesInDirectory(fullPath);
-			} else {
+			else
 				count++;
-			}
 		}
 
 		return count;
