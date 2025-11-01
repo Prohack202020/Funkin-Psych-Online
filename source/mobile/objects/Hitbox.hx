@@ -23,8 +23,8 @@ import openfl.geom.Matrix;
  */
 class GlobalHitbox extends MobileInputManager
 {
-	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
-	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 }
 
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 30 is enough
@@ -40,8 +40,6 @@ class Hitbox extends GlobalHitbox
 	public var extraKey4 = ClientPrefs.data.extraKeyReturn4.toUpperCase();
 
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
-	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
@@ -268,8 +266,6 @@ class HitboxOld extends GlobalHitbox {
 	public var buttonExtra2:MobileButton = new MobileButton(0, 0);
 
 	public var instance:MobileInputManager;
-	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
-	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
