@@ -1,11 +1,6 @@
 name: Build Psych Online With Ubuntu
 
-on:
-  push:
-    branches: [ main ]
-
-  workflow_dispatch:
-
+on: workflow_dispatch
 jobs:
   buildAndroid:
     runs-on: ubuntu-latest
