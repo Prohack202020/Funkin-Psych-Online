@@ -18,7 +18,7 @@ import openfl.geom.Matrix;
  * @modifier KralOyuncu 2010x (ArkoseLabs)
  */
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 30 is enough
-class Hitbox extends MobileInputManager
+class Hitbox extends MobileInputManager implements IMobileControls
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
@@ -249,7 +249,7 @@ class Hitbox extends MobileInputManager
 	}
 }
 
-class HitboxOld extends MobileInputManager {
+class HitboxOld extends MobileInputManager implements IMobileControls {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);

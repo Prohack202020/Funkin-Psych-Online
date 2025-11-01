@@ -31,7 +31,7 @@ class MusicBeatSubstate extends FlxSubState
 
 	public var mobilePad:MobilePad;
 	public var mobilePadCam:FlxCamera;
-	public var hitbox:MobileInputManager;
+	public var hitbox:IMobileControls;
 	public var hitboxCam:FlxCamera;
 
 	public function addMobilePad(DPad:String, Action:String)
