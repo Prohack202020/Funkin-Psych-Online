@@ -333,7 +333,24 @@ class HitboxOld extends GlobalHitbox {
 	}
 
 	public function getFrames(?texture:String = 'mobile/Hitbox/hitbox'):FlxAtlasFrames {
-		return Paths.getSparrowAtlas(texture);
+		return getSparrowAtlas(texture);
+	}
+
+	inline static public function getSparrowAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
+	{
+		#if MODS_ALLOWED
+		var imageLoaded:FlxGraphic = Paths.image(key, allowGPU, true);
+		var xmlExists:Bool = false;
+
+		var xml:String = Paths.modFolders(key + '.xml');
+		if(FileSystem.exists(xml)) {
+			xmlExists = true;
+		}
+
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : Paths.image(key, library, allowGPU, true)), (xmlExists ? File.getContent(xml) : Paths.getPath('$key.xml', library)));
+		#else
+		return FlxAtlasFrames.fromSparrow(Paths.image(key, library, allowGPU, true), Paths.getPath('$key.xml', library));
+		#end
 	}
 
 	override public function destroy():Void {

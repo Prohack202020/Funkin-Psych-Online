@@ -204,6 +204,7 @@ class AchievementsMenuState extends MusicBeatState
 			if((controls.RESET || mobilePad.buttonC.pressed) && (options[curSelected].unlocked || options[curSelected].curProgress > 0))
 			{
 				persistentUpdate = false;
+				controls.isInSubstate = true;
 				openSubState(new ResetAchievementSubstate());
 			}
 		}
@@ -253,6 +254,7 @@ class AchievementsMenuState extends MusicBeatState
 
 	override function closeSubState() {
 		persistentUpdate = true;
+		controls.isInSubstate = false;
 		removeMobilePad();
 		addMobilePad("FULL", "A_B_C");
 		super.closeSubState();

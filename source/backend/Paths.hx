@@ -244,13 +244,14 @@ class Paths
 	static var lastImageErrorFile:String = null;
 
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
-	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxGraphic
+	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true, ?isGlobalPath:Bool = false):FlxGraphic
 	{
 		var bitmap:BitmapData = null;
 		var file:String = null;
 
 		#if MODS_ALLOWED
-		file = modsImages(key);
+		if (isGlobalPath) file = modFolders(key + '.png');
+		else file = modsImages(key);
 		if (currentTrackedAssets.exists(file))
 		{
 			localTrackedAssets.push(file);
@@ -261,7 +262,8 @@ class Paths
 		else
 		#end
 		{
-			file = getPath('images/$key.png', IMAGE, library);
+			if (isGlobalPath) file = getPath('$key.png', IMAGE, library);
+			else file = getPath('images/$key.png', IMAGE, library);
 			if (currentTrackedAssets.exists(file))
 			{
 				localTrackedAssets.push(file);

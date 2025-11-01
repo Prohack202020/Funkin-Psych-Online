@@ -33,7 +33,8 @@ class Mods
 		'fonts',
 		'scripts',
 		'achievements',
-		'lumod'
+		'lumod',
+		'mobile'
 	];
 
 	private static var globalMods:Array<String> = [];
