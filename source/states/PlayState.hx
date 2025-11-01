@@ -2118,7 +2118,7 @@ class PlayState extends MusicBeatState
 				daNote.visible = false;
 				daNote.ignoreNote = true;
 
-				daNote.kill();
+				//daNote.kill();
 				unspawnNotes.remove(daNote);
 				daNote.destroy();
 			}
@@ -2134,7 +2134,7 @@ class PlayState extends MusicBeatState
 				daNote.visible = false;
 				daNote.ignoreNote = true;
 
-				daNote.kill();
+				//daNote.kill();
 				notes.remove(daNote, true);
 				daNote.destroy();
 			}
@@ -2873,6 +2873,7 @@ class PlayState extends MusicBeatState
 				}
 				else if (mobilePad.buttonY.justPressed || controls.RESET) {
 					playbackRate = 1;
+					botplayTxt.text = "BOTPLAY";
 				}
 			}
 		}
@@ -3141,7 +3142,7 @@ class PlayState extends MusicBeatState
 								daNote.active = false;
 								daNote.visible = false;
 
-								daNote.kill();
+								//daNote.kill();
 								notes.remove(daNote, true);
 								daNote.destroy();
 							}
@@ -4111,7 +4112,7 @@ class PlayState extends MusicBeatState
 			daNote.active = false;
 			daNote.visible = false;
 
-			daNote.kill();
+			//daNote.kill();
 			notes.remove(daNote, true);
 			daNote.destroy();
 		}
@@ -4718,7 +4719,7 @@ class PlayState extends MusicBeatState
 					{
 						for (doubleNote in pressNotes) {
 							if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 1) {
-								doubleNote.kill();
+								//doubleNote.kill();
 								notes.remove(doubleNote, true);
 								doubleNote.destroy();
 							} else
@@ -4813,40 +4814,26 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
-	private function onButtonPress(button:MobileButton, ids:Array<MobileInputID>):Void
+	private function onButtonPress(button:TouchButton, ids:Array<MobileInputID>):Void
 	{
-		try
-		{
-			if (button != null && ids != null)
-			{
-				if (ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
-					return;
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
 
-				var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
-				callOnScripts('onButtonPressPre', [buttonCode]);
-				if (button.justPressed) keyPressed(buttonCode);
-				callOnScripts('onButtonPress', [buttonCode]);
-			}
-		}
-		catch (e:Dynamic) {}
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonPressPre', [buttonCode]);
+		if (button.justPressed) keyPressed(buttonCode);
+		callOnScripts('onButtonPress', [buttonCode]);
 	}
 
-	private function onButtonRelease(button:MobileButton, ids:Array<MobileInputID>):Void
+	private function onButtonRelease(button:TouchButton, ids:Array<MobileInputID>):Void
 	{
-		try
-		{
-			if (button != null && ids != null)
-			{
-				if (ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
-					return;
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
 
-				var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
-				callOnScripts('onButtonReleasePre', [buttonCode]);
-				if(buttonCode > -1) keyReleased(buttonCode);
-				callOnScripts('onButtonRelease', [buttonCode]);
-			}
-		}
-		catch (e:Dynamic) {}
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonReleasePre', [buttonCode]);
+		if(buttonCode > -1) keyReleased(buttonCode);
+		callOnScripts('onButtonRelease', [buttonCode]);
 	}
 
 	// Hold notes
@@ -4915,7 +4902,7 @@ class PlayState extends MusicBeatState
 		//Dupe note remove
 		notes.forEachAlive(function(note:Note) {
 			if (daNote != note && isPlayerNote(daNote) && daNote.noteData == note.noteData && daNote.isSustainNote == note.isSustainNote && Math.abs(daNote.strumTime - note.strumTime) < 1) {
-				note.kill();
+				//note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}
@@ -5080,7 +5067,7 @@ class PlayState extends MusicBeatState
 
 		if (!note.isSustainNote)
 		{
-			note.kill();
+			//note.kill();
 			notes.remove(note, true);
 			note.destroy();
 		}
@@ -5117,7 +5104,7 @@ class PlayState extends MusicBeatState
 
 				if (!note.isSustainNote)
 				{
-					note.kill();
+					//note.kill();
 					notes.remove(note, true);
 					note.destroy();
 				}
@@ -5208,7 +5195,7 @@ class PlayState extends MusicBeatState
 
 			if (!note.isSustainNote)
 			{
-				note.kill();
+				//note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}
@@ -6105,7 +6092,7 @@ class PlayState extends MusicBeatState
 						&& note.isSustainNote == message[2]
 						&& Math.abs(note.strumTime - message[0]) < 1) 
 					{
-						note.kill();
+						//note.kill();
 						unspawnNotes.remove(note);
 						note.destroy();
 					}

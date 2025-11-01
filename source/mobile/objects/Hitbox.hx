@@ -168,7 +168,6 @@ class Hitbox extends MobileInputManager
 				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
 		}
 
-		storedButtonsIDs.clear();
 		scrollFactor.set();
 		updateTrackedButtons();
 
@@ -184,16 +183,6 @@ class Hitbox extends MobileInputManager
 		onButtonUp.destroy();
 		onButtonDown.destroy();
 
-		buttonLeft = null;
-		buttonDown = null;
-		buttonUp = null;
-		buttonRight = null;
-		
-		buttonExtra1 = null;
-		buttonExtra2 = null;
-		buttonExtra3 = null;
-		buttonExtra4 = null;
-		
 		for (field in Reflect.fields(this))
 			if (Std.isOfType(Reflect.field(this, field), MobileButton))
 				Reflect.setField(this, field, FlxDestroyUtil.destroy(Reflect.field(this, field)));

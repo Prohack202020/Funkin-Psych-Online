@@ -86,10 +86,6 @@ class MobileButton extends TypedMobileButton<FlxSprite>
 #end
 class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 {
-	//A Simple Substate Fix for 1.0x editors
-	public var inSubstate:Bool;
-	public var inState:Bool;
-
 	/**
 	 * The label that appears on the button. Can be any `FlxSprite`.
 	 */
@@ -289,7 +285,7 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	{
 		super.update(elapsed);
 
-		if (visible && inSubstate != inState)
+		if (visible)
 		{
 			// Update the button, but only if at least either touches are enabled
 			#if FLX_POINTER_INPUT
