@@ -26,7 +26,7 @@ class MusicBeatState extends FlxUIState
 
 	public var mobilePad:MobilePad;
 	public var mobilePadCam:FlxCamera;
-	public var hitbox:IMobileControls;
+	public var hitbox:GlobalHitbox;
 	public var hitboxCam:FlxCamera;
 
 	public function addMobilePad(DPad:String, Action:String)

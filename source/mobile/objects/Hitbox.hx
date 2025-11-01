@@ -17,8 +17,18 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw)
  * @modifier KralOyuncu 2010x (ArkoseLabs)
  */
+
+/**
+ * Interface can't see MobileInputManager variables, so use this instead (I hope this works)
+ */
+class GlobalHitbox extends MobileInputManager
+{
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>;
+}
+
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 30 is enough
-class Hitbox extends MobileInputManager implements IMobileControls
+class Hitbox extends GlobalHitbox
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
@@ -249,7 +259,7 @@ class Hitbox extends MobileInputManager implements IMobileControls
 	}
 }
 
-class HitboxOld extends MobileInputManager implements IMobileControls {
+class HitboxOld extends GlobalHitbox {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
