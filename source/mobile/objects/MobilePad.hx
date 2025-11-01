@@ -11,7 +11,7 @@ import openfl.utils.Assets;
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //Psych Extended Allows to Create 30 Extra Button with Json for now
 
 @:access(mobile.objects.MobileButton)
-class MobilePad extends MobileInputManager implements IMobileControls {
+class MobilePad extends MobileInputManager {
 	//DPad
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.UP, MobileInputID.NOTE_UP]);

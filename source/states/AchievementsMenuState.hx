@@ -299,6 +299,8 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		noText.scrollFactor.set();
 		add(noText);
 		updateOptions();
+
+		addMobilePad('LEFT_RIGHT', 'A_B');
 	}
 
 	override function update(elapsed:Float)

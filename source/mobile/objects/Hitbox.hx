@@ -249,7 +249,7 @@ class Hitbox extends MobileInputManager
 	}
 }
 
-class HitboxOld extends MobileInputManager implements IMobileControls {
+class HitboxOld extends MobileInputManager {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);

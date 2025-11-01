@@ -31,14 +31,13 @@ class MusicBeatSubstate extends FlxSubState
 
 	public var mobilePad:MobilePad;
 	public var mobilePadCam:FlxCamera;
-	public var hitbox:Hitbox;
+	public var hitbox:MobileInputManager;
 	public var hitboxCam:FlxCamera;
 
 	public function addMobilePad(DPad:String, Action:String)
 	{
 		mobilePad = new MobilePad(DPad, Action);
 		add(mobilePad);
-		mobilePad.inSubstate = true;
 	}
 
 	public function removeMobilePad()
@@ -57,17 +56,19 @@ class MusicBeatSubstate extends FlxSubState
 	}
 
 	public function addMobileControls(?mode:String, defaultDrawTarget:Bool = false) {
-		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
-		else hitbox = new Hitbox();
+		if(ClientPrefs.data.hitboxmode == 'Classic') {
+			hitbox = new HitboxOld();
+		} else {
+			if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
+			else hitbox = new Hitbox();
+		}
 
 		hitboxCam = new FlxCamera();
 		hitboxCam.bgColor.alpha = 0;
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
 
-		if (ClientPrefs.data.debugThing) add(hitbox.instance);
-		else add(hitbox);
-		hitbox.instance.inSubstate = true;
+		add(hitbox);
 	}
 
 	public function removeMobileControls()

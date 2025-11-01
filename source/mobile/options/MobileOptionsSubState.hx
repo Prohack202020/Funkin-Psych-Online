@@ -75,13 +75,6 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		option.decimals = 1;
 		addOption(option);
 
-		option = new Option('Add Hitbox as Instance',
-			'for debug',
-			'debugThing',
-			'bool'
-		);
-		addOption(option);
-
 		#if mobile
 		option = new Option('Wide Screen Mode',
 			'If checked, The game will stetch to fill your whole screen. (WARNING: Can result in bad visuals & break some mods that resizes the game/cameras)',

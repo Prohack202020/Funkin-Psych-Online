@@ -159,7 +159,16 @@ class CharacterEditorState extends MusicBeatState {
 		camFollow.screenCenter();
 		add(camFollow);
 
-		var tipTextArray:Array<String> = "E/Q - Camera Zoom In/Out
+		var tipTextArray:Array<String> = (controls.mobileControls) ?
+		"X/Y - Camera Zoom In/Out
+		\nZ - Reset Camera Zoom
+		\nHold G and Arrow Buttons to Move Camera
+		\nV/D - Previous/Next Animation
+		\nArrow Buttons - Move Character Offset
+		\nA - Reset Current Offset
+		\nHold C to Move 10x faster\n".split('\n')
+		:
+		"E/Q - Camera Zoom In/Out
 		\nR - Reset Camera Zoom
 		\nJKLI - Move Camera
 		\nW/S - Previous/Next Animation
@@ -216,6 +225,9 @@ class CharacterEditorState extends MusicBeatState {
 
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
+
+		addMobilePad('FULL', 'CHARACTER_EDITOR');
+		addMobilePadCamera();
 
 		super.create();
 	}
@@ -1151,12 +1163,11 @@ class CharacterEditorState extends MusicBeatState {
 	function reloadCharacterDropDown() {
 		var charsLoaded:Map<String, Bool> = new Map();
 
-		#if MODS_ALLOWED
 		characterList = [];
+		#if MODS_ALLOWED
 		var directories:Array<String> = [
 			Paths.mods('characters/'),
 			Paths.mods(Mods.currentModDirectory + '/characters/'),
-			Paths.getPreloadPath('characters/')
 		];
 		for (mod in Mods.getGlobalMods())
 			directories.push(Paths.mods(mod + '/characters/'));
@@ -1165,7 +1176,7 @@ class CharacterEditorState extends MusicBeatState {
 			if (FileSystem.exists(directory)) {
 				for (file in FileSystem.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
-					if (!sys.FileSystem.isDirectory(path) && file.endsWith('.json')) {
+					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
 						var charToCheck:String = file.substr(0, file.length - 5);
 						if (!charsLoaded.exists(charToCheck)) {
 							characterList.push(charToCheck);
@@ -1175,9 +1186,8 @@ class CharacterEditorState extends MusicBeatState {
 				}
 			}
 		}
-		#else
-		characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		#end
+		characterList = characterList.concat(CoolUtil.coolTextFile(Paths.txt('characterList')));
 
 		charDropDown.setData(FlxScrollableDropDownMenu.makeStrIdLabelArray(characterList, true));
 		charDropDown.selectedLabel = daAnim;
@@ -1197,6 +1207,7 @@ class CharacterEditorState extends MusicBeatState {
 		#end
 	}
 
+	var overlapsToButton:Bool = false;
 	override function update(elapsed:Float) {
 		MusicBeatState.camBeat = FlxG.camera;
 		if (char.animationsArray[curAnim] != null) {
@@ -1228,7 +1239,7 @@ class CharacterEditorState extends MusicBeatState {
 		ClientPrefs.toggleVolumeKeys(true);
 
 		if (!charDropDown.dropPanel.visible) {
-			if (FlxG.keys.justPressed.ESCAPE) {
+			if (mobilePad.buttonB.justPressed || FlxG.keys.justPressed.ESCAPE) {
 				if (goToSkins) {
 					FlxG.switchState(() -> new SkinsState());
 				}
@@ -1243,46 +1254,61 @@ class CharacterEditorState extends MusicBeatState {
 				return;
 			}
 
-			if (FlxG.keys.justPressed.R) {
+			if (mobilePad.buttonZ.justPressed || FlxG.keys.justPressed.R) {
 				FlxG.camera.zoom = 1;
 				updateCamPointerZoom();
 			}
 
-			if (FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
+			if (mobilePad.buttonX.pressed || FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
 				FlxG.camera.zoom += elapsed * FlxG.camera.zoom;
 				if (FlxG.camera.zoom > 3)
 					FlxG.camera.zoom = 3;
 				updateCamPointerZoom();
 			}
-			if (FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
+			if (mobilePad.buttonY.pressed || FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
 				FlxG.camera.zoom -= elapsed * FlxG.camera.zoom;
 				if (FlxG.camera.zoom < 0.1)
 					FlxG.camera.zoom = 0.1;
 				updateCamPointerZoom();
 			}
 
-			if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L) {
+			if ((mobilePad.buttonG.pressed && mobilePad.buttonUp.pressed)
+				|| FlxG.keys.pressed.I
+				|| (mobilePad.buttonG.pressed && mobilePad.buttonLeft.pressed)
+				|| FlxG.keys.pressed.J
+				|| (mobilePad.buttonG.pressed && mobilePad.buttonDown.pressed)
+				|| FlxG.keys.pressed.K
+				|| (mobilePad.buttonG.pressed && mobilePad.buttonRight.pressed)
+				|| FlxG.keys.pressed.L) {
 				var addToCam:Float = 500 * elapsed;
 				if (FlxG.keys.pressed.SHIFT)
 					addToCam *= 4;
 
-				if (FlxG.keys.pressed.I)
+				if (mobilePad.buttonUp.pressed || FlxG.keys.pressed.I)
 					camFollow.y -= addToCam;
-				else if (FlxG.keys.pressed.K)
+				else if (mobilePad.buttonDown.pressed || FlxG.keys.pressed.K)
 					camFollow.y += addToCam;
 
-				if (FlxG.keys.pressed.J)
+				if (mobilePad.buttonLeft.pressed || FlxG.keys.pressed.J)
 					camFollow.x -= addToCam;
-				else if (FlxG.keys.pressed.L)
+				else if (mobilePad.buttonRight.pressed || FlxG.keys.pressed.L)
 					camFollow.x += addToCam;
 			}
 
+			mobilePad.forEachAlive((button:TouchButton) ->
+			{
+				if (button.justPressed || button.pressed)
+					overlapsToButton = true;
+				else
+					overlapsToButton = false;
+			});
+
 			if (char.animationsArray.length > 0) {
-				if (FlxG.keys.justPressed.W) {
+				if (mobilePad.buttonV.justPressed || FlxG.keys.justPressed.W) {
 					curAnim -= 1;
 				}
 
-				if (FlxG.keys.justPressed.S) {
+				if (mobilePad.buttonD.justPressed || FlxG.keys.justPressed.S) {
 					curAnim += 1;
 				}
 
@@ -1292,11 +1318,11 @@ class CharacterEditorState extends MusicBeatState {
 				if (curAnim >= char.animationsArray.length)
 					curAnim = 0;
 
-				if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
+				if (mobilePad.buttonV.justPressed || mobilePad.buttonD.justPressed || FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
 					char.playAnim(char.animationsArray[curAnim].anim, true);
 					genBoyOffsets();
 				}
-				if (FlxG.keys.justPressed.T) {
+				if (mobilePad.buttonA.justPressed || FlxG.keys.justPressed.T) {
 					char.animationsArray[curAnim].offsets = [0, 0];
 
 					char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
@@ -1305,15 +1331,18 @@ class CharacterEditorState extends MusicBeatState {
 				}
 
 				var controlArray:Array<Bool> = [
-					FlxG.keys.justPressed.LEFT,
-					FlxG.keys.justPressed.RIGHT,
-					FlxG.keys.justPressed.UP,
+					FlxG.keys.justPressed.LEFT
+					|| (!mobilePad.buttonG.pressed && mobilePad.buttonLeft.justPressed),
+					FlxG.keys.justPressed.RIGHT
+					|| (!mobilePad.buttonG.pressed && mobilePad.buttonRight.justPressed),
+					FlxG.keys.justPressed.UP
+					|| (!mobilePad.buttonG.pressed && mobilePad.buttonUp.justPressed),
 					FlxG.keys.justPressed.DOWN
-				];
+					|| (!mobilePad.buttonG.pressed && mobilePad.buttonDown.justPressed)];
 
 				for (i in 0...controlArray.length) {
 					if (controlArray[i]) {
-						var holdShift = FlxG.keys.pressed.SHIFT;
+						var holdShift = (mobilePad.buttonC.pressed || FlxG.keys.pressed.SHIFT);
 						var multiplier = 1;
 						if (holdShift)
 							multiplier = 10;
@@ -1418,12 +1447,17 @@ class CharacterEditorState extends MusicBeatState {
 
 		var data:String = haxe.Json.stringify(json, "\t");
 
+		
 		if (data.length > 0) {
+			#if mobile
+			StorageUtil.saveContent('$daAnim.json', data);
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, daAnim + ".json");
+			#end
 		}
 	}
 
