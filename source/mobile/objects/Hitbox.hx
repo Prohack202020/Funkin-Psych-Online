@@ -272,6 +272,12 @@ class HitboxOld extends GlobalHitbox {
 	public function new() {
 		instance = this;
 		super();
+		for (button in Reflect.fields(this))
+		{
+			var field = Reflect.field(this, button);
+			if (Std.isOfType(field, MobileButton))
+				storedButtonsIDs.set(button, Reflect.getProperty(field, 'IDs'));
+		}
 
 		if (ClientPrefs.data.extraKeys == 0){
 			add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitbox", null, "buttonLeft"));
@@ -302,18 +308,16 @@ class HitboxOld extends GlobalHitbox {
 				}
 			}
 		}
+		for (button in Reflect.fields(this))
+		{
+			if (Std.isOfType(Reflect.field(this, button), MobileButton))
+				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
+		}
 
 		scrollFactor.set();
 		updateTrackedButtons();
 
 		instance = this;
-
-		/*
-		var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0).loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint'));
-		hitbox_hint.antialiasing = ClientPrefs.data.antialiasing;
-		hitbox_hint.alpha = 0.75;
-		add(hitbox_hint);
-		*/
 	}
 
 	public function createhitbox(x:Float = 0, y:Float = 0, frames:String, ?texture:String, ?customReturn:String, ?mapKey:String) {

@@ -33,7 +33,7 @@
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl" />
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" />
 	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
-	<!-- <define name="TITLE_SCREEN_EASTER_EGG" /> --> <!-- DELETE THE if="officialBuild" for enabling this on an unofficial build -->
+	<define name="TITLE_SCREEN_EASTER_EGG" /> <!-- DELETE THE if="officialBuild" for enabling this on an unofficial build -->
 	<define name="RAR_SUPPORTED" if="windows" unless="hl" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
@@ -136,7 +136,7 @@
 	<haxelib name="json2object" />
 	<haxelib name="hxjsonast" />
 	<haxelib name="flxanimate" />
-	<haxelib name="lumod" if="LUA_ALLOWED" />
+	<haxelib name="lumod" unless="mobile" />
 	<haxelib name="actuate" />
 	<haxelib name="compiletime" />
 	<haxelib name="funkin.vis" />

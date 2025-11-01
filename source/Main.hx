@@ -165,6 +165,10 @@ class Main extends Sprite
 		#end
 		Mods.loadTopMod();
 
+		#if VIDEOS_ALLOWED
+		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
+		#end
+
 		CoolUtil.setDarkMode(true);
 
 		#if lumod
