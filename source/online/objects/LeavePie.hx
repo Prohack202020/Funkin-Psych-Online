@@ -36,31 +36,28 @@ class LeavePie extends FlxTypedSpriteGroup<FlxSprite> {
 	override function update(elapsed) {
 		super.update(elapsed);
 
-		var buttonP_Pressed:Bool = false;
 		try {
-			buttonP_Pressed = getState().mobilePad.buttonP.pressed ? true : false;
-		} catch(e:Dynamic) {}
+			if ((Std.isOfType(getState(), states.PlayState) && getState().mobilePad.buttonP.pressed) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
+				exitTip.alpha = 1;
+				pieDial.amount += elapsed * 2;
+				pieDial.visible = true;
+				if (!finished && pieDial.amount >= 1.0) {
+					finished = true;
 
-		if ((Std.isOfType(getState(), states.PlayState) && buttonP_Pressed) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
-			exitTip.alpha = 1;
-			pieDial.amount += elapsed * 2;
-			pieDial.visible = true;
-			if (!finished && pieDial.amount >= 1.0) {
-				finished = true;
-
-				if (FlxG.state is PlayState)
-					if (FlxG.keys.pressed.F1)
-						GameClient.leaveRoom();
+					if (FlxG.state is PlayState)
+						if (FlxG.keys.pressed.F1)
+							GameClient.leaveRoom();
+						else
+							GameClient.send("requestEndSong");
 					else
-						GameClient.send("requestEndSong");
-				else
-					GameClient.leaveRoom();
+						GameClient.leaveRoom();
+				}
 			}
-		}
-		else {
-			pieDial.amount -= elapsed * 6;
-			exitTip.alpha -= elapsed;
-		}
+			else {
+				pieDial.amount -= elapsed * 6;
+				exitTip.alpha -= elapsed;
+			}
+		} catch(e:Dynamic) {}
 
 		if (pieDial.amount <= 0.03) {
 			pieDial.visible = false;

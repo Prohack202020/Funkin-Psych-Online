@@ -112,6 +112,19 @@ class Main extends Sprite
 
 		// Assets folder
 		#if mobile
+		//Library folder needs to be copy with specificef folder idk why
+		if (!StorageUtil.areAssetsCopied("assets/videos/"))
+			StorageUtil.copyAssetsFromAPK("assets/videos/");
+
+		if (!StorageUtil.areAssetsCopied("assets/songs/"))
+			StorageUtil.copyAssetsFromAPK("assets/songs/");
+
+		if (!StorageUtil.areAssetsCopied("assets/shared/"))
+			StorageUtil.copyAssetsFromAPK("assets/shared/");
+
+		if (!StorageUtil.areAssetsCopied("assets/week_assets/"))
+			StorageUtil.copyAssetsFromAPK("assets/week_assets/");
+
 		if (!StorageUtil.areAssetsCopied("assets/"))
 			StorageUtil.copyAssetsFromAPK("assets/");
 		#end

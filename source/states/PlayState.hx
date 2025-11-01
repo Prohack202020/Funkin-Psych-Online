@@ -1929,7 +1929,7 @@ class PlayState extends MusicBeatState
 		}
 
 		addMobileControls();
-		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? #if android 'X_Y' : 'T' #else 'P_X_Y' : 'P_T' #end);
+		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', 'P_C_T');
 		addMobilePadCamera();
 		hitbox.onButtonDown.add(onButtonPress);
 		hitbox.onButtonUp.add(onButtonRelease);
