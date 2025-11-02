@@ -2,58 +2,76 @@ name: Build Psych Online With Ubuntu
 
 on: workflow_dispatch
 jobs:
-  buildAndroid:
+  buildAndroid-ARM64:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Retrieve Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            export/release/android/haxe
-            export/release/android/obj
-          key: ${{ runner.os }}-cache
+      - name: Checkout
+        uses: actions/checkout@main
 
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.6
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '17'
-
       - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
+        uses: nttld/setup-ndk@main
         with:
-          ndk-version: r29-beta1 # 29.0.13113456
+          ndk-version: r27c
+          add-to-path: false
  
-      - name: Install Haxelib
+      - name: Install Libraries
         run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install
-          haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-          haxelib run lime config JAVA_HOME $JAVA_HOME
-          haxelib run lime config ANDROID_SETUP true
 
-      - name: Setup HXCPP Tools
+      - name: Configure Android
         run: |
-          cd .haxelib/hxcpp/git/tools/hxcpp
-          haxe compile.hxml
-          cd ../../../../..
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true 
 
       - name: Compile
-        run: haxelib run lime build Project.xml android -D ONLY_ARM64 -D HXCPP_M64
+        run: haxelib run lime build android -D ONLY_ARM64
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: androidBuild (experimental)
+          name: androidBuild (ARM64)
+          path: 'export/release/android/bin/app/build/outputs/apk'
+
+  buildAndroid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.6
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@main
+        with:
+          ndk-version: r27c
+          add-to-path: false
+ 
+      - name: Install Libraries
+        run: |
+          haxelib install hmm --quiet
+          haxelib run hmm install
+
+      - name: Configure Android
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true 
+
+      - name: Compile
+        run: haxelib run lime build android
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: androidBuild (Full)
           path: 'export/release/android/bin/app/build/outputs/apk'

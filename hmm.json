@@ -18,8 +18,10 @@
     },
     {
       "name": "flixel",
-      "type": "haxelib",
-      "version": "5.8.0"
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/kittycathy233/flixel"
     },
     {
       "name": "flixel-addons",
@@ -81,11 +83,6 @@
       "name": "UnRAR",
       "type": "haxelib",
       "version": "1.0.0"
-    },
-    {
-      "name": "away3d",
-      "type": "haxelib",
-      "version": "5.0.9"
     },
     {
       "name": "away3d",

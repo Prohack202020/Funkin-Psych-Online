@@ -229,7 +229,7 @@ class Main extends Sprite
 		#end
 
 		#if mobile
-		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
+		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
 		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
