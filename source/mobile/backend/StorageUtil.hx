@@ -3,10 +3,6 @@ package mobile.backend;
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
-#if android
-import extension.androidtools.Tools;
-import extension.androidtools.callback.CallBack;
-#end
 
 import lime.system.System;
 import lime.app.Application;
@@ -25,7 +21,11 @@ class StorageUtil
 	public static final rootDir:String = LimeSystem.applicationStorageDirectory;
 
 	// package name, I know I can app's package name but I really don't want to do it for now
-	public static var packageName:String = 'com.snirozu.psychonline' #if debugBuild + 'debug' #end;
+	#if alternativePackage
+	public static var packageName:String = 'com.kraloyuncuports.psychonline';
+	#else
+	public static var packageName:String = 'com.snirozu.psychonline';
+	#end
 
 	public static function getStorageDirectory():String
 		return #if android haxe.io.Path.addTrailingSlash(AndroidContext.getExternalFilesDir()) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;

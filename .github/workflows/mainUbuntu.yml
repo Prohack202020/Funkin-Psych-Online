@@ -40,7 +40,7 @@ jobs:
           name: androidBuild (ARM64)
           path: 'export/release/android/bin/app/build/outputs/apk'
 
-  buildAndroid:
+  buildAndroid-Alter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -70,10 +70,10 @@ jobs:
           haxelib run lime config ANDROID_SETUP true 
 
       - name: Compile
-        run: haxelib run lime build android
+        run: haxelib run lime build android -D ONLY_ARM64 -D alternativePackage
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: androidBuild (Full)
+          name: androidBuild (Alternative)
           path: 'export/release/android/bin/app/build/outputs/apk'

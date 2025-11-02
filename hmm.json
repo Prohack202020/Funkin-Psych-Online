@@ -8,8 +8,8 @@
     {
       "name": "lime",
       "type": "git",
-      "ref": "develop",
-      "url": "https://github.com/Prohack101010/lime_ex"
+      "ref": "6c0df9759db8953c4535809ee341f8eecdd20270",
+      "url": "https://github.com/th2l-devs/lime"
     },
     {
       "name": "openfl",
