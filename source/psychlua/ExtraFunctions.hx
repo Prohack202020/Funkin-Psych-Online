@@ -43,7 +43,7 @@ class ExtraFunctions
 				if (status == PRESSED || status == JUST_PRESSED)
 					return true;
 			}
-			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls) {
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "pressed");
 				if (check) return check;

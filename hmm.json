@@ -18,10 +18,8 @@
     },
     {
       "name": "flixel",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/kittycathy233/flixel"
+      "type": "haxelib",
+      "version": "5.8.0"
     },
     {
       "name": "flixel-addons",
@@ -36,14 +34,13 @@
     {
       "name": "flixel-ui",
       "type": "haxelib",
-      "version": "2.6.3"
+      "version": "2.6.4"
     },
     {
       "name": "hxcpp",
       "type": "git",
-      "dir": null,
-      "ref": null,
-      "url": "https://github.com/th2l-devs/hxcpp"
+      "ref": "5a0dc3f644dc676a4a092b7e6c8edc8be941f024",
+      "url": "https://github.com/FunkinCrew/hxcpp"
     },
     {
       "name": "tjson",
@@ -53,9 +50,8 @@
     {
       "name": "SScript",
       "type": "git",
-      "dir": null,
-      "ref": null,
-      "url": "https://github.com/th2l-devs/SScript"
+      "ref": "main",
+      "url": "https://github.com/Snirozu/SScript-7.7.0"
     },
     {
       "name": "hxdiscord_rpc",
