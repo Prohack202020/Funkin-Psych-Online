@@ -39,8 +39,9 @@
     {
       "name": "hxcpp",
       "type": "git",
-      "ref": "5a0dc3f644dc676a4a092b7e6c8edc8be941f024",
-      "url": "https://github.com/FunkinCrew/hxcpp"
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/th2l-devs/hxcpp"
     },
     {
       "name": "tjson",
