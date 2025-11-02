@@ -79,6 +79,8 @@ import mobile.input.MobileInputID;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
 import mobile.backend.TouchUtil;
+import mobile.backend.PsychJNI;
+import mobile.backend.TouchFunctions;
 import mobile.backend.StorageUtil;
 import mobile.states.CopyState;
 import mobile.substates.MobileExtraControl;

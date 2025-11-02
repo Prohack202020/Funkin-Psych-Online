@@ -82,7 +82,7 @@ class MobileFunctions
 
 		Lua_helper.add_callback(lua, "MobileC", function(enabled:Bool = false):Void
 		{
-			MusicBeatState.getState().mobilec.instance.visible = enabled;
+			MusicBeatState.getState().hitbox.visible = enabled;
 		});
 
 		//Backwards Compability
@@ -101,9 +101,9 @@ class MobileFunctions
 
 		Lua_helper.add_callback(lua, "setMobileControlPosition", function(?x:Float, ?y:Float):Void
 		{
-			if (MusicBeatState.getState().mobilec != null) {
-				if (x != null) MusicBeatState.getState().mobilec.instance.x = x;
-				if (y != null) MusicBeatState.getState().mobilec.instance.y = y;
+			if (MusicBeatState.getState().hitbox != null) {
+				if (x != null) MusicBeatState.getState().hitbox.x = x;
+				if (y != null) MusicBeatState.getState().hitbox.y = y;
 			}
 		});
 
@@ -114,7 +114,7 @@ class MobileFunctions
 
 		Lua_helper.add_callback(lua, "addMobileControls", function(?mode:String):Void
 		{
-			PlayState.instance.addControls(cValue, mode);
+			PlayState.instance.addControls(mode);
 		});
 
 		Lua_helper.add_callback(lua, "removeMobileControls", function():Void
@@ -129,7 +129,7 @@ class MobileFunctions
 			if (period == null)
 				period = 0;
 			if (duration == null)
-				return FunkinLua.luaTrace('vibrate: No duration specified.');
+				return funk.luaTrace('vibrate: No duration specified.');
 			return Haptic.vibrate(period, duration);
 		});
 
@@ -141,7 +141,7 @@ class MobileFunctions
 			var obj = PlayState.instance.getLuaObject(object);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchPressedObject: $object does not exist.');
+				funk.luaTrace('touchPressedObject: $object does not exist.');
 				return false;
 			}
 			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchPressed;
@@ -152,7 +152,7 @@ class MobileFunctions
 			var obj = PlayState.instance.getLuaObject(object);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustPressedObject: $object does not exist.');
+				funk.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
 			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustPressed;
@@ -163,7 +163,7 @@ class MobileFunctions
 			var obj = PlayState.instance.getLuaObject(object);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustPressedObject: $object does not exist.');
+				funk.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
 			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustReleased;
@@ -174,7 +174,7 @@ class MobileFunctions
 			var obj = PlayState.instance.getLuaObject(object);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchOverlapsObject: $object does not exist.');
+				funk.luaTrace('touchOverlapsObject: $object does not exist.');
 				return false;
 			}
 			return TouchFunctions.touchOverlapObject(obj);
@@ -219,16 +219,16 @@ class AndroidFunctions
 					hint = null;
 			}
 			if (hint == null)
-				return FunkinLua.luaTrace('setOrientation: No orientation specified.');
+				return funk.luaTrace('setOrientation: No orientation specified.');
 			PsychJNI.setOrientation(FlxG.stage.stageWidth, FlxG.stage.stageHeight, false, hint);
 		});
 		Lua_helper.add_callback(lua, "minimizeWindow", () -> AndroidTools.minimizeWindow());
 		Lua_helper.add_callback(lua, "showToast", function(text:String, duration:Null<Int>, ?xOffset:Null<Int>, ?yOffset:Null<Int>)
 		{
 			if (text == null)
-				return FunkinLua.luaTrace('showToast: No text specified.');
+				return funk.luaTrace('showToast: No text specified.');
 			else if (duration == null)
-				return FunkinLua.luaTrace('showToast: No duration specified.');
+				return funk.luaTrace('showToast: No duration specified.');
 
 			if (xOffset == null)
 				xOffset = 0;
@@ -243,7 +243,7 @@ class AndroidFunctions
 		Lua_helper.add_callback(lua, "clipboardGetText", () -> PsychJNI.clipboardGetText());
 		Lua_helper.add_callback(lua, "clipboardSetText", function(text:Null<String>):Void
 		{
-			if (text != null) return FunkinLua.luaTrace('clipboardSetText: No text specified.');
+			if (text != null) return funk.luaTrace('clipboardSetText: No text specified.');
 			PsychJNI.clipboardSetText(text);
 		});
 
@@ -251,7 +251,7 @@ class AndroidFunctions
 
 		Lua_helper.add_callback(lua, "setActivityTitle", function(text:Null<String>):Void
 		{
-			if (text != null) return FunkinLua.luaTrace('setActivityTitle: No text specified.');
+			if (text != null) return funk.luaTrace('setActivityTitle: No text specified.');
 			PsychJNI.setActivityTitle(text);
 		});
 		#end

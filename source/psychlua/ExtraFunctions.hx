@@ -29,7 +29,7 @@ class ExtraFunctions
 			if (Controls.instance?.moodyBlues != null && Controls.instance.moodyBlues.pressedKeys.get('KEY:' + name) == JUST_PRESSED) {
 				return true;
 			}
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "justPressed");
 				if (check) return check;
@@ -43,7 +43,7 @@ class ExtraFunctions
 				if (status == PRESSED || status == JUST_PRESSED)
 					return true;
 			}
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls) {
 			{
 				var check:Bool = specialKeyCheck(name, "pressed");
 				if (check) return check;
@@ -57,7 +57,7 @@ class ExtraFunctions
 				if (status == JUST_RELEASED)
 					return true;
 			}
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "justReleased");
 				if (check) return check;
@@ -126,7 +126,7 @@ class ExtraFunctions
 
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
 			name = name.toLowerCase();
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "justPressed");
 				if (check) return check;
@@ -142,7 +142,7 @@ class ExtraFunctions
 		});
 		Lua_helper.add_callback(lua, "keyPressed", function(name:String = '') {
 			name = name.toLowerCase();
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "pressed");
 				if (check) return check;
@@ -158,7 +158,7 @@ class ExtraFunctions
 		});
 		Lua_helper.add_callback(lua, "keyReleased", function(name:String = '') {
 			name = name.toLowerCase();
-			if (controls.mobileControls)
+			if (Controls.instance?.mobileControls != null && Controls.instance?.mobileControls)
 			{
 				var check:Bool = specialKeyCheck(name, "released");
 				if (check) return check;
@@ -337,8 +337,8 @@ class ExtraFunctions
 	{
 		//Custom return thing
 		for (num in 1...31) {
-			if (MusicBeatState.getState().mobilec.instance != null) {
-				var hitbox:Dynamic = Reflect.getProperty(MusicBeatState.getState().mobilec.instance, 'buttonExtra' + num);
+			if (MusicBeatState.getState().hitbox != null) {
+				var hitbox:Dynamic = Reflect.getProperty(MusicBeatState.getState().hitbox, 'buttonExtra' + num);
 				if (key.toUpperCase() == Reflect.field(hitbox, 'returnedButton')) {
 					if (Reflect.getProperty(hitbox, type)) {
 						return true;
