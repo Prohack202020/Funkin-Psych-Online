@@ -357,6 +357,6 @@ class ExtraFunctions
 				}
 			}
 		}
-		return null;
+		return false;
 	}
 }
