@@ -342,6 +342,7 @@ class ExtraFunctions
 				if (key.toUpperCase() == Reflect.field(hitbox, 'returnedButton')) {
 					if (Reflect.getProperty(hitbox, type)) {
 						return true;
+					}
 				}
 			}
 		}

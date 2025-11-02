@@ -175,12 +175,6 @@ class Hitbox extends GlobalHitbox
 				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
 		}
 
-		if (ClientPrefs.data.hitboxhint){
-			var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0);
-			hitbox_hint.loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint', null, false, true));
-			add(hitbox_hint);
-		}
-
 		scrollFactor.set();
 		updateTrackedButtons();
 
