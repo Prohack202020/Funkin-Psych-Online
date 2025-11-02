@@ -51,23 +51,13 @@ class MusicBeatState extends FlxUIState
 	}
 
 	public function addMobileControls(?mode:String, defaultDrawTarget:Bool = false) {
-		if(ClientPrefs.data.hitboxmode == 'Classic') {
-			hitbox = new HitboxOld();
-		} else {
-			if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
-			else hitbox = new Hitbox();
-		}
+		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
+		else hitbox = new Hitbox();
 
 		hitboxCam = new FlxCamera();
 		hitboxCam.bgColor.alpha = 0;
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
-
-		if (ClientPrefs.data.hitboxhint){
-			var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0).loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint'));
-			add(hitbox_hint);
-			hitbox_hint.cameras = [hitboxCam];
-		}
 
 		add(hitbox);
 	}

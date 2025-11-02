@@ -1,24 +1,36 @@
 package online.replay;
 
 import states.FreeplayState;
-import flixel.input.gamepad.FlxGamepad;
+import mobile.input.MobileInputID;
 import flixel.input.gamepad.FlxGamepad;
 import online.network.Leaderboard;
 import haxe.crypto.Md5;
 import backend.Song;
 import backend.Highscore;
-import sys.FileSystem;
+import backend.io.PsychFileSystem as FileSystem;
 import haxe.Json;
-import sys.io.File;
+import backend.io.PsychFile as File;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import flixel.FlxBasic;
 
+import objects.Note;
 class ReplayRecorder extends FlxBasic {
-	public static final REGISTER_BINDS = [
-		"note_up", "note_down", "note_left", "note_right", "taunt",
+	@:unreflective
+	private var REGISTER_BINDS(default, null) = [];
+	private static final KEYS_MAP:Map<String, Array<String>> = [
+		'4k' => ["note_up", "note_down", "note_left", "note_right"],
+		'5k' => ['5k_note_1', '5k_note_2', '5k_note_3', '5k_note_4', '5k_note_5'],
+		'6k' => ['6k_note_1', '6k_note_2', '6k_note_3', '6k_note_4', '6k_note_5', '6k_note_6'],
+		'7k' => ['7k_note_1', '7k_note_2', '7k_note_3', '7k_note_4', '7k_note_5', '7k_note_6', '7k_note_7'],
+		'8k' => ['8k_note_1', '8k_note_2', '8k_note_3', '8k_note_4', '8k_note_5', '8k_note_6', '8k_note_7', '8k_note_8'],
+		'9k' => ['9k_note_1', '9k_note_2', '9k_note_3', '9k_note_4', '9k_note_5', '9k_note_6', '9k_note_7', '9k_note_8', '9k_note_9']
 	];
+
+	public static function genRegisterBinds() {
+		return ['taunt'].concat(KEYS_MAP.get(Note.maniaKeys + 'k'));
+	}
 
 	public var data:ReplayData = {
 		player: "",
@@ -42,8 +54,9 @@ class ReplayRecorder extends FlxBasic {
 		ghost_tapping: true,
 		rating_offset: null,
 		safe_frames: null,
-		version: 3,
-		mod_url: ''
+		version: 4,
+		mod_url: '',
+		keys: 4
     };
 
     var state:PlayState;
@@ -69,8 +82,10 @@ class ReplayRecorder extends FlxBasic {
 		data.rating_offset = ClientPrefs.data.ratingOffset;
 		data.safe_frames = ClientPrefs.data.safeFrames;
 		data.mod_url = OnlineMods.getModURL(Mods.currentModDirectory);
-		
+		data.keys = Note.maniaKeys;
 		data.chart_hash = Md5.encode(PlayState.RAW_SONG);
+
+		REGISTER_BINDS = genRegisterBinds();
 
 		for (id => binds in state.controls.keyboardBinds) {
 			if (binds != null)
@@ -82,6 +97,15 @@ class ReplayRecorder extends FlxBasic {
 							keyboardIds.set(bind, [id]);
 					}
 				}
+		}
+
+		//exclusive for taunts
+		if (keyboardIds.get(SPACE).contains('taunt')) {
+			for (key in state.keysArray) {
+				if (keyboardIds.get(SPACE).contains(key)) {
+					keyboardIds.get(SPACE).remove('taunt');
+				}
+			}
 		}
 
 		for (id => binds in state.controls.gamepadBinds) {
@@ -217,7 +241,7 @@ class ReplayRecorder extends FlxBasic {
 		}
 	}
 
-	public function save():Float {
+    public function save():Float {
 		if (!FileSystem.exists("replays/"))
 			FileSystem.createDirectory("replays/");
 
@@ -287,6 +311,7 @@ typedef ReplayData = {
 	var opponent_mode:Bool;
 	var beat_time:Float;
 	var chart_hash:String;
+	var keys:Int;
 
 	var note_offset:Float;
 	var gameplay_modifiers:Map<String, Dynamic>;

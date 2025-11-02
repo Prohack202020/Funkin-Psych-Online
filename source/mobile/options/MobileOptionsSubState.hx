@@ -57,7 +57,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		);
 		addOption(option);
 		
-		HitboxTypes.insert(0, "Classic");
+		//HitboxTypes.insert(0, "Classic");
 		option = new Option('Hitbox Mode',
 			'Choose your Hitbox Style!',
 			'hitboxmode',
@@ -76,7 +76,8 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 
 		option = new Option('Hitbox Hint',
 			'Hitbox Hint',
-			'hitboxhint', 'bool');
+			'hitboxhint',
+			'bool');
 		addOption(option);
 
 		option = new Option('Hitbox Opacity',

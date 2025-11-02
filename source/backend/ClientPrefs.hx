@@ -17,11 +17,8 @@ import states.TitleState;
 	#if android public var storageType:String = "EXTERNAL_DATA"; #end
 
 	/* Mobile Controls */
-	#if TOUCH_CONTROLS
 	/* Bool Options */
-	public var pauseButton:Bool = true;
 	public var hitboxhint:Bool = false;
-	public var coloredvpad:Bool = true;
 
 	/* Int/Float Options */
 	public var extraKeys:Int = 2;
@@ -31,9 +28,7 @@ import states.TitleState;
 	/* String Options */
 	public var hitboxtype:String = 'Gradient';
 	public var hitboxLocation:String = 'Bottom';
-	public var mobilePadSkin:String = 'original';
 	public var hitboxmode:String = 'Normal (New)';
-	public var mobilePadTexture:String = "VirtualPad";
 
 	public var extraKeyReturn1:String = 'SHIFT';
 	public var extraKeyReturn2:String = 'SPACE';
@@ -43,6 +38,7 @@ import states.TitleState;
 	public var extraKeyReturn6:String = 'A';
 	public var extraKeyReturn7:String = 'S';
 	public var extraKeyReturn8:String = 'D';
+	public var extraKeyReturn9:String = 'F'; //I'll 9 extra Controls because of extra note update (will be used on next update)
 	#end
 
 	// Mobile Releated

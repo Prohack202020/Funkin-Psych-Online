@@ -29,6 +29,11 @@ class ExtraFunctions
 			if (Controls.instance?.moodyBlues != null && Controls.instance.moodyBlues.pressedKeys.get('KEY:' + name) == JUST_PRESSED) {
 				return true;
 			}
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "justPressed");
+				if (check) return check;
+			}
 			return Reflect.getProperty(FlxG.keys.justPressed, name);
 		});
 		Lua_helper.add_callback(lua, "keyboardPressed", luaPressed = function(name:String)
@@ -38,6 +43,11 @@ class ExtraFunctions
 				if (status == PRESSED || status == JUST_PRESSED)
 					return true;
 			}
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "pressed");
+				if (check) return check;
+			}
 			return Reflect.getProperty(FlxG.keys.pressed, name);
 		});
 		Lua_helper.add_callback(lua, "keyboardReleased", luaJustReleased = function(name:String)
@@ -46,6 +56,11 @@ class ExtraFunctions
 				var status = Controls.instance?.moodyBlues.pressedKeys.get('KEY:' + name);
 				if (status == JUST_RELEASED)
 					return true;
+			}
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "justReleased");
+				if (check) return check;
 			}
 			return Reflect.getProperty(FlxG.keys.justReleased, name);
 		});
@@ -111,6 +126,11 @@ class ExtraFunctions
 
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
 			name = name.toLowerCase();
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "justPressed");
+				if (check) return check;
+			}
 			switch(name) {
 				case 'left': return PlayState.instance.controls.NOTE_LEFT_P;
 				case 'down': return PlayState.instance.controls.NOTE_DOWN_P;
@@ -122,6 +142,11 @@ class ExtraFunctions
 		});
 		Lua_helper.add_callback(lua, "keyPressed", function(name:String = '') {
 			name = name.toLowerCase();
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "pressed");
+				if (check) return check;
+			}
 			switch(name) {
 				case 'left': return PlayState.instance.controls.NOTE_LEFT;
 				case 'down': return PlayState.instance.controls.NOTE_DOWN;
@@ -133,6 +158,11 @@ class ExtraFunctions
 		});
 		Lua_helper.add_callback(lua, "keyReleased", function(name:String = '') {
 			name = name.toLowerCase();
+			if (controls.mobileControls)
+			{
+				var check:Bool = specialKeyCheck(name, "released");
+				if (check) return check;
+			}
 			switch(name) {
 				case 'left': return PlayState.instance.controls.NOTE_LEFT_R;
 				case 'down': return PlayState.instance.controls.NOTE_DOWN_R;
@@ -301,5 +331,32 @@ class ExtraFunctions
 		Lua_helper.add_callback(lua, "getRandomBool", function(chance:Float = 50) {
 			return FlxG.random.bool(chance);
 		});
+	}
+
+	public static function specialKeyCheck(key:String, type:String):Dynamic
+	{
+		//Custom return thing
+		for (num in 1...31) {
+			if (MusicBeatState.getState().mobilec.instance != null) {
+				var hitbox:Dynamic = Reflect.getProperty(MusicBeatState.getState().mobilec.instance, 'buttonExtra' + num);
+				if (key.toUpperCase() == Reflect.field(hitbox, 'returnedButton')) {
+					if (Reflect.getProperty(hitbox, type)) {
+						return true;
+				}
+			}
+		}
+
+		//For mobilePad, this is useful if you're using the V-Slice Mobile Control (Not Added Yet)
+		for (num in 1...31) {
+			if (MusicBeatState.getState().mobilePad != null) {
+				var hitbox:Dynamic = Reflect.getProperty(MusicBeatState.getState().mobilePad, 'buttonExtra' + num);
+				if (key.toUpperCase() == Reflect.field(hitbox, 'returnedButton')) {
+					if (Reflect.getProperty(hitbox, type)) {
+						return true;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -40,6 +40,9 @@ import psychlua.LuaUtils.LuaTweenOptions;
 #if HSCRIPT_ALLOWED
 import psychlua.HScript;
 #end
+#if mobile
+import mobile.psychlua.Functions;
+#end
 import psychlua.DebugLuaText;
 import psychlua.ModchartSprite;
 
@@ -1492,6 +1495,8 @@ class FunkinLua {
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
 		online.backend.OnlineScriptFunctions.implement(this);
+		#if android AndroidFunctions.implement(this); #end
+		#if mobile MobileFunctions.implement(this); #end
 		
 		try{
 			var result:Dynamic = LuaL.dofile(lua, scriptName);

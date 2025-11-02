@@ -14,12 +14,11 @@ import openfl.geom.Matrix;
  * A zone with 34 hint's (A hitbox).
  * It's really easy to customize the layout.
  *
- * @author Mihai Alexandru (M.A. Jigsaw)
- * @modifier KralOyuncu 2010x (ArkoseLabs)
+ * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
 /**
- * Interface can't see MobileInputManager variables, so use this instead (I hope this works)
+ * Interface can't see MobileInputManager's variables, so use class instead
  */
 class GlobalHitbox extends MobileInputManager
 {
@@ -176,6 +175,12 @@ class Hitbox extends GlobalHitbox
 				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
 		}
 
+		if (ClientPrefs.data.hitboxhint){
+			var hitbox_hint:FlxSprite = new FlxSprite(0, (ClientPrefs.data.hitboxLocation == 'Bottom' && ClientPrefs.data.extraKeys != 0) ? -150 : 0);
+			hitbox_hint.loadGraphic(Paths.image('mobile/Hitbox/hitbox_hint', null, false, true));
+			add(hitbox_hint);
+		}
+
 		scrollFactor.set();
 		updateTrackedButtons();
 
@@ -254,121 +259,5 @@ class Hitbox extends GlobalHitbox
 		#end
 		if (customReturn != null) hint.returnedButton = customReturn;
 		return hint;
-	}
-}
-
-class HitboxOld extends GlobalHitbox {
-	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
-	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
-	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
-	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_RIGHT, MobileInputID.NOTE_RIGHT]);
-	public var buttonExtra1:MobileButton = new MobileButton(0, 0);
-	public var buttonExtra2:MobileButton = new MobileButton(0, 0);
-
-	public var instance:MobileInputManager;
-
-	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
-
-	public function new() {
-		instance = this;
-		super();
-		for (button in Reflect.fields(this))
-		{
-			var field = Reflect.field(this, button);
-			if (Std.isOfType(field, MobileButton))
-				storedButtonsIDs.set(button, Reflect.getProperty(field, 'IDs'));
-		}
-
-		if (ClientPrefs.data.extraKeys == 0){
-			add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitbox", null, "buttonLeft"));
-			add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitbox", null, "buttonDown"));
-			add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitbox", null, "buttonUp"));
-			add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitbox", null, "buttonRight"));
-		}else{
-			if (ClientPrefs.data.hitboxLocation == 'Bottom') {
-				switch (ClientPrefs.data.extraKeys) {
-					case 2:
-						add(buttonLeft = createhitbox(0, 0, "left", "mobile/Hitbox/hitboxBottom-2", null, "buttonLeft"));
-						add(buttonDown = createhitbox(320, 0, "down", "mobile/Hitbox/hitboxBottom-2", null, "buttonDown"));
-						add(buttonUp = createhitbox(640, 0, "up", "mobile/Hitbox/hitboxBottom-2", null, "buttonUp"));
-						add(buttonRight = createhitbox(960, 0, "right", "mobile/Hitbox/hitboxBottom-2", null, "buttonRight"));
-						add(buttonExtra1 = createhitbox(0, 580, "extra1", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn1.toUpperCase()));
-						add(buttonExtra2 = createhitbox(640, 580, "extra2", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn2.toUpperCase()));
-				}
-			}
-			else if (ClientPrefs.data.hitboxLocation == 'Top') {
-				switch (ClientPrefs.data.extraKeys) {
-					case 2:
-						add(buttonLeft = createhitbox(0, 144, "left", "mobile/Hitbox/hitboxBottom-2", null, "buttonLeft"));
-						add(buttonDown = createhitbox(320, 144, "down", "mobile/Hitbox/hitboxBottom-2", null, "buttonDown"));
-						add(buttonUp = createhitbox(640, 144, "up", "mobile/Hitbox/hitboxBottom-2", null, "buttonUp"));
-						add(buttonRight = createhitbox(960, 144, "right", "mobile/Hitbox/hitboxBottom-2", null, "buttonRight"));
-						add(buttonExtra1 = createhitbox(0, 0, "extra1", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn1.toUpperCase(), "buttonExtra1"));
-						add(buttonExtra2 = createhitbox(640, 0, "extra2", "mobile/Hitbox/hitboxBottom-2", ClientPrefs.data.extraKeyReturn2.toUpperCase(), "buttonExtra2"));
-				}
-			}
-		}
-		for (button in Reflect.fields(this))
-		{
-			if (Std.isOfType(Reflect.field(this, button), MobileButton))
-				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
-		}
-
-		scrollFactor.set();
-		updateTrackedButtons();
-
-		instance = this;
-	}
-
-	public function createhitbox(x:Float = 0, y:Float = 0, frames:String, ?texture:String, ?customReturn:String, ?mapKey:String) {
-		var button = new MobileButton(x, y);
-		button.loadGraphic(FlxGraphic.fromFrame(getFrames(texture).getByName(frames)));
-		button.antialiasing = ClientPrefs.data.antialiasing;
-		button.alpha = 0.00001;
-		button.onDown.callback = function()
-		{
-			onButtonDown.dispatch(button, storedButtonsIDs.get(mapKey));
-			if (button.alpha != 0.75)
-				button.alpha = 0.75;
-		}
-		button.onOut.callback = button.onUp.callback = function()
-		{
-			onButtonUp.dispatch(button, storedButtonsIDs.get(mapKey));
-			if (button.alpha != 0.00001)
-				button.alpha = 0.00001;
-		}
-		if (customReturn != null) button.returnedButton = customReturn;
-		return button;
-	}
-
-	public function getFrames(?texture:String = 'mobile/Hitbox/hitbox'):FlxAtlasFrames {
-		return getSparrowAtlas(texture);
-	}
-
-	inline static public function getSparrowAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
-	{
-		#if MODS_ALLOWED
-		var imageLoaded:FlxGraphic = Paths.image(key, allowGPU, true);
-		var xmlExists:Bool = false;
-
-		var xml:String = Paths.modFolders(key + '.xml');
-		if(FileSystem.exists(xml)) {
-			xmlExists = true;
-		}
-
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : Paths.image(key, library, allowGPU, true)), (xmlExists ? File.getContent(xml) : Paths.getPath('$key.xml', library)));
-		#else
-		return FlxAtlasFrames.fromSparrow(Paths.image(key, library, allowGPU, true), Paths.getPath('$key.xml', library));
-		#end
-	}
-
-	override public function destroy():Void {
-		super.destroy();
-		onButtonUp.destroy();
-		onButtonDown.destroy();
-
-		for (field in Reflect.fields(this))
-			if (Std.isOfType(Reflect.field(this, field), MobileButton))
-				Reflect.setField(this, field, FlxDestroyUtil.destroy(Reflect.field(this, field)));
 	}
 }

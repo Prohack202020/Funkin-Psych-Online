@@ -533,13 +533,16 @@ class PlayState extends MusicBeatState
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camOther = new FlxCamera();
+		luaMpadCam = new FlxCamera();
 		camLoading = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
+		luaMpadCam.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
+		FlxG.cameras.add(luaMpadCam, false);
 		FlxG.cameras.add(camLoading, false);
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
@@ -5261,6 +5264,9 @@ class PlayState extends MusicBeatState
 			hscriptArray.pop();
 		#end
 
+		if (luaMobilePad != null)
+			luaMobilePad = FlxDestroyUtil.destroy(luaMobilePad);
+
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		FlxG.animationTimeScale = 1;
@@ -6364,4 +6370,64 @@ class PlayStatePlayer {
 	function new(player:Player) {
 		this.player = player;
 	}
+
+	public var luaMobilePad:MobilePad;
+	public var luaMpadCam:FlxCamera;
+	public function makeLuaMobilePad(DPad:String, Action:String)
+	{
+		if(members.contains(luaMobilePad)) return;
+
+		if(!variables.exists("luaMobilePad"))
+			variables.set("luaMobilePad", luaMobilePad);
+
+		luaMobilePad = new MobilePad(DPad, Action);
+		luaMobilePad.alpha = ClientPrefs.data.mobilePadAlpha;
+	}
+
+	public function addLuaMobilePad() {
+		if(luaMobilePad == null || members.contains(luaMobilePad)) return;
+
+		var target:Dynamic = isDead ? GameOverSubstate.instance : PlayState.instance;
+		target.insert(target.members.length + 1, luaMobilePad);
+	}
+
+	public function addLuaMobilePadCamera()
+		if(luaMobilePad != null) luaMobilePad.cameras = [luaMpadCam];
+
+	public function removeLuaMobilePad()
+	{
+		if (luaMobilePad != null) {
+			luaMobilePad.kill();
+			luaMobilePad.destroy();
+			remove(luaMobilePad);
+			luaMobilePad = null;
+		}
+	}
+
+	public static function checkMPadPress(buttonPostfix:String, type = 'justPressed') {
+		var buttonName = "button" + buttonPostfix;
+		var button = Reflect.getProperty(PlayState.instance.luaMobilePad, buttonName); //Access Spesific Button
+		return Reflect.getProperty(button, type);
+		return false;
+	}
+
+	//I don't need this anymore because Hitboxes can returnable to any keys
+	public static function checkHBoxPress(button:String, type = 'justPressed') {
+		if (MusicBeatState.getState().hitbox != null) button = Reflect.getProperty(MusicBeatState.getState().hitbox, button);
+		if (button != null) return Reflect.getProperty(button, type);
+		return false;
+	}
+
+	//Lua Stuff for Mobile Controls
+	public function reloadControls(?mode:String)
+	{
+		removeMobileControls();
+		addMobileControls(mode);
+	}
+
+	public function addControls(?mode:String)
+		addMobileControls(mode);
+
+	public function removeControls()
+		removeMobileControls();
 }
