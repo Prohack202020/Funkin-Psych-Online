@@ -5239,18 +5239,15 @@ class PlayState extends MusicBeatState
 	}
 
 	override function destroy() {
-		CoolUtil.showPopUp("Started\nLua Destroying", "Destroy");
 		#if LUA_ALLOWED
 		for (i in 0...luaArray.length) {
 			var lua:FunkinLua = luaArray[0];
 			lua.call('onDestroy', []);
-			CoolUtil.showPopUp("onDestroy function called", "Destroy");
 			lua.stop();
 		}
 		luaArray = [];
 		FunkinLua.customFunctions.clear();
 		#end
-		CoolUtil.showPopUp("Lua Destroyed\nHScript Destroying", "Destroy");
 
 		#if HSCRIPT_ALLOWED
 		for (script in hscriptArray)
@@ -5263,7 +5260,6 @@ class PlayState extends MusicBeatState
 		while (hscriptArray.length > 0)
 			hscriptArray.pop();
 		#end
-		CoolUtil.showPopUp("HScript Destroyed\nRest of the stuff destroying", "Destroy");
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -5278,9 +5274,7 @@ class PlayState extends MusicBeatState
 		// 	//stage3D.dispose();
 		// 	stage3D = null;
 		// }
-		CoolUtil.showPopUp("State's itself destroying", "Destroy");
 		super.destroy();
-		CoolUtil.showPopUp("State destroyed", "Destroy");
 	}
 
 	public static function cancelMusicFadeTween() {

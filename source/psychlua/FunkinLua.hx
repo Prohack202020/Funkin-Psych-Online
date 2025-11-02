@@ -1585,22 +1585,15 @@ class FunkinLua {
 	}
 
 	public function stop() {
-		CoolUtil.showPopUp("Stopping Process Started", "Lua");
 		#if LUA_ALLOWED
 		PlayState.instance.luaArray.remove(this);
-		CoolUtil.showPopUp("Removed From Array", "Lua");
 		closed = true;
-		CoolUtil.showPopUp("Setted as Closed", "Lua");
 
-		CoolUtil.showPopUp("Null Check", "Lua");
 		if(lua == null) {
 			return;
 		}
-		CoolUtil.showPopUp("Null Check is Done, Closing", "Lua");
 		Lua.close(lua);
-		CoolUtil.showPopUp("Closed", "Lua");
 		lua = null;
-		CoolUtil.showPopUp("lua is null", "Lua");
 		#if HSCRIPT_ALLOWED
 		if(hscript != null)
 		{
