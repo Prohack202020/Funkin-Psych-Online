@@ -14,6 +14,7 @@ jobs:
 
       - name: Setup Android NDK
         uses: nttld/setup-ndk@main
+        id: setup-ndk
         with:
           ndk-version: r27c
           add-to-path: false
@@ -51,6 +52,7 @@ jobs:
 
       - name: Setup Android NDK
         uses: nttld/setup-ndk@main
+        id: setup-ndk
         with:
           ndk-version: r27c
           add-to-path: false
