@@ -81,6 +81,7 @@ import mobile.input.MobileInputManager;
 import mobile.backend.TouchUtil;
 import mobile.backend.StorageUtil;
 import mobile.states.CopyState;
+import mobile.substates.MobileExtraControl;
 //Android
 #if android
 import extension.androidtools.content.Context as AndroidContext;

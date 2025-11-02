@@ -4,6 +4,7 @@ import lime.ui.Haptic;
 import flixel.util.FlxSave;
 import mobile.backend.TouchFunctions;
 import psychlua.CustomSubstate;
+import psychlua.FunkinLua;
 #if android
 import extension.androidtools.widget.Toast as AndroidToast;
 #end

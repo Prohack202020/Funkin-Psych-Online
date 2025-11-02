@@ -34,6 +34,8 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
+			case 'Mobile Extra Control':
+				openSubState(new mobile.substates.MobileExtraControl());
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(() -> new options.NoteOffsetState());
 		}
@@ -81,7 +83,7 @@ class OptionsState extends MusicBeatState
 
 		super.create();
 
-		addMobilePad("UP_DOWN", "A_B");
+		addMobilePad("UP_DOWN", "A_B_E");
 
 		online.GameClient.send("status", "In the Game Options");
 	}
@@ -92,7 +94,7 @@ class OptionsState extends MusicBeatState
 		ClientPrefs.saveSettings();
 		controls.isInSubstate = false;
 		removeMobilePad();
-		addMobilePad('UP_DOWN', 'A_B');
+		addMobilePad('UP_DOWN', 'A_B_E');
 		persistentUpdate = true;
 	}
 
@@ -134,6 +136,7 @@ class OptionsState extends MusicBeatState
 			else FlxG.switchState(() -> new MainMenuState());
 		}
 		else if (controls.ACCEPT #if desktop || FlxG.mouse.justPressed #end) openSelectedSubstate(options[curSelected]);
+		else if (mobilePad.buttonE.justPressed) openSelectedSubstate(openSelectedSubstate);
 	}
 	
 	function changeSelection(change:Int = 0) {
