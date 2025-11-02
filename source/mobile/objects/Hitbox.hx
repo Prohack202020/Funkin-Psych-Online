@@ -367,9 +367,8 @@ class HitboxOld extends GlobalHitbox {
 		onButtonUp.destroy();
 		onButtonDown.destroy();
 
-		buttonLeft = null;
-		buttonDown = null;
-		buttonUp = null;
-		buttonRight = null;
+		for (field in Reflect.fields(this))
+			if (Std.isOfType(Reflect.field(this, field), MobileButton))
+				Reflect.setField(this, field, FlxDestroyUtil.destroy(Reflect.field(this, field)));
 	}
 }

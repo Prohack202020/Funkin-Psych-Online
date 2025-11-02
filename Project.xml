@@ -132,11 +132,10 @@
 	<haxelib name="colyseus" />
 	<haxelib name="HtmlParser" />
 	<haxelib name="UnRAR" />
-	<haxelib name="away3d" />
 	<haxelib name="json2object" />
 	<haxelib name="hxjsonast" />
 	<haxelib name="flxanimate" />
-	<haxelib name="lumod" unless="mobile" />
+	<haxelib name="lumod" if="LUA_ALLOWED" />
 	<haxelib name="actuate" />
 	<haxelib name="compiletime" />
 	<haxelib name="funkin.vis" />
