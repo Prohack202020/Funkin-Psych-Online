@@ -28,7 +28,7 @@
 
 	<define name="MODS_ALLOWED" />
 	<define name="HSCRIPT_ALLOWED" />
-	<!-- <define name="LUA_ALLOWED" if="cpp" /> -->
+	<define name="LUA_ALLOWED" if="cpp" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl" />
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" />
