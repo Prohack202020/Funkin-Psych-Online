@@ -333,8 +333,16 @@ class ExtraFunctions
 		});
 	}
 
-	public static function specialKeyCheck(key:String, type:String):Dynamic
+	public static function specialKeyCheck(key:String, ?type:String, ?alter:Bool):Dynamic
 	{
+		var textfix:Array<String> = key.trim().split('.');
+		var extraControl:Dynamic = null;
+		if (alter)
+		{
+			type = textfix[1].trim();
+			key = textfix[2].trim();
+		}
+
 		//Custom return thing
 		for (num in 1...31) {
 			if (MusicBeatState.getState().hitbox != null) {
@@ -353,6 +361,17 @@ class ExtraFunctions
 				var hitbox:Dynamic = Reflect.getProperty(MusicBeatState.getState().mobilePad, 'buttonExtra' + num);
 				if (key.toUpperCase() == Reflect.field(hitbox, 'returnedButton')) {
 					if (Reflect.getProperty(hitbox, type)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		if (alter) {
+			for (num in 1...9){
+				if (ClientPrefs.data.extraKeys >= num && key == Reflect.field(ClientPrefs.data, 'extraKeyReturn' + num)){
+					extraControl = Reflect.getProperty(MusicBeatState.getState().hitbox, 'buttonExtra' + num);
+					if (Reflect.getProperty(extraControl, type)) {
 						return true;
 					}
 				}

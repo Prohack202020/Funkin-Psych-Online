@@ -36,6 +36,8 @@ class ReflectionFunctions
 		});
 		Lua_helper.add_callback(lua, "getPropertyFromClass", function(classVar:String, variable:String, ?allowMaps:Bool = true):Dynamic {
 			if (classVar == 'flixel.FlxG' && variable.startsWith('keys')) {
+				if (ExtraFunctions.specialKeyCheck(variable, null, true) == true) return true; //Fix it like this
+
 				var why = variable.split('.');
 				switch (why[1]) {
 					case 'pressed':

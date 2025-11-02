@@ -35,6 +35,7 @@ class OptionsState extends MusicBeatState
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
 			case 'Mobile Extra Control':
+				controls.isInSubstate = true;
 				openSubState(new mobile.substates.MobileExtraControl());
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(() -> new options.NoteOffsetState());

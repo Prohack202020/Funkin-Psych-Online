@@ -33,7 +33,6 @@ class MusicBeatSubstate extends FlxSubState
 	public var mobilePadCam:FlxCamera;
 	public var hitbox:GlobalHitbox;
 	public var hitbox_hint:FlxSprite;
-	public var hitboxCam:FlxCamera;
 
 	public function addMobilePad(DPad:String, Action:String)
 	{
@@ -60,7 +59,7 @@ class MusicBeatSubstate extends FlxSubState
 		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
 		else hitbox = new Hitbox();
 
-		hitboxCam = new FlxCamera();
+		var hitboxCam:FlxCamera = new FlxCamera();
 		hitboxCam.bgColor.alpha = 0;
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];

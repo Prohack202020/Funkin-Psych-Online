@@ -28,6 +28,10 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 	override function create() {
 		super.create();
 
+		var bgCam:FlxCamera = new FlxCamera();
+		bgCam.bgColor.alpha = 0;
+		FlxG.cameras.add(bgCam, false);
+
 		if (!ClientPrefs.data.disableOnlineShaders) {
 			blurFilter = new BlurFilter();
 			for (cam in FlxG.cameras.list) {
@@ -40,6 +44,7 @@ class RoomSettingsSubstate extends MusicBeatSubstate {
 			blackSprite.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			blackSprite.alpha = 0.75;
 			add(blackSprite);
+			blackSprite.cameras = [bgCam]; // Lol
 		}
 
 		coolCam = new FlxCamera();
