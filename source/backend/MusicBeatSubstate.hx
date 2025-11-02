@@ -89,12 +89,6 @@ class MusicBeatSubstate extends FlxSubState
 			hitbox_hint = FlxDestroyUtil.destroy(hitbox_hint);
 			hitbox_hint = null;
 		}
-
-		if (hitboxCam != null)
-		{
-			FlxG.cameras.remove(hitboxCam);
-			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
-		}
 	}
 
 	public function addMobilePadCamera(defaultDrawTarget:Bool = false):Void

@@ -4,6 +4,7 @@ import Type.ValueType;
 import haxe.Constraints;
 
 import substates.GameOverSubstate;
+import psychlua.ExtraFunctions;
 
 //
 // Functions that use a high amount of Reflections, which are somewhat CPU intensive
