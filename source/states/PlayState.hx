@@ -5241,8 +5241,7 @@ class PlayState extends MusicBeatState
 	override function destroy() {
 		CoolUtil.showPopUp("Destroy Started\nLua Destroying", "Trace");
 		#if LUA_ALLOWED
-		for (i in 0...luaArray.length) {
-			var lua:FunkinLua = luaArray[0];
+		for (lua in luaArray) {
 			lua.call('onDestroy', []);
 			lua.stop();
 		}
