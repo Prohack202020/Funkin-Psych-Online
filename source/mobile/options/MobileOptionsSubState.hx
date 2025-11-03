@@ -80,6 +80,12 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 			'bool');
 		addOption(option);
 
+		option = new Option('V Slice Controls',
+			'If checked, The game\'s control will be like original Friday Night Funkin\': Mobile.\n(WARNING: This Option can break the some mechanics, please use for simple mods)',
+			'VSliceControl',
+			'bool');
+		addOption(option);
+
 		option = new Option('Hitbox Opacity',
 			'Selects the opacity for the hitbox buttons.',
 			'hitboxalpha',

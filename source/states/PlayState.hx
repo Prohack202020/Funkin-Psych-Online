@@ -1208,7 +1208,6 @@ class PlayState extends MusicBeatState
 		preloadTasks.push(() -> {
 			for (notetype in noteTypes)
 			{
-				CoolUtil.showPopUp('' + notetype, 'for notetype in noteTypes');
 				startLuasNamed('custom_notetypes/' + notetype + '.lua', true);
 			}
 		});
@@ -1952,6 +1951,10 @@ class PlayState extends MusicBeatState
 		});
 	}
 
+	public var VSliceControls:Bool = false;
+	public var playerNotePositions:Array<Int> = [260, 440, 710, 890];
+	public var playerNotePositionsFixed:Array<Int> = [-360, -140, 140, 360];
+	public static var playerNotePositionsFixedStatic:Array<Int> = [-360, -140, 140, 360];
 	public function startCountdown()
 	{
 		theWorld = false;
@@ -1972,6 +1975,9 @@ class PlayState extends MusicBeatState
 			}
 			if (!GameClient.isConnected())
 				generateStrums();
+
+			if (ClientPrefs.data.VSliceControl) VSliceControls = true;
+			if (VSliceControls) enableVSliceControls();
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
@@ -2066,6 +2072,32 @@ class PlayState extends MusicBeatState
 			}, 5);
 		}
 		return true;
+	}
+
+	/* V-Slice Mobile Controls */
+	public function enableVSliceControls() {
+		//I took this from PsychEngine's discord server and make it to work with HScript Improved (.hsc), now I'm using it on source code 😂
+		// Credit: @allaxnofake (Discord)
+		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
+		for (i in 0...unspawnNotes.length)
+		{
+			if (!unspawnNotes[i].mustPress)
+				unspawnNotes[i].visible = false;
+		}
+		for (i in 0...4) {
+			opponentStrums.members[i].y = 40;
+			//playerStrums.members[i].y = 550;
+			opponentStrums.members[i].x = 10 + (i * 65);
+			playerStrums.members[i].screenCenter(X);
+			playerStrums.members[i].x += playerNotePositionsFixed[i];
+			playerNotePositionsFixedStatic[i] = Std.int(playerStrums.members[i].x) - 20;
+			opponentStrums.members[i].scale.x = opponentStrums.members[i].scale.x / 1.75;
+			opponentStrums.members[i].scale.y = opponentStrums.members[i].scale.y / 1.75;
+		}
+		//use More Resulation Friendly one
+		PlayState.instance.reloadControls("V Slice"); //I'm lazy to write removeMobileControls, so I'll keep it the same
+		mobilec.instance.cameras = [camHUD]; //Visual Fix (Honestly not needed because you can't see hitboxes)
+		mobilec.instance.visible = false; //hides the hitbox (better visuality, bitch)
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
@@ -2513,7 +2545,6 @@ class PlayState extends MusicBeatState
 				}
 
 				if(!noteTypes.contains(swagNote.noteType)) {
-					CoolUtil.showPopUp('' + swagNote.noteType, 'noteTypes adding:');
 					noteTypes.push(swagNote.noteType);
 				}
 			}
@@ -5406,14 +5437,12 @@ class PlayState extends MusicBeatState
 	}
 
 	#if LUA_ALLOWED
-	public function startLuasNamed(luaFile:String, ?calledFromNoteTypes:Bool)
+	public function startLuasNamed(luaFile:String)
 	{
 		#if MODS_ALLOWED
 		var luaToLoad:String = Paths.modFolders(luaFile);
 		if(!FileSystem.exists(luaToLoad))
 			luaToLoad = Paths.getPreloadPath(luaFile);
-
-		if (calledFromNoteTypes) CoolUtil.showPopUp('' + luaToLoad, 'startLuasNamed:');
 
 		if(FileSystem.exists(luaToLoad))
 		#elseif sys

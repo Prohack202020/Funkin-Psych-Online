@@ -19,6 +19,7 @@ import states.TitleState;
 	/* Mobile Controls */
 	/* Bool Options */
 	public var hitboxhint:Bool = false;
+	public var VSliceControl:Bool = false; //There we go
 
 	/* Int/Float Options */
 	public var extraKeys:Int = 2;
