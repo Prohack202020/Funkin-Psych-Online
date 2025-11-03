@@ -1208,7 +1208,7 @@ class PlayState extends MusicBeatState
 		preloadTasks.push(() -> {
 			for (notetype in noteTypes)
 			{
-				startLuasNamed('custom_notetypes/' + notetype + '.lua', true);
+				startLuasNamed('custom_notetypes/' + notetype + '.lua');
 			}
 		});
 
@@ -2096,8 +2096,8 @@ class PlayState extends MusicBeatState
 		}
 		//use More Resulation Friendly one
 		PlayState.instance.reloadControls("V Slice"); //I'm lazy to write removeMobileControls, so I'll keep it the same
-		mobilec.instance.cameras = [camHUD]; //Visual Fix (Honestly not needed because you can't see hitboxes)
-		mobilec.instance.visible = false; //hides the hitbox (better visuality, bitch)
+		hitbox.cameras = [camHUD]; //Visual Fix (Honestly not needed because you can't see hitboxes)
+		hitbox.visible = false; //hides the hitbox (better visuality, bitch)
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
