@@ -213,7 +213,7 @@ class ClientPrefs {
 
 		'accept'		=> [A],
 		'back'			=> [B],
-		'pause'			=> [#if android NONE #else P #end],
+		'pause'			=> [P],
 		'reset'			=> [NONE],
 		'taunt'			=> [T]
 	];
