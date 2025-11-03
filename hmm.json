@@ -8,8 +8,8 @@
     {
       "name": "lime",
       "type": "git",
-      "ref": "6c0df9759db8953c4535809ee341f8eecdd20270",
-      "url": "https://github.com/th2l-devs/lime"
+      "ref": "int-delta",
+      "url": "https://github.com/HomuHomu833-haxelibs/lime
     },
     {
       "name": "openfl",
@@ -36,7 +36,7 @@
     {
       "name": "flixel-ui",
       "type": "haxelib",
-      "version": "2.6.4"
+      "version": "2.6.3"
     },
     {
       "name": "hxcpp",
