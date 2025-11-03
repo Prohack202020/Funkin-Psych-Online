@@ -2360,12 +2360,14 @@ class PlayState extends MusicBeatState
 
 		for (section in noteData)
 		{
+			/* I think this shit brokes the things
 			haxe.ds.ArraySort.sort(section.sectionNotes, function(a, b):Int {
 				if (a == null || b == null) {
 					return 0;
 				}
 				return a[0] - b[0];
 			});
+			*/
 			
 			for (songNotes in section.sectionNotes)
 			{
@@ -2511,6 +2513,7 @@ class PlayState extends MusicBeatState
 				}
 
 				if(!noteTypes.contains(swagNote.noteType)) {
+					CoolUtil.showPopUp('' + swagNote.noteType, 'noteTypes adding:');
 					noteTypes.push(swagNote.noteType);
 				}
 			}
