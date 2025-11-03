@@ -859,6 +859,13 @@ class FreeplayState extends MusicBeatState
 			searchString = searchString;
 		}
 
+		#if mobile
+		if (searchInputWait && !FlxG.stage.window.textInputEnabled) //maybe can fix search problem
+		{
+			searchInputWait = false;
+		}
+		#end
+
 		var shiftMult:Int = 1;
 		if(mobilePad.buttonZ.pressed || FlxG.keys.pressed.SHIFT) shiftMult = 3;
 

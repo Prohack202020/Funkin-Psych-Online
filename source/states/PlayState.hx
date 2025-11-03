@@ -1207,7 +1207,10 @@ class PlayState extends MusicBeatState
 		#if LUA_ALLOWED
 		preloadTasks.push(() -> {
 			for (notetype in noteTypes)
-				startLuasNamed('custom_notetypes/' + notetype + '.lua');
+			{
+				CoolUtil.showPopUp('' + notetype, 'for notetype in noteTypes');
+				startLuasNamed('custom_notetypes/' + notetype + '.lua', true);
+			}
 		});
 
 		preloadTasks.push(() -> {
@@ -5400,13 +5403,15 @@ class PlayState extends MusicBeatState
 	}
 
 	#if LUA_ALLOWED
-	public function startLuasNamed(luaFile:String)
+	public function startLuasNamed(luaFile:String, ?calledFromNoteTypes:Bool)
 	{
 		#if MODS_ALLOWED
 		var luaToLoad:String = Paths.modFolders(luaFile);
 		if(!FileSystem.exists(luaToLoad))
 			luaToLoad = Paths.getPreloadPath(luaFile);
-		
+
+		if (calledFromNoteTypes) CoolUtil.showPopUp('' + luaToLoad, 'startLuasNamed:');
+
 		if(FileSystem.exists(luaToLoad))
 		#elseif sys
 		var luaToLoad:String = Paths.getPreloadPath(luaFile);
