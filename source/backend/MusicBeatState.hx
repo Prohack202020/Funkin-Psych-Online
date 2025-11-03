@@ -28,6 +28,7 @@ class MusicBeatState extends FlxUIState
 	public var mobilePadCam:FlxCamera;
 	public var hitbox:GlobalHitbox;
 	public var hitbox_hint:FlxSprite;
+	public var hitboxCam:FlxCamera;
 
 	public function addMobilePad(DPad:String, Action:String)
 	{
@@ -54,7 +55,7 @@ class MusicBeatState extends FlxUIState
 		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
 		else hitbox = new Hitbox();
 
-		var hitboxCam:FlxCamera = new FlxCamera();
+		hitboxCam = new FlxCamera();
 		hitboxCam.bgColor.alpha = 0;
 		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
 		hitbox.cameras = [hitboxCam];
@@ -83,6 +84,12 @@ class MusicBeatState extends FlxUIState
 			remove(hitbox_hint);
 			hitbox_hint = FlxDestroyUtil.destroy(hitbox_hint);
 			hitbox_hint = null;
+		}
+
+		if (hitboxCam != null)
+		{
+			FlxG.cameras.remove(hitboxCam);
+			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
 		}
 	}
 

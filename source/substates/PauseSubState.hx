@@ -183,7 +183,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		regenMenu();
 		//cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
-		cameras = [PlayState.instance.camOther];
+		//cameras = [PlayState.instance.camOther];
+		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]]; //mobilePad cameras has a more priority, so use this instead
 
 		addMobilePad(menuItems.contains('Skip Time') ? 'FULL' : 'UP_DOWN', 'A_B');
 		addMobilePadCamera();
