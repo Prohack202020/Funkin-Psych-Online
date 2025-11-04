@@ -1949,6 +1949,12 @@ class PlayState extends MusicBeatState
 			if (mobilePad.buttonP != null)
 				button.deadZones.push(mobilePad.buttonP);
 		});
+		
+		if (ClientPrefs.data.VSliceControl) VSliceControls = true;
+		if (VSliceControls) {
+			enableVSliceControls(0);
+			enableVSliceControls(1);
+		}
 	}
 
 	public var VSliceControls:Bool = false;
@@ -1975,12 +1981,6 @@ class PlayState extends MusicBeatState
 			}
 			if (!GameClient.isConnected())
 				generateStrums();
-
-			if (ClientPrefs.data.VSliceControl) VSliceControls = true;
-			if (VSliceControls) {
-				enableVSliceControls(0);
-				enableVSliceControls(1);
-			}
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
@@ -2082,11 +2082,6 @@ class PlayState extends MusicBeatState
 		//I took this from PsychEngine's discord server and make it to work with HScript Improved (.hsc), now I'm using it on source code 😂
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
-		for (i in 0...unspawnNotes.length)
-		{
-			if (!unspawnNotes[i].mustPress)
-				unspawnNotes[i].visible = false;
-		}
 		var strumGroup = player == 1 ? playerStrums : opponentStrums;
 		for (i in 0...4) {
 			if (!isPlayerStrumNote(player))
@@ -3277,6 +3272,15 @@ class PlayState extends MusicBeatState
 
 		if (Conductor.songPosition >= FlxG.sound.music.length) {
 			finishSong();
+		}
+
+		if (VSliceControls)
+		{
+			for (i in 0...unspawnNotes.length)
+			{
+				if (!unspawnNotes[i].mustPress && unspawnNotes[i].visible)
+					unspawnNotes[i].visible = false;
+			}
 		}
 	}
 
