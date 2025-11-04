@@ -2097,7 +2097,7 @@ class PlayState extends MusicBeatState
 		//use More Resulation Friendly one
 		reloadControls("V Slice");
 		hitbox.cameras = [camHUD];
-		hitbox.alpha = 0;
+		hitbox.visible = false;
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
@@ -6396,15 +6396,31 @@ class PlayState extends MusicBeatState
 	//Lua Stuff for Mobile Controls
 	public function reloadControls(?mode:String)
 	{
+		hitbox.forEachAlive((button) ->
+		{
+			button.deadZones = [];
+		});
 		removeMobileControls();
 		addMobileControls(mode);
+		hitbox.onButtonDown.add(onButtonPress);
+		hitbox.onButtonUp.add(onButtonRelease);
 	}
 
 	public function addControls(?mode:String)
+	{
 		addMobileControls(mode);
+		hitbox.onButtonDown.add(onButtonPress);
+		hitbox.onButtonUp.add(onButtonRelease);
+	}
 
 	public function removeControls()
+	{
+		hitbox.forEachAlive((button) ->
+		{
+			button.deadZones = [];
+		});
 		removeMobileControls();
+	}
 }
 
 @:publicFields
