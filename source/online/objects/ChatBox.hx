@@ -241,12 +241,7 @@ class ChatBox extends FlxTypedSpriteGroup<FlxSprite> {
 
 		super.update(elapsed);
 
-		var buttonC_Pressed:Bool = false;
-		try {
-			buttonC_Pressed = (MusicBeatState.getState().mobilePad.buttonC != null && MusicBeatState.getState().mobilePad.buttonC.justPressed) ? true : false;
-		} catch (e:Dynamic) {}
-
-		if (buttonC_Pressed || FlxG.keys.justPressed.TAB) {
+		if (MusicBeatState.getState().touchPad?.buttonC?.justPressed == true || FlxG.keys.justPressed.TAB) {
 			focused = !focused;
 			#if !android FlxG.stage.window.textInputEnabled = focused; #end
 		}

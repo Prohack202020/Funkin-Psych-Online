@@ -36,28 +36,26 @@ class LeavePie extends FlxTypedSpriteGroup<FlxSprite> {
 	override function update(elapsed) {
 		super.update(elapsed);
 
-		try {
-			if ((Std.isOfType(getState(), states.PlayState) && getState().mobilePad.buttonP.pressed) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
-				exitTip.alpha = 1;
-				pieDial.amount += elapsed * 2;
-				pieDial.visible = true;
-				if (!finished && pieDial.amount >= 1.0) {
-					finished = true;
+		if ((Std.isOfType(getState(), states.PlayState) && getState().touchPad?.buttonP?.pressed == true) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
+			exitTip.alpha = 1;
+			pieDial.amount += elapsed * 2;
+			pieDial.visible = true;
+			if (!finished && pieDial.amount >= 1.0) {
+				finished = true;
 
-					if (FlxG.state is PlayState)
-						if (FlxG.keys.pressed.F1)
-							GameClient.leaveRoom();
-						else
-							GameClient.send("requestEndSong");
-					else
+				if (FlxG.state is PlayState)
+					if (FlxG.keys.pressed.F1)
 						GameClient.leaveRoom();
-				}
+					else
+						GameClient.send("requestEndSong");
+				else
+					GameClient.leaveRoom();
 			}
-			else {
-				pieDial.amount -= elapsed * 6;
-				exitTip.alpha -= elapsed;
-			}
-		} catch(e:Dynamic) {}
+		}
+		else {
+			pieDial.amount -= elapsed * 6;
+			exitTip.alpha -= elapsed;
+		}
 
 		if (pieDial.amount <= 0.03) {
 			pieDial.visible = false;

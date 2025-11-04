@@ -120,6 +120,17 @@ class ReplayRecorder extends FlxBasic {
 			trace("Tried to init replay recorder for mobile pad but failed.");
 		}
 
+		var mobilePad:MobilePad = state.controls.requestedInstance.mobilePad;
+		if(mobilePad != null)
+		{
+			mobilePad.onButtonDown.add((button:MobilePad, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
+			mobilePad.onButtonUp.add((button:MobilePad, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
+		}
+		else
+		{
+			trace("Tried to init replay recorder for mobile pad but failed.");
+		}
+
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
@@ -193,6 +204,8 @@ class ReplayRecorder extends FlxBasic {
 		if (IDs == null || IDs.length < 0)
 			return;
 
+		FunkinLua.trace('buttonIDs: ${IDs}', true, false, FlxColor.YELLOW);
+
 		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
 		{
 			switch(IDs[0])
@@ -207,13 +220,17 @@ class ReplayRecorder extends FlxBasic {
 			return;
 		}
 
+		FunkinLua.trace('Test', true, false, FlxColor.YELLOW);
+
 		for (id in IDs)
 		{
 			var idName:String = id.toString().toLowerCase();
+			FunkinLua.trace('idName: ${idName}', true, false, FlxColor.YELLOW);
 
 			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
 				continue;
 
+			FunkinLua.trace('[${time}, ${idName}, ${move}]', true, false, FlxColor.YELLOW);
 			data.inputs.push([time, idName, move]);
 		}
 	}
