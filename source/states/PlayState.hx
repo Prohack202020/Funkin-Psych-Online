@@ -2095,9 +2095,10 @@ class PlayState extends MusicBeatState
 			opponentStrums.members[i].scale.y = opponentStrums.members[i].scale.y / 1.75;
 		}
 		//use More Resulation Friendly one
-		PlayState.instance.reloadControls("V Slice"); //I'm lazy to write removeMobileControls, so I'll keep it the same
-		hitbox.cameras = [camHUD]; //Visual Fix (Honestly not needed because you can't see hitboxes)
-		hitbox.visible = false; //hides the hitbox (better visuality, bitch)
+		reloadControls("V Slice");
+		hitbox.cameras = [camHUD];
+		hitbox.alpha = 0;
+		hitbox.parentAlpha = 0;
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
