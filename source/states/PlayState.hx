@@ -2098,7 +2098,6 @@ class PlayState extends MusicBeatState
 		reloadControls("V Slice");
 		hitbox.cameras = [camHUD];
 		hitbox.alpha = 0;
-		hitbox.parentAlpha = 0;
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
