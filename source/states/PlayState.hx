@@ -1977,7 +1977,10 @@ class PlayState extends MusicBeatState
 				generateStrums();
 
 			if (ClientPrefs.data.VSliceControl) VSliceControls = true;
-			if (VSliceControls) enableVSliceControls();
+			if (VSliceControls) {
+				enableVSliceControls(0);
+				enableVSliceControls(1);
+			}
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
@@ -2075,7 +2078,7 @@ class PlayState extends MusicBeatState
 	}
 
 	/* V-Slice Mobile Controls */
-	public function enableVSliceControls() {
+	public function enableVSliceControls(player:Int) {
 		//I took this from PsychEngine's discord server and make it to work with HScript Improved (.hsc), now I'm using it on source code 😂
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
@@ -2084,15 +2087,21 @@ class PlayState extends MusicBeatState
 			if (!unspawnNotes[i].mustPress)
 				unspawnNotes[i].visible = false;
 		}
+		var strumGroup = player == 1 ? playerStrums : opponentStrums;
 		for (i in 0...4) {
-			opponentStrums.members[i].y = 40;
-			//playerStrums.members[i].y = 550;
-			opponentStrums.members[i].x = 10 + (i * 65);
-			playerStrums.members[i].screenCenter(X);
-			playerStrums.members[i].x += playerNotePositionsFixed[i];
-			playerNotePositionsFixedStatic[i] = Std.int(playerStrums.members[i].x) - 20;
-			opponentStrums.members[i].scale.x = opponentStrums.members[i].scale.x / 1.75;
-			opponentStrums.members[i].scale.y = opponentStrums.members[i].scale.y / 1.75;
+			if (!isPlayerStrumNote(player))
+			{
+				strumGroup.members[i].y = 40;
+				strumGroup.members[i].x = 10 + (i * 65);
+				strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
+				strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
+			}
+			else
+			{
+				strumGroup.members[i].screenCenter(X);
+				strumGroup.members[i].x += playerNotePositionsFixed[i];
+				playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
+			}
 		}
 		//use More Resulation Friendly one
 		reloadControls("V Slice");
