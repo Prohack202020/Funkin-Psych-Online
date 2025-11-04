@@ -1,5 +1,6 @@
 package online.replay;
 
+import psychlua.FunkinLua;
 import objects.Note;
 import states.FreeplayState;
 import mobile.input.MobileInputID;
@@ -114,17 +115,6 @@ class ReplayRecorder extends FlxBasic {
 		{
 			mobilePad.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			mobilePad.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
-		}
-		else
-		{
-			trace("Tried to init replay recorder for mobile pad but failed.");
-		}
-
-		var mobilePad:MobilePad = state.controls.requestedInstance.mobilePad;
-		if(mobilePad != null)
-		{
-			mobilePad.onButtonDown.add((button:MobilePad, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
-			mobilePad.onButtonUp.add((button:MobilePad, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
 		}
 		else
 		{
