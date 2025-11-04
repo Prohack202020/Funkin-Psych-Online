@@ -57,10 +57,10 @@ class Hitbox extends GlobalHitbox
 		}
 
 		if ((ClientPrefs.data.hitboxmode == 'V Slice' && CustomMode == null) || CustomMode == 'V Slice'){
-			add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99));
-			add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF));
-			add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05));
-			add(buttonRight = createHint(PlayState.playerNotePositionsFixedStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F));
+			add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
+			add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
+			add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
+			add(buttonRight = createHint(PlayState.playerNotePositionsFixedStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
 		}
 		else if ((ClientPrefs.data.hitboxmode != 'Classic' && CustomMode == null) || CustomMode != null){
 			var Custom:String = CustomMode != null ? CustomMode : ClientPrefs.data.hitboxmode;
