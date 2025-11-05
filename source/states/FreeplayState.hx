@@ -1140,17 +1140,16 @@ class FreeplayState extends MusicBeatState
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");
 
-							#if mobile
-							var fileDialog = new FileDialog();
-							fileDialog.onSelect.add(res -> {
-								playReplay(cast(res, Bytes).toString());
-							});
-							fileDialog.browse(OPEN, 'funkinreplay');
-							#else
-							var fileDialog = new FileDialog();
+							var fileDialog = new filemanager.FileDialogCustom();
 							fileDialog.onOpen.add(res -> {
 								playReplay(cast(res, Bytes).toString());
 							});
+							#if mobile
+							if (ClientPrefs.data.debugMode)
+								fileDialog.openFile('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
+							else
+								fileDialog.openFile('funkinreplay');
+							#else
 							fileDialog.open('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
 							#end
 						}
