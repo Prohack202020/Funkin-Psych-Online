@@ -6,7 +6,8 @@ import lime.utils.Resource;
 import openfl.net.FileFilter;
 
 /**
- * A custom FileDialog functions for easier usability
+ * A class that converts FileDialog requests to FileReference.
+ * for some unknown reason, using FileDialog directly causes a crash.
  * mostly used for mobile devices
  * Author: KralOyuncu 2010x
 */
@@ -17,6 +18,7 @@ class FileDialogCustom
 	function new() {}
 
 	public function open(filter:String = null):Bool
+	{
 		var fileDialog:FileReference;
 
 		var jsonFilter:FileFilter = new FileFilter(filter, filter);
