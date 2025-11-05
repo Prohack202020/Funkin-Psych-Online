@@ -2082,23 +2082,29 @@ class PlayState extends MusicBeatState
 		//I took this from PsychEngine's discord server and make it to work with HScript Improved (.hsc), now I'm using it on source code 😂
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
+
+		/* Actual Code */
 		var strumGroup = player == 1 ? playerStrums : opponentStrums;
+		for (i in 0...unspawnNotes.length)
+		{
+			if (!unspawnNotes[i].mustPress)
+				unspawnNotes[i].visible = false;
+		}
 		for (i in 0...4) {
-			if (!isPlayerStrumNote(player))
+			if (isPlayerStrumNote(player))
+			{
+				strumGroup.members[i].screenCenter(X);
+				strumGroup.members[i].x += playerNotePositionsFixed[i];
+				playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
+			}
+			else
 			{
 				strumGroup.members[i].y = 40;
 				strumGroup.members[i].x = 10 + (i * 65);
 				strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
 				strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
 			}
-			else
-			{
-				strumGroup.members[i].screenCenter(X);
-				strumGroup.members[i].x += playerNotePositionsFixed[i];
-				playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
-			}
 		}
-		//use More Resulation Friendly one
 		reloadControls("V Slice");
 		hitbox.cameras = [camHUD];
 		hitbox.visible = false;
@@ -3272,15 +3278,6 @@ class PlayState extends MusicBeatState
 
 		if (Conductor.songPosition >= FlxG.sound.music.length) {
 			finishSong();
-		}
-
-		if (VSliceControls)
-		{
-			for (i in 0...unspawnNotes.length)
-			{
-				if (!unspawnNotes[i].mustPress && unspawnNotes[i].visible)
-					unspawnNotes[i].visible = false;
-			}
 		}
 	}
 
