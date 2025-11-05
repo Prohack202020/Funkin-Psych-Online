@@ -54,12 +54,11 @@ class ReplayRecorder extends FlxBasic {
 	var controllerIds:Map<FlxGamepadInputID, Array<String>> = [];
 
 	public function new(state:PlayState) {
-        super();
+		super();
 
 		trace("Recording a replay...");
-		FunkinLua.trace('Recording a replay...', true, false, FlxColor.YELLOW);
 
-        this.state = state;
+		this.state = state;
 
 		data.player = ClientPrefs.getNickname();
 		data.song = PlayState.SONG.song;
@@ -75,8 +74,6 @@ class ReplayRecorder extends FlxBasic {
 
 		data.chart_hash = Md5.encode(PlayState.RAW_SONG);
 
-		FunkinLua.trace('trace 2', true, false, FlxColor.YELLOW);
-
 		for (id => binds in state.controls.keyboardBinds) {
 			if (binds != null)
 				for (bind in binds) {
@@ -89,8 +86,6 @@ class ReplayRecorder extends FlxBasic {
 				}
 		}
 
-		FunkinLua.trace('trace 3', true, false, FlxColor.YELLOW);
-
 		for (id => binds in state.controls.gamepadBinds) {
 			for (bind in binds) {
 				if (REGISTER_BINDS.contains(id)) {
@@ -102,36 +97,36 @@ class ReplayRecorder extends FlxBasic {
 			}
 		}
 
-		FunkinLua.trace('trace 4', true, false, FlxColor.YELLOW);
-
 		state.add(this);
 
-		FunkinLua.trace('trace 5', true, false, FlxColor.YELLOW);
+		FunkinLua.trace('Enabling replay recorder for mobile controls', true, false, FlxColor.YELLOW);
 
-		var hitbox:Hitbox = state.controls.requestedHitbox;
+		var hitbox:GlobalHitbox = state.hitbox;
 		if(hitbox != null)
 		{
-			FunkinLua.trace('trace 5.5', true, false, FlxColor.YELLOW);
+			FunkinLua.trace('Hitbox found, hitbox recording', true, false, FlxColor.YELLOW);
 			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
-			FunkinLua.trace('trace 5.5.1', true, false, FlxColor.YELLOW);
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile controls but failed.");
+			FunkinLua.trace('Tried to init replay recorder for mobile controls but failed.', true, false, FlxColor.YELLOW);
 		}
 
-		FunkinLua.trace('trace 6', true, false, FlxColor.YELLOW);
+		FunkinLua.trace('trying to record mobile pad', true, false, FlxColor.YELLOW);
 
-		var mobilePad:MobilePad = state.controls.requestedInstance.mobilePad;
+		var mobilePad:MobilePad = state.mobilePad;
 		if(mobilePad != null)
 		{
+			FunkinLua.trace('Hitbox found, mobile pad recording', true, false, FlxColor.YELLOW);
 			mobilePad.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			mobilePad.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile pad but failed.");
+			FunkinLua.trace('Tried to init replay recorder for mobile pad but failed.', true, false, FlxColor.YELLOW);
 		}
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
