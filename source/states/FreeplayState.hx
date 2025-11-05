@@ -1136,23 +1136,29 @@ class FreeplayState extends MusicBeatState
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:
+						#if mobile
 						if (!GameClient.isConnected()) {
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");
 
-							var fileDialog = new filemanager.FileDialogCustom();
+							var fileDialog:filemanager.FileDialogCustom = new filemanager.FileDialogCustom();
 							fileDialog.onOpen.add(res -> {
 								playReplay(cast(res, Bytes).toString());
 							});
-							#if mobile
-							if (ClientPrefs.data.debugMode)
-								fileDialog.openFile('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
-							else
-								fileDialog.openFile('funkinreplay');
-							#else
-							fileDialog.open('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
-							#end
+							fileDialog.open('funkinreplay');
 						}
+						#else
+						if (!GameClient.isConnected()) {
+							if (!FileSystem.exists("replays/"))
+								FileSystem.createDirectory("replays/");
+
+							var fileDialog = new FileDialog();
+							fileDialog.onOpen.add(res -> {
+								playReplay(cast(res, Bytes).toString());
+							});
+							fileDialog.open('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
+						}
+						#end
 					case 3:
 						persistentUpdate = false;
 						openSubState(new ResetScoreSubState(getSongName(), curDifficulty, songs[curSelected].songCharacter));

@@ -1,17 +1,40 @@
 package filemanager;
 
+import openfl.net.FileReference;
+import openfl.events.Event;
+import lime.utils.Resource;
+import openfl.net.FileFilter;
+
 /**
  * A custom FileDialog functions for easier usability
  * mostly used for mobile devices
  * Author: KralOyuncu 2010x
 */
-class FileDialogCustom extends lime.ui.FileDialog
+class FileDialogCustom
 {
-	public function openFile(filter:String = null, defaultPath:String = null, title:String = null):Bool
+	public var onOpen = new Event<Resource->Void>();
+
+	function new() {}
+
+	public function open(filter:String = null):Bool
+		var fileDialog:FileReference;
+
+		var jsonFilter:FileFilter = new FileFilter(filter, filter);
+		fileDialog = new FileReference();
+		fileDialog.addEventListener(Event.SELECT, onLoadComplete);
+		fileDialog.browse([jsonFilter]);
+	}
+
+	private static function onLoadComplete(_):Void
 	{
-		onSelect.add(path -> {
-			onOpen.dispatch(sys.io.File.getBytes(path));
-		});
-		return browse(OPEN, filter, defaultPath, title); //use retun for getting true & false
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+
+		#if sys
+		var fullPath:String = null;
+		@:privateAccess
+		if(_file.__path != null) fullPath = _file.__path;
+
+		if(fullPath != null) onOpen.dispatch(sys.io.File.getBytes(fullPath));
+		#end
 	}
 }
