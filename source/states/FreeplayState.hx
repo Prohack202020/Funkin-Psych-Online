@@ -1141,7 +1141,7 @@ class FreeplayState extends MusicBeatState
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");
 
-							var fileDialog:filemanager.FileDialogCustom;
+							var fileDialog:filemanager.FileDialogCustom = new filemanager.FileDialogCustom();
 							fileDialog.onOpen.add(res -> {
 								playReplay(cast(res, Bytes).toString());
 							});

@@ -15,6 +15,8 @@ class FileDialogCustom
 {
 	public var onOpen = new lime.app.Event<Resource->Void>();
 
+	public function new() {}
+
 	var fileDialog:FileReference;
 	public function open(filter:String = null):Void
 	{
