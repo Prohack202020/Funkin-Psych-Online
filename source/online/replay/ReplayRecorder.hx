@@ -99,34 +99,26 @@ class ReplayRecorder extends FlxBasic {
 
 		state.add(this);
 
-		FunkinLua.trace('Enabling replay recorder for mobile controls', true, false, FlxColor.YELLOW);
-
 		var hitbox:GlobalHitbox = state.hitbox;
 		if(hitbox != null)
 		{
-			FunkinLua.trace('Hitbox found, hitbox recording', true, false, FlxColor.YELLOW);
 			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile controls but failed.");
-			FunkinLua.trace('Tried to init replay recorder for mobile controls but failed.', true, false, FlxColor.YELLOW);
 		}
-
-		FunkinLua.trace('trying to record mobile pad', true, false, FlxColor.YELLOW);
 
 		var mobilePad:MobilePad = state.mobilePad;
 		if(mobilePad != null)
 		{
-			FunkinLua.trace('Hitbox found, mobile pad recording', true, false, FlxColor.YELLOW);
 			mobilePad.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			mobilePad.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile pad but failed.");
-			FunkinLua.trace('Tried to init replay recorder for mobile pad but failed.', true, false, FlxColor.YELLOW);
 		}
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -202,8 +194,6 @@ class ReplayRecorder extends FlxBasic {
 		if (IDs == null || IDs.length < 0)
 			return;
 
-		FunkinLua.trace('buttonIDs: ${IDs}', true, false, FlxColor.YELLOW);
-
 		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
 		{
 			switch(IDs[0])
@@ -218,17 +208,13 @@ class ReplayRecorder extends FlxBasic {
 			return;
 		}
 
-		FunkinLua.trace('Test', true, false, FlxColor.YELLOW);
-
 		for (id in IDs)
 		{
 			var idName:String = id.toString().toLowerCase();
-			FunkinLua.trace('idName: ${idName}', true, false, FlxColor.YELLOW);
 
 			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
 				continue;
 
-			FunkinLua.trace('[${time}, ${idName}, ${move}]', true, false, FlxColor.YELLOW);
 			data.inputs.push([time, idName, move]);
 		}
 	}

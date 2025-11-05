@@ -859,13 +859,6 @@ class FreeplayState extends MusicBeatState
 			searchString = searchString;
 		}
 
-		#if mobile
-		if (searchInputWait && !FlxG.stage.window.textInputEnabled) //maybe can fix search problem
-		{
-			searchInputWait = false;
-		}
-		#end
-
 		var shiftMult:Int = 1;
 		if(mobilePad.buttonZ.pressed || FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
@@ -1147,11 +1140,19 @@ class FreeplayState extends MusicBeatState
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");
 
+							#if mobile
+							var fileDialog = new FileDialog();
+							fileDialog.onSelect.add(res -> {
+								playReplay(cast(res, Bytes).toString());
+							});
+							fileDialog.browse(OPEN, 'funkinreplay');
+							#else
 							var fileDialog = new FileDialog();
 							fileDialog.onOpen.add(res -> {
 								playReplay(cast(res, Bytes).toString());
 							});
 							fileDialog.open('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
+							#end
 						}
 					case 3:
 						persistentUpdate = false;
