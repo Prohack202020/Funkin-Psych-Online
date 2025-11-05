@@ -2,6 +2,7 @@ package filemanager;
 
 import openfl.net.FileReference;
 import openfl.events.Event;
+import lime.app.Event as LimeEvent;
 import lime.utils.Resource;
 import openfl.net.FileFilter;
 
@@ -13,9 +14,7 @@ import openfl.net.FileFilter;
 */
 class FileDialogCustom
 {
-	public var onOpen = new Event<Resource->Void>();
-
-	function new() {}
+	public var onOpen = new LimeEvent<Resource->Void>();
 
 	public function open(filter:String = null):Bool
 	{
