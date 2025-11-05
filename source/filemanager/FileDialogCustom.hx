@@ -15,24 +15,23 @@ class FileDialogCustom
 {
 	public var onOpen = new lime.app.Event<Resource->Void>();
 
-	public function open(filter:String = null):Bool
+	var fileDialog:FileReference;
+	public function open(filter:String = null):Void
 	{
-		var fileDialog:FileReference;
-
 		var jsonFilter:FileFilter = new FileFilter(filter, filter);
 		fileDialog = new FileReference();
 		fileDialog.addEventListener(Event.SELECT, onLoadComplete);
 		fileDialog.browse([jsonFilter]);
 	}
 
-	private static function onLoadComplete(_):Void
+	private function onLoadComplete(_):Void
 	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		fileDialog.removeEventListener(Event.SELECT, onLoadComplete);
 
 		#if sys
 		var fullPath:String = null;
 		@:privateAccess
-		if(_file.__path != null) fullPath = _file.__path;
+		if(fileDialog.__path != null) fullPath = fileDialog.__path;
 
 		if(fullPath != null) onOpen.dispatch(sys.io.File.getBytes(fullPath));
 		#end
