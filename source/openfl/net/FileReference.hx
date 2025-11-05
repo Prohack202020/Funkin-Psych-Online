@@ -26,6 +26,8 @@ import js.html.InputElement;
 import js.Browser;
 #end
 
+using StringTools;
+
 /**
 	The FileReference class provides a means to upload and download files
 	between a user's computer and a server. An operating-system dialog box
