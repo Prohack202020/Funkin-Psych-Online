@@ -1136,18 +1136,7 @@ class FreeplayState extends MusicBeatState
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:
-						#if mobile
-						if (!GameClient.isConnected()) {
-							if (!FileSystem.exists("replays/"))
-								FileSystem.createDirectory("replays/");
-
-							var fileDialog:filemanager.FileDialogCustom = new filemanager.FileDialogCustom();
-							fileDialog.onOpen.add(res -> {
-								playReplay(cast(res, Bytes).toString());
-							});
-							fileDialog.open('funkinreplay');
-						}
-						#else
+						#if !mobile
 						if (!GameClient.isConnected()) {
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");

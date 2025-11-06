@@ -20,7 +20,7 @@ class FileDialogCustom
 	var fileDialog:FileReference;
 	public function open(filter:String = null):Void
 	{
-		var jsonFilter:FileFilter = new FileFilter(filter, filter);
+		var jsonFilter:FileFilter = new FileFilter("Nothing", filter);
 		fileDialog = new FileReference();
 		fileDialog.addEventListener(Event.SELECT, onLoadComplete);
 		fileDialog.browse([jsonFilter]);

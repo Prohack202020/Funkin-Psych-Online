@@ -97,5 +97,7 @@ import android.os.Build.VERSION as AndroidVersion;
 import android.os.Build.VERSION_CODES as AndroidVersionCode;
 #end
 
+import filemanager.FileDialogCustom;
+
 using StringTools;
 #end
