@@ -100,7 +100,6 @@ class HScript extends SScript
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
-		set('FileDialogCustom', filemanager.FileDialogCustom); //add this thing directly
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic)

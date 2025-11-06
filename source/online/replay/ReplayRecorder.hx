@@ -219,7 +219,41 @@ class ReplayRecorder extends FlxBasic {
 		}
 	}
 
-    public function save():Float {
+	public function update() {
+		var hitbox:GlobalHitbox = state.hitbox;
+		if(hitbox != null)
+		{
+			var onButtonDown = (button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0);
+			var onButtonUp = (button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1);
+
+			if (!hitbox.onButtonDown.contains(onButtonDown))
+				hitbox.onButtonDown.add(onButtonDown);
+			if (!hitbox.onButtonUp.contains(onButtonUp))
+				hitbox.onButtonUp.add(onButtonUp);
+		}
+		else
+		{
+			trace("Tried to init replay recorder for mobile controls but failed.");
+		}
+
+		var mobilePad:MobilePad = state.mobilePad;
+		if(mobilePad != null)
+		{
+			var onButtonDown = (button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0);
+			var onButtonUp = (button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1);
+
+			if (!mobilePad.onButtonDown.contains(onButtonDown))
+				mobilePad.onButtonDown.add(onButtonDown);
+			if (!mobilePad.onButtonUp.contains(onButtonUp))
+				mobilePad.onButtonUp.add(onButtonUp);
+		}
+		else
+		{
+			trace("Tried to init replay recorder for mobile pad but failed.");
+		}
+	}
+
+	public function save():Float {
 		if (!FileSystem.exists("replays/"))
 			FileSystem.createDirectory("replays/");
 
