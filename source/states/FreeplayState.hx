@@ -1136,7 +1136,6 @@ class FreeplayState extends MusicBeatState
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:
-						#if !mobile
 						if (!GameClient.isConnected()) {
 							if (!FileSystem.exists("replays/"))
 								FileSystem.createDirectory("replays/");
@@ -1147,7 +1146,6 @@ class FreeplayState extends MusicBeatState
 							});
 							fileDialog.open('funkinreplay', online.util.FileUtils.joinNativePath([Sys.getCwd(), "replays", "_"]), "Load Replay File");
 						}
-						#end
 					case 3:
 						persistentUpdate = false;
 						openSubState(new ResetScoreSubState(getSongName(), curDifficulty, songs[curSelected].songCharacter));
