@@ -15,8 +15,9 @@ class ButtonMacro {
 
 		for (i in 1...extraButtons + 1) {
 			var buttonName = 'buttonExtra$i';
+			var buttonID = 'EXTRA_$i';
 			var buttonType = macro :MobileButton;
-			var buttonExpr = macro new MobileButton(0, 0);
+			var buttonExpr = macro new MobileButton(0, 0, [MobileInputID.$buttonID]);
 
 			fields.push({
 				name: buttonName,
@@ -47,6 +48,26 @@ class ButtonMacro {
 			});
 		}
 		
+		return fields;
+	}
+
+	public static macro function createExtraButtonIDs(extraButtons:Int, startFromValue:Int):Array<Field> {
+		var fields = Context.getBuildFields();
+		var currentValue = startFromValue;
+
+		for (i in 1...extraButtons + 1) {
+			var buttonName = 'EXTRA_$i';
+			var buttonExpr = macro $v{currentValue};
+
+			fields.push({
+				name: buttonName,
+				access: [APublic],
+				kind: FVar(null, buttonExpr),
+				pos: Context.currentPos()
+			});
+			currentValue++;
+		}
+
 		return fields;
 	}
 }
