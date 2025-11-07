@@ -129,7 +129,7 @@ class ReplayRecorder extends FlxBasic {
 		super.update(elapsed);
 
 		//get Variables on update bc I wanna check them
-		var hitbox:GlobalHitbox = state.hitbox;
+		var hitbox:Hitbox = state.hitbox;
 		var mobilePad:MobilePad = state.mobilePad;
 
 		//Null Check

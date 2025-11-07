@@ -17,17 +17,8 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-/**
- * Interface can't see MobileInputManager's variables, so use class instead
- */
-class GlobalHitbox extends MobileInputManager
-{
-	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
-	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
-}
-
 @:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 30 is enough
-class Hitbox extends GlobalHitbox
+class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
@@ -38,6 +29,8 @@ class Hitbox extends GlobalHitbox
 	public var extraKey3 = ClientPrefs.data.extraKeyReturn3.toUpperCase();
 	public var extraKey4 = ClientPrefs.data.extraKeyReturn4.toUpperCase();
 
+	public var onButtonDown:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
+	public var onButtonUp:FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void> = new FlxTypedSignal<(MobileButton, Array<MobileInputID>) -> Void>();
 	public var instance:MobileInputManager;
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
