@@ -1936,7 +1936,7 @@ class PlayState extends MusicBeatState
 		addMobileControls();
 		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
 		addMobilePadCamera();
-		if (replayData != null && !GameClient.isConnected()) {
+		if (replayData == null) {
 			hitbox.onButtonDown.add(onButtonPress);
 			hitbox.onButtonUp.add(onButtonRelease);
 		}
@@ -6414,8 +6414,19 @@ class PlayState extends MusicBeatState
 		});
 		removeMobileControls();
 		addMobileControls(mode);
-		hitbox.onButtonDown.add(onButtonPress);
-		hitbox.onButtonUp.add(onButtonRelease);
+		if (replayData == null) {
+			hitbox.onButtonDown.add(onButtonPress);
+			hitbox.onButtonUp.add(onButtonRelease);
+		}
+		hitbox.forEachAlive((button) ->
+		{
+			if (mobilePad.buttonT != null)
+				button.deadZones.push(mobilePad.buttonT);
+			if (mobilePad.buttonC != null)
+				button.deadZones.push(mobilePad.buttonC);
+			if (mobilePad.buttonP != null)
+				button.deadZones.push(mobilePad.buttonP);
+		});
 	}
 
 	public function addControls(?mode:String)
