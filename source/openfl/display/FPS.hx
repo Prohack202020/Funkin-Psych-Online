@@ -102,7 +102,7 @@ class FPS extends TextField
 			
 			#if cpp
 			text += '\nRAM: ${flixel.util.FlxStringUtil.formatBytes(cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE))}';
-			text += '\nPsych Online ' + PSYCH_ONLINE_VERSION;
+			text += '\nPsych Online ' + Main.PSYCH_ONLINE_VERSION;
 			#end
 
 			#if !HACKER
