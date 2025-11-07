@@ -366,17 +366,6 @@ class ExtraFunctions
 				}
 			}
 		}
-
-		if (alter) {
-			for (num in 1...9){
-				if (ClientPrefs.data.extraKeys >= num && key == Reflect.field(ClientPrefs.data, 'extraKeyReturn' + num)){
-					extraControl = Reflect.getProperty(MusicBeatState.getState().hitbox, 'buttonExtra' + num);
-					if (Reflect.getProperty(extraControl, type)) {
-						return true;
-					}
-				}
-			}
-		}
 		return false;
 	}
 }

@@ -200,9 +200,32 @@ class ReplayRecorder extends FlxBasic {
 			switch(IDs[0])
 			{
 				case EXTRA_1:
-					data.inputs.push([time, 'KEY:SPACE', move]);
+					if (state.hitbox.buttonExtra1 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra1.returnedButton.toUpperCase(), move]);
 				case EXTRA_2:
-					data.inputs.push([time, 'KEY:SHIFT', move]);
+					if (state.hitbox.buttonExtra2 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra2.returnedButton.toUpperCase(), move]);
+				case EXTRA_3:
+					if (state.hitbox.buttonExtra3 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra3.returnedButton.toUpperCase(), move]);
+				case EXTRA_4:
+					if (state.hitbox.buttonExtra4 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra4.returnedButton.toUpperCase(), move]);
+				case EXTRA_5:
+					if (state.hitbox.buttonExtra5 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra5.returnedButton.toUpperCase(), move]);
+				case EXTRA_6:
+					if (state.hitbox.buttonExtra6 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra6.returnedButton.toUpperCase(), move]);
+				case EXTRA_7:
+					if (state.hitbox.buttonExtra7 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra7.returnedButton.toUpperCase(), move]);
+				case EXTRA_8:
+					if (state.hitbox.buttonExtra8 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra8.returnedButton.toUpperCase(), move]);
+				case EXTRA_9:
+					if (state.hitbox.buttonExtra9 != null)
+						data.inputs.push([time, 'KEY:' + state.hitbox.buttonExtra9.returnedButton.toUpperCase(), move]);
 				default:
 					// nothing
 			}

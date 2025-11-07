@@ -168,6 +168,13 @@ class Hitbox extends GlobalHitbox
 				else if(buttonData.extraKeyMode == null)
 					addButton = true;
 
+				//If buttons doesn't have a customReturn, set it from ClientPrefs
+				for (i in 1...10) {
+					var buttonString = 'buttonExtra${i}';
+					if (buttonData.button == buttonString && customReturn == null)
+						customReturn = Reflect.getProperty(ClientPrefs.data, 'extraKeyReturn${i}');
+				}
+
 				if (addButton) {
 					Reflect.setField(this, buttonData.button,
 						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button));
