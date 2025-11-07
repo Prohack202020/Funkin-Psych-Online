@@ -1335,11 +1335,6 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		//Add Mobile Controls in there, because otherwise RePlay Recorder can't see them
-		addMobileControls();
-		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
-		addMobilePadCamera();
-
 		preloadTasks.push(() -> {
 			if (replayData != null && !GameClient.isConnected()) {
 				add(replayPlayer = new ReplayPlayer(this, replayData));
@@ -1938,8 +1933,13 @@ class PlayState extends MusicBeatState
 			// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 		}
 
-		hitbox.onButtonDown.add(onButtonPress);
-		hitbox.onButtonUp.add(onButtonRelease);
+		addMobileControls();
+		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
+		addMobilePadCamera();
+		if (replayData != null && !GameClient.isConnected()) {
+			hitbox.onButtonDown.add(onButtonPress);
+			hitbox.onButtonUp.add(onButtonRelease);
+		}
 		if (replayData == null && !cpuControlled)
 			hitbox.visible = true;
 		hitbox.forEachAlive((button) ->
@@ -6416,15 +6416,6 @@ class PlayState extends MusicBeatState
 		addMobileControls(mode);
 		hitbox.onButtonDown.add(onButtonPress);
 		hitbox.onButtonUp.add(onButtonRelease);
-		hitbox.forEachAlive((button) ->
-		{
-			if (mobilePad.buttonT != null)
-				button.deadZones.push(mobilePad.buttonT);
-			if (mobilePad.buttonC != null)
-				button.deadZones.push(mobilePad.buttonC);
-			if (mobilePad.buttonP != null)
-				button.deadZones.push(mobilePad.buttonP);
-		});
 	}
 
 	public function addControls(?mode:String)
