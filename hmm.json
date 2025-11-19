@@ -107,9 +107,8 @@
     },
     {
       "name": "lumod",
-      "type": "git",
-      "ref": "main",
-      "url": "https://github.com/Prohack202020/Lumod-Fixes"
+      "type": "haxelib",
+      "version": "2.1.0"
     },
     {
       "name": "actuate",
