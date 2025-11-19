@@ -90,6 +90,14 @@ typedef CustomHitboxData =
 	double:Array<HitboxData>,
 	triple:Array<HitboxData>,
 	quad:Array<HitboxData>,
+	mania1:Array<HitboxData>,
+	mania2:Array<HitboxData>,
+	mania3:Array<HitboxData>,
+	mania5:Array<HitboxData>,
+	mania6:Array<HitboxData>,
+	mania7:Array<HitboxData>,
+	mania8:Array<HitboxData>,
+	mania9:Array<HitboxData>,
 	test:Array<HitboxData>
 }
 

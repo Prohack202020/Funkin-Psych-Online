@@ -28,6 +28,7 @@ class Hitbox extends MobileInputManager
 	public var buttonKey6:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_6]);
 	public var buttonKey7:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_7]);
 	public var buttonKey8:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_8]);
+	public var buttonKey9:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_9]);
 	public var extraKey1 = ClientPrefs.data.extraKeyReturn1.toUpperCase();
 	public var extraKey2 = ClientPrefs.data.extraKeyReturn2.toUpperCase();
 	public var extraKey3 = ClientPrefs.data.extraKeyReturn3.toUpperCase();
