@@ -18,8 +18,9 @@
     },
     {
       "name": "flixel",
-      "type": "haxelib",
-      "version": "5.6.2"
+      "type": "git",
+      "ref": "c0b31efd85f3a3b75c337b83cd0ad9afc8a44894",
+      "url": "https://github.com/HaxeFlixel/flixel"
     },
     {
       "name": "flixel-addons",
