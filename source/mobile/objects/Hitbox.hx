@@ -1,9 +1,6 @@
 package mobile.objects;
 
-#if hscript
-import hscript.Parser;
-import hscript.Interp;
-#end
+import objects.Note;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
@@ -24,6 +21,11 @@ class Hitbox extends MobileInputManager
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
 	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_RIGHT, MobileInputID.NOTE_RIGHT]);
+	public var buttonNote5:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_5]);
+	public var buttonNote6:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_6]);
+	public var buttonNote7:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_7]);
+	public var buttonNote8:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_8]);
+	public var buttonNote9:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_9]);
 	public var extraKey1 = ClientPrefs.data.extraKeyReturn1.toUpperCase();
 	public var extraKey2 = ClientPrefs.data.extraKeyReturn2.toUpperCase();
 	public var extraKey3 = ClientPrefs.data.extraKeyReturn3.toUpperCase();
