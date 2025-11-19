@@ -8,13 +8,13 @@ import openfl.display.Shape;
 import openfl.geom.Matrix;
 
 /**
- * A zone with 34 hint's (A hitbox).
+ * A zone with 19 hint's (A hitbox).
  * It's really easy to customize the layout.
  *
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-@:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 30 is enough
+@:build(mobile.macros.ButtonMacro.createExtraButtons(10)) //I think 30 is enough
 class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
