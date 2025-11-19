@@ -1835,11 +1835,8 @@ class ChartingState extends MusicBeatState
 
 		if (!blockInput)
 		{
-<<<<<<< HEAD
-			if (FlxG.keys.justPressed.ESCAPE || mobilePad.buttonC.justPressed)
-=======
+			if ((FlxG.keys.justPressed.ESCAPE || mobilePad.buttonC.justPressed) && false)
 			if (FlxG.keys.justPressed.ESCAPE && false)
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 			{
 				FlxG.sound.music.pause();
 				for (v in [vocals, opponentVocals]) {

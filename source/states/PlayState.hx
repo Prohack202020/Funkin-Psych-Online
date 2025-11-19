@@ -2440,30 +2440,6 @@ class PlayState extends MusicBeatState
 
 		var isPsychRelease = (songData.format ?? '').startsWith('psych_v1');
 
-<<<<<<< HEAD
-		for (section in noteData)
-		{
-			/* I think this shit brokes the things
-			haxe.ds.ArraySort.sort(section.sectionNotes, function(a, b):Int {
-				if (a == null || b == null) {
-					return 0;
-				}
-				return a[0] - b[0];
-			});
-			*/
-			
-			for (songNotes in section.sectionNotes)
-			{
-				var daStrumTime:Float = songNotes[0];
-				if (daStrumTime > inst.length)
-					continue;
-				var daNoteData:Int = Std.int(songNotes[1] % 4);
-				var maniaKeys:Int = 4;
-				// switch (SONG.mania) {
-				// 	case 1, 5, 6: // 6k
-				// 		maniaKeys = 6;
-				// 		daNoteData = Std.int(songNotes[1] % maniaKeys);
-=======
 		Song.updateManiaKeys(SONG);
 
 		if (maniaModifier == Note.maniaKeys) {
@@ -2503,7 +2479,6 @@ class PlayState extends MusicBeatState
 		
 		// MULTIKEY NOTES CONVERSION ALGO!!!
 		// also shoutouts to bromaster
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 
 		if (maniaModifier != null) {
 			function scaleKeyToNew(noteData:Int):Int {

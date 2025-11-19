@@ -298,13 +298,9 @@ class OnlineOptionsState extends MusicBeatState {
 			sezOption.ID = i++;
 
 			var sidebarOption:InputOption;
-<<<<<<< HEAD
-			items.add(sidebarOption = new InputOption("Open Sidebar", "Open the Network Sidebar" + ((!controls.mobileControls) ? ", if you aren't able to.\n(Press " + InputFormatter.getKeyName(cast(ClientPrefs.keyBinds.get('sidebar')[0], FlxKey)) + " to open it at any time!)" : "")));
-=======
-			items.add(sidebarOption = new InputOption("Open Sidebar", "Open the Network Sidebar, if you aren't able to.\n(Press " + InputFormatter.getKeyName(cast(ClientPrefs.keyBinds.get('sidebar')[0], FlxKey)) + " to open it at any time!)", null, () -> {
+			items.add(sidebarOption = new InputOption("Open Sidebar", "Open the Network Sidebar" + ((!controls.mobileControls) ? ", if you aren't able to.\n(Press " + InputFormatter.getKeyName(cast(ClientPrefs.keyBinds.get('sidebar')[0], FlxKey)) + " to open it at any time!)" : ""), null, () -> {
 				online.gui.sidebar.SideUI.instance.active = true;
 			}));
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 			sidebarOption.y = sezOption.y + sezOption.height + 50;
 			sidebarOption.screenCenter(X);
 			sidebarOption.ID = i++;

@@ -50,10 +50,6 @@ class TopPlayerSubstate extends MusicBeatSubstate {
 		leaderboardTimer = new FlxTimer().start(0.5, t -> { generateLeaderboard(); });
 		add(topShit);
 
-<<<<<<< HEAD
-		addMobilePad('FULL', 'A_B');
-		controls.isInSubstate = true;
-=======
 		categoryTxt = new FlxText(0, 20);
 		categoryTxt.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(categoryTxt);
@@ -61,7 +57,9 @@ class TopPlayerSubstate extends MusicBeatSubstate {
 		keysTxt = new FlxText(0, 50);
 		keysTxt.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(keysTxt);
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
+
+		addMobilePad('FULL', 'A_B');
+		controls.isInSubstate = true;
     }
 
     var top:Array<Dynamic> = [];

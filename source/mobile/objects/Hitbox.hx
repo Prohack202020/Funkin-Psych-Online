@@ -24,6 +24,10 @@ class Hitbox extends MobileInputManager
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
 	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_RIGHT, MobileInputID.NOTE_RIGHT]);
+	public var buttonKey5:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_5]);
+	public var buttonKey6:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_6]);
+	public var buttonKey7:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_7]);
+	public var buttonKey8:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_8]);
 	public var extraKey1 = ClientPrefs.data.extraKeyReturn1.toUpperCase();
 	public var extraKey2 = ClientPrefs.data.extraKeyReturn2.toUpperCase();
 	public var extraKey3 = ClientPrefs.data.extraKeyReturn3.toUpperCase();
@@ -73,6 +77,22 @@ class Hitbox extends MobileInputManager
 				currentHint = MobileData.hitboxModes.get(Custom).quad;
 			if (ClientPrefs.data.extraKeys != 0 && MobileData.hitboxModes.get(Custom).test != null)
 				currentHint = MobileData.hitboxModes.get(Custom).test;
+			if (Note.maniaKeys == 1 && MobileData.hitboxModes.get(Custom).mania1 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania1;
+			if (Note.maniaKeys == 2 && MobileData.hitboxModes.get(Custom).mania2 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania2;
+			if (Note.maniaKeys == 3 && MobileData.hitboxModes.get(Custom).mania3 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania3;
+			if (Note.maniaKeys == 5 && MobileData.hitboxModes.get(Custom).mania5 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania5;
+			if (Note.maniaKeys == 6 && MobileData.hitboxModes.get(Custom).mania6 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania6;
+			if (Note.maniaKeys == 7 && MobileData.hitboxModes.get(Custom).mania7 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania7;
+			if (Note.maniaKeys == 8 && MobileData.hitboxModes.get(Custom).mania8 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania8;
+			if (Note.maniaKeys == 9 && MobileData.hitboxModes.get(Custom).mania9 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania9;
 
 			for (buttonData in currentHint)
 			{

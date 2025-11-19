@@ -1,9 +1,6 @@
 package online.replay;
 
-<<<<<<< HEAD
 import psychlua.FunkinLua;
-=======
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 import objects.Note;
 import states.FreeplayState;
 import mobile.input.MobileInputID;
@@ -86,11 +83,8 @@ class ReplayRecorder extends FlxBasic {
 		data.rating_offset = ClientPrefs.data.ratingOffset;
 		data.safe_frames = ClientPrefs.data.safeFrames;
 		data.mod_url = OnlineMods.getModURL(Mods.currentModDirectory);
-<<<<<<< HEAD
 
-=======
 		data.keys = Note.maniaKeys;
->>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 		data.chart_hash = Md5.encode(PlayState.RAW_SONG);
 
 		REGISTER_BINDS = genRegisterBinds();
