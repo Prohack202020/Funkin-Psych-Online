@@ -18,10 +18,8 @@
     },
     {
       "name": "flixel",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/FNF-SE/flixel"
+      "type": "haxelib",
+      "version": "5.8.0"
     },
     {
       "name": "flixel-addons",
@@ -109,9 +107,8 @@
     },
     {
       "name": "lumod",
-      "type": "git",
-      "ref": "main",
-      "url": "https://github.com/Prohack202020/Lumod-Fixes"
+      "type": "haxelib",
+      "version": "2.1.0"
     },
     {
       "name": "actuate",
@@ -161,11 +158,6 @@
       "dir": null,
       "ref": "1966f8fbbbc509ed90d4b520f3c49c084fc92fd6",
       "url": "https://github.com/FunkinCrew/funkVis"
-    },
-    {
-      "name": "extension-androidtools",
-      "type": "haxelib",
-      "version": "2.2.2"
     }
   ]
 }
