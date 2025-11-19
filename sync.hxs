@@ -6,7 +6,7 @@ function init() { // initializes the game
 }
 
 function switchState(state) { // game state gets switched
-    
+
 }
 
 function openSubState(substate) { // game substate gets opened

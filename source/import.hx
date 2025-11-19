@@ -98,4 +98,5 @@ import android.os.Build.VERSION_CODES as AndroidVersionCode;
 #end
 
 using StringTools;
+using ArrayTools;
 #end

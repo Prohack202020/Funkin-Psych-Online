@@ -149,6 +149,7 @@ class CoolUtil
 		return haxArr;
 	}
 
+<<<<<<< HEAD
 	public static function showPopUp(message:String, title:String):Void
 	{
 		#if android
@@ -166,5 +167,14 @@ class CoolUtil
 	public static function getCPUThreadsCount():Int
 	{
 		return 1;
+=======
+	public static function to2DArrayfrom1D<T>(array1D:Array<T>, every:Int):Array<Array<T>> {
+		var arr2D:Array<Array<T>> = [];
+		for (i => part in array1D) {
+			arr2D[Std.int(i / every)] ??= [];
+			arr2D[Std.int(i / every)].push(part);
+		}
+		return arr2D;
+>>>>>>> 6d320d34793cbb791cf739c6dc567970cca5c8fc
 	}
 }

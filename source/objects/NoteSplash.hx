@@ -44,8 +44,14 @@ class NoteSplash extends FlxSprite
 	}
 
 	var maxAnims:Int = 2;
+	var regularColArray:Array<String>;
 	public function setupNoteSplash(x:Float, y:Float, direction:Int = 0, ?note:Note = null) {
-		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
+		direction = Note.colToIndex(Note.getColArrayFromKeys(true)[direction % Note.maniaKeys]);
+
+		regularColArray = Note.getColArrayFromKeys(true);
+
+		setPosition(x - Note.swagScaledWidth * 0.95, y - Note.swagScaledWidth);
+		setGraphicSize(Std.int(width * Note.noteScale));
 		aliveTime = 0;
 
 		var texture:String = null;
@@ -91,7 +97,7 @@ class NoteSplash extends FlxSprite
 		var maxFps:Int = 26;
 		if(config != null)
 		{
-			var animID:Int = direction + ((animNum - 1) * Note.colArray.length);
+			var animID:Int = direction + ((animNum - 1) * regularColArray.length);
 			//trace('anim: ${animation.curAnim.name}, $animID');
 			var offs:Array<Float> = config.offsets[FlxMath.wrap(animID, 0, config.offsets.length-1)];
 			offset.x += offs[0];
@@ -104,6 +110,9 @@ class NoteSplash extends FlxSprite
 			offset.x += -58;
 			offset.y += -55;
 		}
+
+		offset.x *= Note.noteScale;
+		offset.y *= Note.noteScale;
 
 		if(animation.curAnim != null)
 			animation.curAnim.frameRate = FlxG.random.int(minFps, maxFps);
@@ -139,8 +148,8 @@ class NoteSplash extends FlxSprite
 
 		while(true) {
 			var animID:Int = maxAnims + 1;
-			for (i in 0...Note.colArray.length) {
-				if (!addAnimAndCheck('note$i-$animID', '$animName ${Note.colArray[i]} $animID', 24, false)) {
+			for (i in 0...regularColArray.length) {
+				if (!addAnimAndCheck('note$i-$animID', '$animName ${regularColArray[i]} $animID', 24, false)) {
 					//trace('maxAnims: $maxAnims');
 					return config;
 				}

@@ -20,7 +20,7 @@ class NotesSubState extends MusicBeatSubstate
 	public static var isOpened:Bool = false;
 
 	var onModeColumn:Bool = true;
-	var curSelectedMode:Int = 0;
+	var curSelectedMode(default, set):Int = 0;
 	var curSelectedNote:Int = 0;
 	var onPixel:Bool = false;
 	var dataArray:Array<Array<FlxColor>>;
@@ -43,6 +43,7 @@ class NotesSubState extends MusicBeatSubstate
 	var alphabetB:Alphabet;
 	var alphabetHex:Alphabet;
 
+	var pickersBG:FlxSprite;
 	var modeBG:FlxSprite;
 	var notesBG:FlxSprite;
 
@@ -78,15 +79,15 @@ class NotesSubState extends MusicBeatSubstate
 		notesBG.alpha = 0.4;
 		add(notesBG);
 
-		modeNotes = new FlxTypedGroup<FlxSprite>();
+		modeNotes = new FlxTypedSpriteGroup<FlxSprite>();
 		add(modeNotes);
 
 		myNotes = new FlxTypedGroup<StrumNote>();
 		add(myNotes);
 
-		var bg:FlxSprite = new FlxSprite(720).makeGraphic(FlxG.width - 720, FlxG.height, FlxColor.BLACK);
-		bg.alpha = 0.25;
-		add(bg);
+		pickersBG = new FlxSprite(720).makeGraphic(FlxG.width - 720, FlxG.height, FlxColor.BLACK);
+		pickersBG.alpha = 0.25;
+		add(pickersBG);
 		var bg:FlxSprite = new FlxSprite(750, 160).makeGraphic(FlxG.width - 780, 540, FlxColor.BLACK);
 		bg.alpha = 0.25;
 		add(bg);
@@ -201,7 +202,7 @@ class NotesSubState extends MusicBeatSubstate
 	override function update(elapsed:Float) {
 		if (controls.BACK) {
 			if (GameClient.isConnected()) {
-				GameClient.send('updateArrColors', [ClientPrefs.data.arrowRGB, ClientPrefs.data.arrowRGBPixel]);
+				GameClient.send('updateArrColors', ClientPrefs.getArrowRGBCompleteMaps());
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			isOpened = controls.isInSubstate = false;
@@ -489,11 +490,11 @@ class NotesSubState extends MusicBeatSubstate
 		{
 			if(FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER))
 			{
-				for (i in 0...3)
+				for (i in 0...Note.maniaKeys)
 				{
 					var strumRGB:RGBShaderReference = myNotes.members[curSelectedNote].rgbShader;
-					var color:FlxColor = !onPixel ? ClientPrefs.defaultData.arrowRGB[curSelectedNote][i] :
-													ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][i];
+					var color:FlxColor = !onPixel ? ClientPrefs.getRGBColorDefault()[curSelectedNote][i] :
+													ClientPrefs.getRGBColorDefault('pixel')[curSelectedNote][i];
 					switch(i)
 					{
 						case 0:
@@ -506,7 +507,7 @@ class NotesSubState extends MusicBeatSubstate
 					dataArray[curSelectedNote][i] = color;
 				}
 			}
-			setShaderColor(!onPixel ? ClientPrefs.defaultData.arrowRGB[curSelectedNote][curSelectedMode] : ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][curSelectedMode]);
+			setShaderColor(!onPixel ? ClientPrefs.getRGBColorDefault()[curSelectedNote][curSelectedMode] : ClientPrefs.getRGBColorDefault('pixel')[curSelectedNote][curSelectedMode]);
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.6);
 			updateColors();
 		}
@@ -557,12 +558,25 @@ class NotesSubState extends MusicBeatSubstate
 		hexTypeVisibleTimer = 0;
 	}
 
+	function set_curSelectedMode(v:Int) {
+		if (v == 3) {
+			var maniaKeysList = ['4k', '5k', '6k', '7k', '8k', '9k'];
+			openSubState(new online.substates.SoFunkinSubstate(['4k', '5k', '6k', '7k', '8k', '9k'], maniaKeysList.indexOf(Note.maniaKeys + 'k'), (i) -> {
+				Note.maniaKeys = Std.parseInt(maniaKeysList[i].split('k')[0]);
+				spawnNotes();
+				updateNotes(true);
+				return true;
+			}));
+		}
+		if (v < 0)
+			v = 2;
+		if (v >= 3)
+			v = 0;
+		return curSelectedMode = v;
+	}
+
 	function changeSelectionMode(change:Int = 0) {
 		curSelectedMode += change;
-		if (curSelectedMode < 0)
-			curSelectedMode = 2;
-		if (curSelectedMode >= 3)
-			curSelectedMode = 0;
 
 		modeBG.visible = true;
 		notesBG.visible = false;
@@ -596,12 +610,13 @@ class NotesSubState extends MusicBeatSubstate
 
 	// notes sprites functions
 	var skinNote:FlxSprite;
-	var modeNotes:FlxTypedGroup<FlxSprite>;
+	var modeNotes:FlxTypedSpriteGroup<FlxSprite>;
 	var myNotes:FlxTypedGroup<StrumNote>;
 	var bigNote:Note;
+	var maniaTxt:FlxText;
 	public function spawnNotes()
 	{
-		dataArray = !onPixel ? ClientPrefs.data.arrowRGB : ClientPrefs.data.arrowRGBPixel;
+		dataArray = !onPixel ? ClientPrefs.getRGBColor(-1) : ClientPrefs.getRGBPixelColor(-1);
 		if (onPixel) PlayState.stageUI = "pixel";
 
 		// clear groups
@@ -616,15 +631,11 @@ class NotesSubState extends MusicBeatSubstate
 		modeNotes.clear();
 		myNotes.clear();
 
-		if(skinNote != null)
-		{
-			remove(skinNote);
-			skinNote.destroy();
-		}
-		if(bigNote != null)
-		{
-			remove(bigNote);
-			bigNote.destroy();
+		for (obj in [skinNote, bigNote, maniaTxt]) {
+			if (obj != null) {
+				remove(obj);
+				obj.destroy();
+			}
 		}
 
 		// respawn stuff
@@ -639,29 +650,42 @@ class NotesSubState extends MusicBeatSubstate
 		add(skinNote);
 
 		var res:Int = !onPixel ? 160 : 17;
-		for (i in 0...3)
+		for (i in 0...4)
 		{
-			var newNote:FlxSprite = new FlxSprite(230 + (100 * i), 100).loadGraphic(Paths.image('noteColorMenu/' + (!onPixel ? 'note' : 'notePixel')), true, res, res);
+			var newNote:FlxSprite = new FlxSprite(0, 100).loadGraphic(Paths.image('noteColorMenu/' + (!onPixel ? 'note' : 'notePixel')), true, res, res);
 			newNote.antialiasing = ClientPrefs.data.antialiasing;
 			newNote.setGraphicSize(85);
 			newNote.updateHitbox();
+			// newNote.x = 
+			newNote.x += i * 100;
 			newNote.animation.add('anim', [i], 24, true);
 			newNote.animation.play('anim', true);
 			newNote.ID = i;
 			if(onPixel) newNote.antialiasing = false;
+			if (i == 3) {
+				maniaTxt = new FlxText(0, 0, newNote.width);
+				maniaTxt.text = '${Note.maniaKeys}k';
+				maniaTxt.setFormat('Pixel Arial 11 Bold', 20, FlxColor.WHITE, CENTER);
+				maniaTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+				add(maniaTxt);
+			}
 			modeNotes.add(newNote);
 		}
+
+		modeNotes.x = (pickersBG.x - modeNotes.width) / 2;
+		maniaTxt.x = modeNotes.members[3].x;
+		maniaTxt.y = modeNotes.members[3].y + modeNotes.members[3].height / 2 - maniaTxt.height / 2;
 
 		Note.globalRgbShaders = [];
 		for (i in 0...dataArray.length)
 		{
 			Note.initializeGlobalRGBShader(i, true);
-			var newNote:StrumNote = new StrumNote(150 + (480 / dataArray.length * i), 200, i, 0);
+			var newNote:StrumNote = new StrumNote(0, 200, i, 0);
+			newNote.x = (pickersBG.x - Note.maniaKeys * Note.swagScaledWidth) / 2 + (Note.getNoteOffsetX() * (Note.maniaKeys - 1)) * 0.5;
 			newNote.useRGBShader = true;
-			newNote.setGraphicSize(102);
-			newNote.updateHitbox();
 			newNote.ID = i;
 			myNotes.add(newNote);
+			newNote.postAddedToGroup();
 		}
 
 		bigNote = new Note(0, 0, false, true);

@@ -1,5 +1,6 @@
 package backend;
 
+import objects.Note;
 import tjson.TJSON as Json;
 import lime.utils.Assets;
 
@@ -35,7 +36,8 @@ typedef SwagSong =
 	@:optional var splashSkin:String;
 
 	//MOD SPECIFIC
-	@:optional var mania:Int;
+	@:optional var mania:Null<Int>;
+	@:optional var keyCount:Null<Int>;
 
 	//psych engine 1.0
 	@:optional var format:String;
@@ -217,10 +219,40 @@ class Song
 				player2: "",
 				gfVersion: "",
 				stage: "",
-				format: 'psych_v1'
+				format: 'psych_legacy'
 			};
 		}
 
 		throw new haxe.Exception("No song data found, or is invalid.");
+	}
+
+	public static function updateManiaKeys(songData:SwagSong):Int {
+		var keys = null;
+
+		if (songData.mania != null)
+			if ((songData.format ?? '').startsWith('psych_v1') || (songData.splashSkin != null)) {
+				keys = songData.mania + 1;
+			}
+			else {
+				switch (songData.mania) {
+					case 0: // 4k
+						keys = 4;
+					case 4: // 5k
+						keys = 5;
+					case 1, 5, 6: // 6k
+						keys = 6;
+					case 2, 7: // 7k
+						keys = 7;
+					case 3, 8: // 9k
+						keys = 9;
+					default:
+						keys = songData.mania;
+				}
+			}
+
+		if (keys == null && songData.keyCount != null)
+			keys = songData.keyCount;
+
+		return Note.maniaKeys = keys ?? 4;
 	}
 }

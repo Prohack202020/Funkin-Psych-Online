@@ -32,8 +32,13 @@ class SustainSplash extends FlxSprite {
 		super.update(elapsed);
 
 		if (strumNote != null && animation != null && strumNote.animation != null) {
-			setPosition(strumNote.x, strumNote.y);
-			visible = strumNote.visible;
+			if (online.backend.SyncScript.dispatch('testSusSplashUpdate', [this]) == null) {
+				x = strumNote.x - (Note.swagWidth - Note.swagScaledWidth);
+				y = strumNote.y - (Note.swagWidth - Note.swagScaledWidth);
+				setPosition(x - Note.swagScaledWidth * 0.95, y - Note.swagScaledWidth);
+			}
+			//TODO sustain splash for more keys
+			visible = Note.maniaKeys == 4 && strumNote.visible;
 			alpha = ClientPrefs.data.holdSplashAlpha - (1 - strumNote.alpha);
 
 			if (animation.curAnim != null && strumNote.animation.curAnim != null && animation.curAnim.name == "hold" && strumNote.animation.curAnim.name == "static") {
@@ -52,6 +57,10 @@ class SustainSplash extends FlxSprite {
 
 		if (animation == null)
 			return;
+
+		if (online.backend.SyncScript.dispatch('testSusSplash', [this]) == null) {
+			setGraphicSize(Std.int(width * Note.noteScale));
+		}
 
 		animation.play('hold', true, false, 0);
 		if (animation.curAnim != null) {
@@ -77,7 +86,9 @@ class SustainSplash extends FlxSprite {
 
 		strumNote = strum;
 		alpha = ClientPrefs.data.holdSplashAlpha - (1 - strumNote.alpha);
-		offset.set(PlayState.isPixelStage ? 112.5 : 106.25, 100);
+		offset.set(PlayState.isPixelStage ? 10 : 0, -15);
+		offset.x *= Note.noteScale;
+		offset.y *= Note.noteScale;
 
 		if (timer != null)
 			timer.cancel();

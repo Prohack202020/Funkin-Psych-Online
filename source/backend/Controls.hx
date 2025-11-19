@@ -96,7 +96,7 @@ class Controls
 	public var mobileBinds:Map<String, Array<MobileInputID>>;
 	public function justPressed(key:String)
 	{
-		if (moodyBlues != null && ReplayRecorder.REGISTER_BINDS.contains(key)) {
+		if (moodyBlues != null && moodyBlues.ALLOWED_BINDS.contains(key)) {
 			return moodyBlues.pressedKeys.get(key) == JUST_PRESSED;
 		}
 
@@ -112,7 +112,7 @@ class Controls
 
 	public function pressed(key:String)
 	{
-		if (moodyBlues != null && ReplayRecorder.REGISTER_BINDS.contains(key)) {
+		if (moodyBlues != null && moodyBlues.ALLOWED_BINDS.contains(key)) {
 			var status = moodyBlues.pressedKeys.get(key);
 			return status == PRESSED || status == JUST_PRESSED;
 		}
@@ -129,7 +129,7 @@ class Controls
 
 	public function justReleased(key:String)
 	{
-		if (moodyBlues != null && ReplayRecorder.REGISTER_BINDS.contains(key)) {
+		if (moodyBlues != null && moodyBlues.ALLOWED_BINDS.contains(key)) {
 			var status = moodyBlues.pressedKeys.get(key);
 			return status == JUST_RELEASED;
 		}

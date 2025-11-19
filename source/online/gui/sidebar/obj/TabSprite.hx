@@ -49,7 +49,14 @@ class TabSprite extends Sprite {
 	}
 	function create():Void {}
 	function init():Void {}
-	function onShow():Void {}
+	function onShow():Void {
+		if (scrollRect != null) {
+			var rect = scrollRect;
+			rect.x = 0;
+			rect.y = 0;
+			scrollRect = rect;
+		}
+	}
 	function onRemove():Void {}
 	function onHide():Void {};
 

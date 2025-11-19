@@ -19,12 +19,15 @@ class SideUI extends WSprite {
 	public static final DEFAULT_TAB_WIDTH:Int = 400;
 
 	public var initTabs:Array<Class<TabSprite>> = [
+		NotificationsTab,
+		ProfileTab,
 		FriendsTab,
 		ChatTab,
-		ProfileTab,
+		// TODO 
 		// DownloaderTab,
 		// ReportTab,
-		// OptionsTab,
+		// ServerTab
+		// DebugTab
 	];
 
 	public var tabUI:Sprite;
@@ -152,8 +155,14 @@ class SideUI extends WSprite {
 				// }
 			}
 			
-			if (active)
+			if (active) {
 				curTab.keyDown(e);
+
+				if (e.keyCode == Keyboard.F1) {
+					trace("reloading syncscript!");
+					online.backend.SyncScript.initScript();
+				}
+			}
 		});
 		stage.addEventListener(MouseEvent.MOUSE_MOVE, (e:MouseEvent) -> {
 			cursor.x = e.stageX;
