@@ -1,3 +1,4 @@
-#if !hscript
-import mobile.hscript.*; //Import this if project doesn't have HScript (Not Tested)
+// Engine Imports Here
+#if !macro
+import objects.Note;
 #end
