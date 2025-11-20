@@ -5072,6 +5072,7 @@ class PlayState extends MusicBeatState
 
 						if (!released)
 							goodNoteHit(n);
+					}
 				}
 			}
 
