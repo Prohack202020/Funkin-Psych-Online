@@ -14,7 +14,7 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-@:build(mobile.macros.ButtonMacro.createExtraButtons(9000)) //I think 10 is enough
+@:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 10 is enough
 class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_1, MobileInputID.NOTE_1]);

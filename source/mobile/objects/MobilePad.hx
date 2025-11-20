@@ -8,7 +8,7 @@ import openfl.utils.Assets;
 
 //More button support (Some buttons doesn't have a texture)
 @:build(mobile.macros.ButtonMacro.createButtons(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","Q","R","S","T","U","V","W","X","Y","Z","TAUNT"]))
-@:build(mobile.macros.ButtonMacro.createExtraButtons(10)) //Mobile Pad Allows to Create 10 Extra Button with Json for now
+@:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //Mobile Pad Allows to Create 10 Extra Button with Json for now
 
 @:access(mobile.objects.MobileButton)
 class MobilePad extends MobileInputManager {
