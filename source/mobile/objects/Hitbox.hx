@@ -14,18 +14,18 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-@:build(mobile.macros.ButtonMacro.createExtraButtons(10)) //I think 30 is enough
+@:build(mobile.macros.ButtonMacro.createExtraButtons(10)) //I think 10 is enough
 class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
 	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
 	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_RIGHT, MobileInputID.NOTE_RIGHT]);
-	public var buttonNote5:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_5]);
-	public var buttonNote6:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_6]);
-	public var buttonNote7:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_7]);
-	public var buttonNote8:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_8]);
-	public var buttonNote9:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_9]);
+	public var buttonNote5:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_5, MobileInputID.NOTE_5]);
+	public var buttonNote6:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_6, MobileInputID.NOTE_6]);
+	public var buttonNote7:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_7, MobileInputID.NOTE_7]);
+	public var buttonNote8:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_8, MobileInputID.NOTE_8]);
+	public var buttonNote9:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_9, MobileInputID.NOTE_9]);
 	public var extraKey1 = ClientPrefs.data.extraKeyReturn1.toUpperCase();
 	public var extraKey2 = ClientPrefs.data.extraKeyReturn2.toUpperCase();
 	public var extraKey3 = ClientPrefs.data.extraKeyReturn3.toUpperCase();
@@ -77,12 +77,6 @@ class Hitbox extends MobileInputManager
 				currentHint = MobileData.hitboxModes.get(Custom).test;
 
 			//Extra Key Stuff
-			if (Note.maniaKeys == 1 && MobileData.hitboxModes.get(Custom).mania1 != null)
-				currentHint = MobileData.hitboxModes.get(Custom).mania1;
-			if (Note.maniaKeys == 2 && MobileData.hitboxModes.get(Custom).mania2 != null)
-				currentHint = MobileData.hitboxModes.get(Custom).mania2;
-			if (Note.maniaKeys == 3 && MobileData.hitboxModes.get(Custom).mania3 != null)
-				currentHint = MobileData.hitboxModes.get(Custom).mania3;
 			if (Note.maniaKeys == 5 && MobileData.hitboxModes.get(Custom).mania5 != null)
 				currentHint = MobileData.hitboxModes.get(Custom).mania5;
 			if (Note.maniaKeys == 6 && MobileData.hitboxModes.get(Custom).mania6 != null)
