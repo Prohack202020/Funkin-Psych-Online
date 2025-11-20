@@ -16,10 +16,10 @@ enum abstract MobileInputID(Int) from Int to Int {
 	var ANY = -2;
 	var NONE = -1;
 	// Notes
-	var NOTE_LEFT = 0;
-	var NOTE_DOWN = 1;
-	var NOTE_UP = 2;
-	var NOTE_RIGHT = 3;
+	var NOTE_1 = 0;
+	var NOTE_2 = 1;
+	var NOTE_3 = 2;
+	var NOTE_4 = 3;
 	var NOTE_5 = 4;
 	var NOTE_6 = 5;
 	var NOTE_7 = 6;
@@ -62,10 +62,10 @@ enum abstract MobileInputID(Int) from Int to Int {
 	var RIGHT = 41;
 	var RIGHT2 = 42;
 	// Hitbox Hints (Not Needed, removing them doesn't change anything on my port)
-	var HITBOX_UP = 43;
-	var HITBOX_DOWN = 44;
-	var HITBOX_LEFT = 45;
-	var HITBOX_RIGHT = 46;
+	var HITBOX_NOTE_1 = 43;
+	var HITBOX_NOTE_2 = 44;
+	var HITBOX_NOTE_3 = 45;
+	var HITBOX_NOTE_4 = 46;
 	var HITBOX_NOTE_5 = 47;
 	var HITBOX_NOTE_6 = 48;
 	var HITBOX_NOTE_7 = 49;

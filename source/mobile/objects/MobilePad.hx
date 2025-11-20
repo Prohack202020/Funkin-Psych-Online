@@ -13,16 +13,16 @@ import openfl.utils.Assets;
 @:access(mobile.objects.MobileButton)
 class MobilePad extends MobileInputManager {
 	//DPad
-	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.LEFT, MobileInputID.NOTE_LEFT]);
-	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.UP, MobileInputID.NOTE_UP]);
-	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.RIGHT, MobileInputID.NOTE_RIGHT]);
-	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.DOWN, MobileInputID.NOTE_DOWN]);
+	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.LEFT, MobileInputID.NOTE_1]);
+	public var buttonDown:MobileButton = new MobileButton(0, 0, [MobileInputID.DOWN, MobileInputID.NOTE_2]);
+	public var buttonUp:MobileButton = new MobileButton(0, 0, [MobileInputID.UP, MobileInputID.NOTE_3]);
+	public var buttonRight:MobileButton = new MobileButton(0, 0, [MobileInputID.RIGHT, MobileInputID.NOTE_4]);
 
 	//PAD DUO MODE
-	public var buttonLeft2:MobileButton = new MobileButton(0, 0, [MobileInputID.LEFT2, MobileInputID.NOTE_LEFT]);
-	public var buttonUp2:MobileButton = new MobileButton(0, 0, [MobileInputID.UP2, MobileInputID.NOTE_UP]);
-	public var buttonRight2:MobileButton = new MobileButton(0, 0, [MobileInputID.RIGHT2, MobileInputID.NOTE_RIGHT]);
-	public var buttonDown2:MobileButton = new MobileButton(0, 0, [MobileInputID.DOWN2, MobileInputID.NOTE_DOWN]);
+	public var buttonLeft2:MobileButton = new MobileButton(0, 0, [MobileInputID.LEFT2, MobileInputID.NOTE_1]);
+	public var buttonDown2:MobileButton = new MobileButton(0, 0, [MobileInputID.DOWN2, MobileInputID.NOTE_2]);
+	public var buttonUp2:MobileButton = new MobileButton(0, 0, [MobileInputID.UP2, MobileInputID.NOTE_3]);
+	public var buttonRight2:MobileButton = new MobileButton(0, 0, [MobileInputID.RIGHT2, MobileInputID.NOTE_4]);
 
 	//These variables is here because macro can't create them as a working one
 	public var buttonP:MobileButton = new MobileButton(0, 0, [MobileInputID.P]);
