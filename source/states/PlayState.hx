@@ -5061,15 +5061,18 @@ class PlayState extends MusicBeatState
 			// rewritten inputs???
 			if(notes.length > 0)
 			{
-				notes.forEachAlive(function(daNote:Note)
-				{
+				//this should fix mobile controls
+				for (n in notes) { // I can't do a filter here, that's kinda awesome
 					// hold note functions
-					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData - 3] && daNote.canBeHit
-					&& isPlayerNote(daNote) && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
-						FunkinLua.trace('hold note correctly called');
-						goodNoteHit(daNote);
-					}
-				});
+					var canHit:Bool = (n != null && !strumsBlocked[n.noteData] && n.canBeHit
+						&& n.mustPress && !n.tooLate && !n.wasGoodHit && !n.blockHit);
+
+					if (canHit && n.isSustainNote) {
+						var released:Bool = !holdArray[n.noteData];
+
+						if (!released)
+							goodNoteHit(n);
+				}
 			}
 
 			self.noteHold = holdArray.contains(true);
