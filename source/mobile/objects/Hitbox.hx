@@ -184,7 +184,7 @@ class Hitbox extends MobileInputManager
 
 				if (addButton) {
 					Reflect.setField(this, buttonData.button,
-						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button));
+						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button, buttonData.tempOneY, buttonData.tempTwoY));
 					add(Reflect.field(this, buttonData.button));
 				}
 			}
@@ -253,104 +253,49 @@ class Hitbox extends MobileInputManager
 		return bitmap;
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String):MobileButton
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String, ?tempOneY:Float = 0, ?tempTwoY:Float = 0):MobileButton
 	{
-		var hint = new MobileButton(X, Y);
-		hint.statusAlphas = [];
-		hint.statusIndicatorType = NONE;
+		var hint:MobileButton = new MobileButton(X, Y);
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
 
+		var hintUp:FlxSprite = null;
+		var hintDown:FlxSprite = null;
 		if (ClientPrefs.data.hitboxhint) {
-			//First Label
-			hint.label = new FlxSprite();
-			hint.labelStatusDiff = ClientPrefs.data.hitboxalpha;
-			hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
-			hint.label.offset.y -= (hint.height - hint.label.height) / 2;
+			//Up Hint
+			hintUp = new FlxSprite();
+			hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hintUp.screenCenter(Y);
+			hintUp.y = tempOneY;
+			hintUp.draw();
 
-			//Second Label
-			hint.secondLabel = new FlxSprite();
-			hint.labelStatusDiff = ClientPrefs.data.hitboxalpha;
-			hint.secondLabel.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
-			hint.secondLabel.offset.y += (hint.height - hint.secondLabel.height) / 2;
-		}
-		if (ClientPrefs.data.hitboxalpha != 0)
-		{
-			var hintTween:FlxTween = null;
-			var hintLaneTween:FlxTween = null;
-			var hintSecondLaneTween:FlxTween = null;
-
-			hint.onDown.callback = function()
-			{
-				onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
-
-				if (hintTween != null)
-					hintTween.cancel();
-
-				if (hintLaneTween != null)
-					hintLaneTween.cancel();
-
-				hintTween = FlxTween.tween(hint, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
-					ease: FlxEase.circInOut,
-					onComplete: (twn:FlxTween) -> hintTween = null
-				});
-
-				if (ClientPrefs.data.hitboxhint) {
-					hintLaneTween = FlxTween.tween(hint.label, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
-						ease: FlxEase.circInOut,
-						onComplete: (twn:FlxTween) -> hintTween = null
-					});
-
-					hintSecondLaneTween = FlxTween.tween(hint.secondLabel, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
-						ease: FlxEase.circInOut,
-						onComplete: (twn:FlxTween) -> hintTween = null
-					});
-				}
-			}
-
-			hint.onOut.callback = hint.onUp.callback = function()
-			{
-				onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
-
-				if (hintTween != null)
-					hintTween.cancel();
-
-				if (hintLaneTween != null)
-					hintLaneTween.cancel();
-
-				if (hintSecondLaneTween != null)
-					hintSecondLaneTween.cancel();
-
-				hintTween = FlxTween.tween(hint, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
-					ease: FlxEase.circInOut,
-					onComplete: (twn:FlxTween) -> hintTween = null
-				});
-
-				if (ClientPrefs.data.hitboxhint) {
-					hintLaneTween = FlxTween.tween(hint.label, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
-						ease: FlxEase.circInOut,
-						onComplete: (twn:FlxTween) -> hintTween = null
-					});
-
-					hintSecondLaneTween = FlxTween.tween(hint.secondLabel, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
-						ease: FlxEase.circInOut,
-						onComplete: (twn:FlxTween) -> hintTween = null
-					});
-				}
-			}
-		}
-		else
-		{
-			hint.onDown.callback = () -> onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
-			hint.onOut.callback = hint.onUp.callback = () -> onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
+			//Down Hint
+			hintDown = new FlxSprite();
+			hintDown(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hintDown.screenCenter(Y);
+			hintDown.y = tempTwoY;
+			hintDown.draw();
 		}
 
-		hint.immovable = hint.multiTouch = true;
-		hint.solid = hint.moves = false;
+		hint.solid = false;
+		hint.immovable = true;
+		hint.scrollFactor.set();
 		hint.alpha = 0.00001;
-		hint.label.alpha = (ClientPrefs.data.hitboxalpha != 0) ? ClientPrefs.data.hitboxalpha : 0.00001;
-		hint.canChangeLabelAlpha = false;
-		hint.label.antialiasing = hint.antialiasing = ClientPrefs.data.antialiasing;
-		hint.color = Color;
+		hint.onDown.callback = function()
+		{
+			onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
+			if (hint.alpha != ClientPrefs.data.hitboxalpha)
+				hint.alpha = ClientPrefs.data.hitboxalpha;
+			if (hintUp?.alpha != 0.00001 || hintDown?.alpha != 0.00001)
+				hintUp.alpha = hintDown.alpha = 0.00001;
+		}
+		hint.onOut.callback = hint.onUp.callback = function()
+		{
+			onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
+			if (hint.alpha != 0.00001)
+				hint.alpha = 0.00001;
+			if (hintUp?.alpha != ClientPrefs.data.hitboxalpha || hintDown?.alpha != ClientPrefs.data.hitboxalpha)
+				hintUp.alpha = hintDown.alpha = ClientPrefs.data.hitboxalpha;
+		}
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
 		#end

@@ -549,6 +549,9 @@ class PlayState extends MusicBeatState
 		Paths.clearUnusedMemory();
 		Paths.clearStoredMemory();
 
+		//Load Mobile Shit (Makes Testing The Hitboxes Easier)
+		MobileData.init();
+
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();

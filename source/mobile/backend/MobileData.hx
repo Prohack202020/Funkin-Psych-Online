@@ -109,6 +109,8 @@ typedef HitboxData =
 	color:String, // the button color, default color is white.
 	returnKey:String, // the button return, default return is nothing (please don't add custom return if you don't need).
 	extraKeyMode:Null<Int>,
+	tempOneY:Dynamic,
+	tempTwoY:Dynamic,
 	//Top
 	topX:Dynamic,
 	topY:Dynamic,
