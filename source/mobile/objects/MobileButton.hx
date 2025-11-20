@@ -92,6 +92,11 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	public var label(default, set):T;
 
 	/**
+	 * The label that appears on the button. Can be any `FlxSprite`.
+	 */
+	public var secondLabel(default, set):T;
+
+	/**
 	 * What offsets the `label` should have for each status.
 	 */
 	public var labelOffsets:Array<FlxPoint> = [FlxPoint.get(), FlxPoint.get(), FlxPoint.get(0, 1)];
@@ -261,6 +266,7 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	override public function destroy():Void
 	{
 		label = FlxDestroyUtil.destroy(label);
+		secondLabel = FlxDestroyUtil.destroy(secondLabel);
 		_spriteLabel = null;
 
 		onUp = FlxDestroyUtil.destroy(onUp);
@@ -501,6 +507,21 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 		_spriteLabel = label;
 
 		updateLabelPosition();
+
+		return Value;
+	}
+
+	//A second label for creating up and down hints at the same time
+	function set_secondLabel(Value:T):T
+	{
+		if (Value != null)
+		{
+			// use the same FlxPoint object for both
+			Value.scrollFactor.put();
+			Value.scrollFactor = scrollFactor;
+		}
+
+		secondLabel = Value;
 
 		return Value;
 	}

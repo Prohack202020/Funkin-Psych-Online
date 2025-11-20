@@ -215,7 +215,7 @@ class Hitbox extends MobileInputManager
 				Reflect.setField(this, field, FlxDestroyUtil.destroy(Reflect.field(this, field)));
 	}
 
-	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
+	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?isLane:Bool = false):BitmapData
 	{
 		var guh:Float = ClientPrefs.data.hitboxalpha;
 		var shape:Shape = new Shape();
@@ -224,7 +224,10 @@ class Hitbox extends MobileInputManager
 			case "No Gradient":
 				var matrix:Matrix = new Matrix();
 				matrix.createGradientBox(Width, Height, 0, 0, 0);
-				shape.graphics.beginGradientFill(RADIAL, [Color, Color], [0, guh], [60, 255], matrix, PAD, RGB, 0);
+				if (isLane)
+					shape.graphics.beginFill(Color);
+				else
+					shape.graphics.beginGradientFill(RADIAL, [Color, Color], [0, guh], [60, 255], matrix, PAD, RGB, 0);
 				shape.graphics.drawRect(0, 0, Width, Height);
 				shape.graphics.endFill();
 			case "No Gradient (Old)":
@@ -237,7 +240,10 @@ class Hitbox extends MobileInputManager
 				shape.graphics.lineStyle(0, 0, 0);
 				shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
 				shape.graphics.endFill();
-				shape.graphics.beginGradientFill(RADIAL, [Color, FlxColor.TRANSPARENT], [guh, 0], [0, 255], null, null, null, 0.5);
+				if (isLane)
+					shape.graphics.beginFill(Color);
+				else
+					shape.graphics.beginGradientFill(RADIAL, [Color, FlxColor.TRANSPARENT], [guh, 0], [0, 255], null, null, null, 0.5);
 				shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
 				shape.graphics.endFill();
 		}
@@ -249,25 +255,102 @@ class Hitbox extends MobileInputManager
 
 	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String):MobileButton
 	{
-		var hint:MobileButton = new MobileButton(X, Y);
+		var hint = new MobileButton(X, Y);
+		hint.statusAlphas = [];
+		hint.statusIndicatorType = NONE;
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
 
-		hint.solid = false;
-		hint.immovable = true;
-		hint.scrollFactor.set();
+		if (ClientPrefs.data.hitboxhint) {
+			//First Label
+			hint.label = new FlxSprite();
+			hint.labelStatusDiff = ClientPrefs.data.hitboxalpha;
+			hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hint.label.offset.y -= (hint.height - hint.label.height) / 2;
+
+			//Second Label
+			hint.secondLabel = new FlxSprite();
+			hint.labelStatusDiff = ClientPrefs.data.hitboxalpha;
+			hint.secondLabel.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hint.secondLabel.offset.y += (hint.height - hint.secondLabel.height) / 2;
+		}
+		if (ClientPrefs.data.hitboxalpha != 0)
+		{
+			var hintTween:FlxTween = null;
+			var hintLaneTween:FlxTween = null;
+			var hintSecondLaneTween:FlxTween = null;
+
+			hint.onDown.callback = function()
+			{
+				onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
+
+				if (hintTween != null)
+					hintTween.cancel();
+
+				if (hintLaneTween != null)
+					hintLaneTween.cancel();
+
+				hintTween = FlxTween.tween(hint, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
+					ease: FlxEase.circInOut,
+					onComplete: (twn:FlxTween) -> hintTween = null
+				});
+
+				if (ClientPrefs.data.hitboxhint) {
+					hintLaneTween = FlxTween.tween(hint.label, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
+						ease: FlxEase.circInOut,
+						onComplete: (twn:FlxTween) -> hintTween = null
+					});
+
+					hintSecondLaneTween = FlxTween.tween(hint.secondLabel, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
+						ease: FlxEase.circInOut,
+						onComplete: (twn:FlxTween) -> hintTween = null
+					});
+				}
+			}
+
+			hint.onOut.callback = hint.onUp.callback = function()
+			{
+				onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
+
+				if (hintTween != null)
+					hintTween.cancel();
+
+				if (hintLaneTween != null)
+					hintLaneTween.cancel();
+
+				if (hintSecondLaneTween != null)
+					hintSecondLaneTween.cancel();
+
+				hintTween = FlxTween.tween(hint, {alpha: 0.00001}, ClientPrefs.data.hitboxalpha / 10, {
+					ease: FlxEase.circInOut,
+					onComplete: (twn:FlxTween) -> hintTween = null
+				});
+
+				if (ClientPrefs.data.hitboxhint) {
+					hintLaneTween = FlxTween.tween(hint.label, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
+						ease: FlxEase.circInOut,
+						onComplete: (twn:FlxTween) -> hintTween = null
+					});
+
+					hintSecondLaneTween = FlxTween.tween(hint.secondLabel, {alpha: ClientPrefs.data.hitboxalpha}, ClientPrefs.data.hitboxalpha / 100, {
+						ease: FlxEase.circInOut,
+						onComplete: (twn:FlxTween) -> hintTween = null
+					});
+				}
+			}
+		}
+		else
+		{
+			hint.onDown.callback = () -> onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
+			hint.onOut.callback = hint.onUp.callback = () -> onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
+		}
+
+		hint.immovable = hint.multiTouch = true;
+		hint.solid = hint.moves = false;
 		hint.alpha = 0.00001;
-		hint.onDown.callback = function()
-		{
-			onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
-			if (hint.alpha != ClientPrefs.data.hitboxalpha)
-				hint.alpha = ClientPrefs.data.hitboxalpha;
-		}
-		hint.onOut.callback = hint.onUp.callback = function()
-		{
-			onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
-			if (hint.alpha != 0.00001)
-				hint.alpha = 0.00001;
-		}
+		hint.label.alpha = (ClientPrefs.data.hitboxalpha != 0) ? ClientPrefs.data.hitboxalpha : 0.00001;
+		hint.canChangeLabelAlpha = false;
+		hint.label.antialiasing = hint.antialiasing = ClientPrefs.data.antialiasing;
+		hint.color = Color;
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
 		#end

@@ -41,7 +41,6 @@ import states.TitleState;
 	public var extraKeyReturn6:String = 'A';
 	public var extraKeyReturn7:String = 'S';
 	public var extraKeyReturn8:String = 'D';
-	public var extraKeyReturn9:String = 'F'; //I'll 9 extra Controls because of extra note update (will be used on next update)
 
 	// Mobile Releated
 	public var screensaver:Bool = false;
