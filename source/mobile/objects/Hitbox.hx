@@ -14,7 +14,7 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-@:build(mobile.macros.ButtonMacro.createExtraButtons(10)) //I think 10 is enough
+@:build(mobile.macros.ButtonMacro.createExtraButtons(9000)) //I think 10 is enough
 class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_1, MobileInputID.NOTE_1]);
@@ -263,16 +263,16 @@ class Hitbox extends MobileInputManager
 		if (ClientPrefs.data.hitboxhint) {
 			//Up Hint
 			hintUp = new FlxSprite();
-			hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hintUp.screenCenter(flixel.util.FlxAxes.Y);
-			hintUp.y = tempOneY;
+			hintUp.y += tempOneY;
 			hintUp.draw();
 
 			//Down Hint
 			hintDown = new FlxSprite();
-			hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.020), Color, true));
+			hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hintDown.screenCenter(flixel.util.FlxAxes.Y);
-			hintDown.y = tempTwoY;
+			hintDown.y += tempTwoY;
 			hintDown.draw();
 		}
 

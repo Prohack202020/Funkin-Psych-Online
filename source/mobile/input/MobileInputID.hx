@@ -8,7 +8,7 @@ import flixel.system.macros.FlxMacroUtil;
  * @author Karim Akra
  */
 @:runtimeValue
-@:build(mobile.macros.ButtonMacro.createExtraButtonIDs(10, 53))
+@:build(mobile.macros.ButtonMacro.createExtraButtonIDs(9000, 53))
 enum abstract MobileInputID(Int) from Int to Int {
 	public static var fromStringMap(default, null):Map<String, MobileInputID> = FlxMacroUtil.buildMap("mobile.input.MobileInputID");
 	public static var toStringMap(default, null):Map<MobileInputID, String> = FlxMacroUtil.buildMap("mobile.input.MobileInputID", true);
