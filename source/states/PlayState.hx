@@ -2135,26 +2135,24 @@ class PlayState extends MusicBeatState
 		if (Note.maniaKeys > 4)
 		{
 			var strumLineX:Float = 0;
-			//I'm lazy to change positions, so use the original
-			var swagScaledWidth = Note.swagWidth * (Note.swagWidth * 4) / (Note.swagWidth * Note.maniaKeys) + (0.055 * (Note.maniaKeys - 4));
-
-			var strumWidth = 6 * swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
+			var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
 			var gap:Int = 150;
 			if (Note.maniaKeys == 9) gap = 140;
 			for (i in 0...Note.maniaKeys) {
 				var strumLineX:Float = 0;
 				if (isPlayerStrumNote(player))
 				{
-					if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.6 + (gap * i);
-					else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 0.7 + (gap * i);
-					else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
-					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.1 + (gap * i);
-					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.6 + (gap * i);
+					if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
+					else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (gap * i);
+					else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
+					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
+					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.9 + (gap * i);
 					strumGroup.members[i].x = strumLineX;
 					defaultPlayerNotePositions[i] = strumGroup.members[i].x;
 					fixHitboxPos();
 				} else {
 					strumGroup.members[i].visible = false;
+					strumGroup.members[i].x = 9999;
 				}
 			}
 		}
