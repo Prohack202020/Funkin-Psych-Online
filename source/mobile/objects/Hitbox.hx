@@ -196,7 +196,7 @@ class Hitbox extends MobileInputManager
 
 				if (addButton) {
 					Reflect.setField(this, buttonData.button,
-						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button, buttonData.tempOneY, buttonData.tempTwoY));
+						createHint(buttonX, buttonY, buttonWidth, buttonHeight, CoolUtil.colorFromString(buttonColor), customReturn, buttonData.button));
 					add(Reflect.field(this, buttonData.button));
 				}
 			}
@@ -265,7 +265,7 @@ class Hitbox extends MobileInputManager
 		return bitmap;
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String, ?tempOneY:Float = 0, ?tempTwoY:Float = 0):MobileButton
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?customReturn:String, ?mapKey:String):MobileButton
 	{
 		var hint:MobileButton = new MobileButton(X, Y);
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
@@ -276,14 +276,14 @@ class Hitbox extends MobileInputManager
 			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintUp.screenCenter(flixel.util.FlxAxes.Y);
 			hint.hintUp.x = X;
-			hint.hintUp.y += -350;
+			hint.hintUp.y += -355;
 
 			//Down Hint
 			hint.hintDown = new FlxSprite();
 			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintDown.screenCenter(flixel.util.FlxAxes.Y);
 			hint.hintDown.x = X;
-			hint.hintDown.y += 350;
+			hint.hintDown.y += 355;
 		}
 
 		hint.solid = false;

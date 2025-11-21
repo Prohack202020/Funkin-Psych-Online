@@ -2148,11 +2148,9 @@ class PlayState extends MusicBeatState
 					if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.6 + (gap * i);
 					else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 0.7 + (gap * i);
 					else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
-					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
+					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.1 + (gap * i);
 					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.6 + (gap * i);
 					strumGroup.members[i].x = strumLineX;
-					strumGroup.members[i].scale.x = 0.70;
-					strumGroup.members[i].scale.y = 0.70;
 					defaultPlayerNotePositions[i] = strumGroup.members[i].x;
 					fixHitboxPos();
 				} else {
