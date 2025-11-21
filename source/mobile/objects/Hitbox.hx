@@ -52,10 +52,22 @@ class Hitbox extends MobileInputManager
 		}
 
 		if ((ClientPrefs.data.hitboxmode == 'V Slice' && CustomMode == null) || CustomMode == 'V Slice'){
-			add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
-			add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
-			add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
-			add(buttonRight = createHint(PlayState.playerNotePositionsFixedStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
+			if (Note.maniaKeys != 4) {
+				add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
+				add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
+				add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
+				add(buttonRight = createHint(PlayState.playerNotePositionsFixedStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
+			} else {
+				add(buttonLeft = createHint(PlayState.playerNoteStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
+				add(buttonDown = createHint(PlayState.playerNoteStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
+				add(buttonUp = createHint(PlayState.playerNoteStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
+				add(buttonRight = createHint(PlayState.playerNoteStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
+				if (Note.maniaKeys == 5) add(buttonNote5 = createHint(PlayState.playerNoteStatic[4], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonNote5'));
+				if (Note.maniaKeys == 6) add(buttonNote6 = createHint(PlayState.playerNoteStatic[5], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonNote6'));
+				if (Note.maniaKeys == 7) add(buttonNote7 = createHint(PlayState.playerNoteStatic[6], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonNote7'));
+				if (Note.maniaKeys == 8) add(buttonNote8 = createHint(PlayState.playerNoteStatic[7], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonNote8'));
+				if (Note.maniaKeys == 9) add(buttonNote9 = createHint(PlayState.playerNoteStatic[8], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonNote9'));
+			}
 		}
 		else if ((ClientPrefs.data.hitboxmode != 'Classic' && CustomMode == null) || CustomMode != null){
 			var Custom:String = CustomMode != null ? CustomMode : ClientPrefs.data.hitboxmode;

@@ -1992,7 +1992,8 @@ class PlayState extends MusicBeatState
 			if (mobilePad.buttonP != null)
 				button.deadZones.push(mobilePad.buttonP);
 		});
-		
+
+		playerNoteStatic = [];
 		if (ClientPrefs.data.VSliceControl) VSliceControls = true;
 		if (VSliceControls) {
 			enableVSliceControls(0);
@@ -2004,6 +2005,7 @@ class PlayState extends MusicBeatState
 	public var playerNotePositions:Array<Int> = [260, 440, 710, 890];
 	public var playerNotePositionsFixed:Array<Int> = [-360, -140, 140, 360];
 	public static var playerNotePositionsFixedStatic:Array<Int> = [-360, -140, 140, 360];
+	public static var playerNoteStatic:Array<Int> = [];
 	public function startCountdown()
 	{
 		theWorld = false;
@@ -2133,24 +2135,52 @@ class PlayState extends MusicBeatState
 			if (!unspawnNotes[i].mustPress)
 				unspawnNotes[i].visible = false;
 		}
-		for (i in 0...4) {
-			if (isPlayerStrumNote(player))
-			{
-				strumGroup.members[i].screenCenter(X);
-				strumGroup.members[i].x += playerNotePositionsFixed[i];
-				playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
+		if (Note.maniaKeys != 4)
+		{
+			var strumLineX:Float = 0;
+			var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
+			for (i in 0...Note.maniaKeys) {
+				var strumLineX:Float = 0;
+				if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.8 + (100 * i);
+				else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (100 * i);
+				else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.3 + (100 * i);
+				else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.6 + (100 * i);
+				else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 2.5 + (100 * i);
+				strumGroup.members[i].x = strumLineX;
+				strumGroup.members[i].scale.x = 0.65;
+				strumGroup.members[i].scale.y = 0.65;
+				playerNoteStatic.push(strumGroup.members[i].x);
 			}
-			else
+
+			for (i in 0...unspawnNotes.length)
 			{
-				strumGroup.members[i].y = 40;
-				strumGroup.members[i].x = 10 + (i * 65);
-				strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
-				strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
+				if (unspawnNotes[i].mustPress) {
+					unspawnNotes[i].scale.x = 0.65;
+					unspawnNotes[i].scale.y = 0.65;
+				}
+			}
+		}
+		else
+		{
+			for (i in 0...4) {
+				if (isPlayerStrumNote(player))
+				{
+					strumGroup.members[i].screenCenter(X);
+					strumGroup.members[i].x += playerNotePositionsFixed[i];
+					playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
+				}
+				else
+				{
+					strumGroup.members[i].y = 40;
+					strumGroup.members[i].x = 10 + (i * 65);
+					strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
+					strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
+				}
 			}
 		}
 		reloadControls("V Slice");
 		hitbox.cameras = [camHUD];
-		hitbox.visible = false;
+		//hitbox.visible = false;
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite
