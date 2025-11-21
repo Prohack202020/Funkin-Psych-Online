@@ -2135,7 +2135,10 @@ class PlayState extends MusicBeatState
 		if (Note.maniaKeys > 4)
 		{
 			var strumLineX:Float = 0;
-			var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
+			//I'm lazy to change positions, so use the original
+			var swagScaledWidth = Note.swagWidth * (Note.swagWidth * 4) / (Note.swagWidth * Note.maniaKeys) + (0.055 * (Note.maniaKeys - 4))
+
+			var strumWidth = 6 * swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
 			var gap:Int = 150;
 			if (Note.maniaKeys == 9) gap = 140;
 			for (i in 0...Note.maniaKeys) {
@@ -2154,42 +2157,6 @@ class PlayState extends MusicBeatState
 					fixHitboxPos();
 				} else {
 					strumGroup.members[i].visible = false;
-				}
-			}
-			
-			for (i in 0...unspawnNotes.length)
-			{
-				if (unspawnNotes[i].mustPress) {
-					unspawnNotes[i].scale.x = 0.70;
-					unspawnNotes[i].scale.y = 0.70;
-				}
-
-				//This should fix sustain notes (basically calculates the height again)
-				for (sustainNote in unspawnNotes[i].tail) {
-					var oldNote:Note;
-					if (unspawnNotes.length > 0 && i != 0)
-						oldNote = unspawnNotes[i-1];
-					else
-						oldNote = null;
-
-					sustainNote.correctionOffset = unspawnNotes[i].height / 2;
-					if(!PlayState.isPixelStage)
-					{
-						if(oldNote.isSustainNote)
-						{
-							oldNote.scale.y *= Note.SUSTAIN_SIZE / oldNote.frameHeight;
-							oldNote.scale.y /= playbackRate;
-							oldNote.updateHitbox();
-						}
-
-						if(ClientPrefs.data.downScroll)
-							sustainNote.correctionOffset = 0;
-					}
-					else if(oldNote.isSustainNote)
-					{
-						oldNote.scale.y /= playbackRate;
-						oldNote.updateHitbox();
-					}
 				}
 			}
 		}
