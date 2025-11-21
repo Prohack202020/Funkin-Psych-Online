@@ -2001,7 +2001,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var VSliceControls:Bool = false;
-	public var defaultPlayerNotePositions:Array<Int> = [-360, -140, 140, 360, 0, 0, 0, 0, 0];
+	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360, 0, 0, 0, 0, 0];
 	public function startCountdown()
 	{
 		theWorld = false;
@@ -2172,7 +2172,7 @@ class PlayState extends MusicBeatState
 					else
 						oldNote = null;
 
-					sustainNote.correctionOffset = swagNote.height / 2;
+					sustainNote.correctionOffset = unspawnNotes[i].height / 2;
 					if(!PlayState.isPixelStage)
 					{
 						if(oldNote.isSustainNote)

@@ -199,8 +199,8 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	/**
 	 * A hint shits, did you expect something?
 	 */
-	var hintUp:FlxSprite;
-	var hintDown:FlxSprite;
+	public var hintUp:FlxSprite;
+	public var hintDown:FlxSprite;
 
 	/** 
 	 * We don't need an ID here, so let's just use `Int` as the type.
