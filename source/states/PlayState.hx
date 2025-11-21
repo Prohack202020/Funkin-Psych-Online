@@ -2189,7 +2189,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public function fixHitboxPos() {
-		var hitboxFixPos:Int = 10;
+		var hitboxFixPos:Float = 10;
 		if (Note.maniaKeys == 7) hitboxFixPos = 13;
 		if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
 		if (Note.maniaKeys == 9) hitboxFixPos = 15;
