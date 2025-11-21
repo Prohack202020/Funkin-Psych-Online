@@ -2150,6 +2150,7 @@ class PlayState extends MusicBeatState
 					strumGroup.members[i].x = strumLineX;
 					strumGroup.members[i].scale.x = 0.70;
 					strumGroup.members[i].scale.y = 0.70;
+					defaultPlayerNotePositions[i] = strumGroup.members[i].x;
 					fixHitboxPos();
 				} else {
 					strumGroup.members[i].visible = false;
@@ -2199,6 +2200,7 @@ class PlayState extends MusicBeatState
 				{
 					strumGroup.members[i].screenCenter(X);
 					strumGroup.members[i].x += defaultPlayerNotePositions[i];
+					defaultPlayerNotePositions[i] = strumGroup.members[i].x;
 				}
 				else
 				{
@@ -2216,25 +2218,25 @@ class PlayState extends MusicBeatState
 
 	public function fixHitboxPos(?keyCountIsDefault:Bool) {
 		if (keyCountIsDefault) {
-			hitbox.buttonLeft.x = Std.int(strumGroup.members[0].x) - 20;
-			hitbox.buttonDown.x = Std.int(strumGroup.members[1].x) - 20;
-			hitbox.buttonUp.x = Std.int(strumGroup.members[2].x) - 20;
-			hitbox.buttonRight.x = Std.int(strumGroup.members[3].x) - 20;
+			hitbox.buttonLeft.x = Std.int(defaultPlayerNotePositions[0].x) - 20;
+			hitbox.buttonDown.x = Std.int(defaultPlayerNotePositions[1].x) - 20;
+			hitbox.buttonUp.x = Std.int(defaultPlayerNotePositions[2].x) - 20;
+			hitbox.buttonRight.x = Std.int(defaultPlayerNotePositions[3].x) - 20;
 		} else {
 			var hitboxFixPos:Float = 10;
 			if (Note.maniaKeys == 7) hitboxFixPos = 13;
 			if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
 			if (Note.maniaKeys == 9) hitboxFixPos = 15;
 
-			hitbox.buttonLeft.x = playerStrums.members[0].x - hitboxFixPos;
-			hitbox.buttonDown.x = playerStrums.members[1].x - hitboxFixPos;
-			hitbox.buttonUp.x = playerStrums.members[2].x - hitboxFixPos;
-			hitbox.buttonRight.x = playerStrums.members[3].x - hitboxFixPos;
-			if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = playerStrums.members[4].x - hitboxFixPos;
-			if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = playerStrums.members[5].x - hitboxFixPos;
-			if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = playerStrums.members[6].x - hitboxFixPos;
-			if (Note.maniaKeys >= 8) hitbox.buttonNote8.x = playerStrums.members[7].x - hitboxFixPos;
-			if (Note.maniaKeys == 9) hitbox.buttonNote9.x = playerStrums.members[8].x - hitboxFixPos;
+			hitbox.buttonLeft.x = defaultPlayerNotePositions[0].x - hitboxFixPos;
+			hitbox.buttonDown.x = defaultPlayerNotePositions[1].x - hitboxFixPos;
+			hitbox.buttonUp.x = defaultPlayerNotePositions[2].x - hitboxFixPos;
+			hitbox.buttonRight.x = defaultPlayerNotePositions[3].x - hitboxFixPos;
+			if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = defaultPlayerNotePositions[4].x - hitboxFixPos;
+			if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = defaultPlayerNotePositions[5].x - hitboxFixPos;
+			if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = defaultPlayerNotePositions[6].x - hitboxFixPos;
+			if (Note.maniaKeys >= 8) hitbox.buttonNote8.x = defaultPlayerNotePositions[7].x - hitboxFixPos;
+			if (Note.maniaKeys == 9) hitbox.buttonNote9.x = defaultPlayerNotePositions[8].x - hitboxFixPos;
 		}
 	}
 
