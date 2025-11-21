@@ -2005,7 +2005,7 @@ class PlayState extends MusicBeatState
 	public var playerNotePositions:Array<Int> = [260, 440, 710, 890];
 	public var playerNotePositionsFixed:Array<Int> = [-360, -140, 140, 360];
 	public static var playerNotePositionsFixedStatic:Array<Int> = [-360, -140, 140, 360];
-	public static var playerNoteStatic:Array<Int> = [];
+	public static var playerNoteStatic:Array<Float> = [];
 	public function startCountdown()
 	{
 		theWorld = false;
