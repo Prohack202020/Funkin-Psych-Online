@@ -2136,7 +2136,7 @@ class PlayState extends MusicBeatState
 		{
 			var strumLineX:Float = 0;
 			//I'm lazy to change positions, so use the original
-			var swagScaledWidth = Note.swagWidth * (Note.swagWidth * 4) / (Note.swagWidth * Note.maniaKeys) + (0.055 * (Note.maniaKeys - 4))
+			var swagScaledWidth = Note.swagWidth * (Note.swagWidth * 4) / (Note.swagWidth * Note.maniaKeys) + (0.055 * (Note.maniaKeys - 4));
 
 			var strumWidth = 6 * swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
 			var gap:Int = 150;
