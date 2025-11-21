@@ -52,7 +52,7 @@ class Hitbox extends MobileInputManager
 		}
 
 		if ((ClientPrefs.data.hitboxmode == 'V Slice' && CustomMode == null) || CustomMode == 'V Slice'){
-			if (Note.maniaKeys != 4) {
+			if (Note.maniaKeys == 4) {
 				add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
 				add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
 				add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));

@@ -2141,15 +2141,20 @@ class PlayState extends MusicBeatState
 			var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
 			for (i in 0...Note.maniaKeys) {
 				var strumLineX:Float = 0;
-				if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.8 + (100 * i);
-				else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (100 * i);
-				else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.3 + (100 * i);
-				else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.6 + (100 * i);
-				else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 2.5 + (100 * i);
-				strumGroup.members[i].x = strumLineX;
-				strumGroup.members[i].scale.x = 0.65;
-				strumGroup.members[i].scale.y = 0.65;
-				playerNoteStatic.push(strumGroup.members[i].x);
+				if (isPlayerStrumNote(player))
+				{
+					if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.8 + (100 * i);
+					else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (100 * i);
+					else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.3 + (100 * i);
+					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.6 + (100 * i);
+					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 2.5 + (100 * i);
+					strumGroup.members[i].x = strumLineX;
+					strumGroup.members[i].scale.x = 0.65;
+					strumGroup.members[i].scale.y = 0.65;
+					playerNoteStatic.push(strumGroup.members[i].x);
+				} else {
+					strumGroup.members[i].visible = false;
+				}
 			}
 
 			for (i in 0...unspawnNotes.length)
