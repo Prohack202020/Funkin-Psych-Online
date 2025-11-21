@@ -2001,9 +2001,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var VSliceControls:Bool = false;
-	public var playerNotePositions:Array<Int> = [260, 440, 710, 890];
-	public var playerNotePositionsFixed:Array<Int> = [-360, -140, 140, 360];
-	public static var playerNotePositionsFixedStatic:Array<Int> = [-360, -140, 140, 360];
+	public var defaultPlayerNotePositions:Array<Int> = [-360, -140, 140, 360, 0, 0, 0, 0, 0];
 	public function startCountdown()
 	{
 		theWorld = false;
@@ -2126,6 +2124,7 @@ class PlayState extends MusicBeatState
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
 
+		reloadControls("V Slice");
 		/* Actual Code */
 		var strumGroup = player == 1 ? playerStrums : opponentStrums;
 		for (i in 0...unspawnNotes.length)
@@ -2163,6 +2162,34 @@ class PlayState extends MusicBeatState
 					unspawnNotes[i].scale.x = 0.70;
 					unspawnNotes[i].scale.y = 0.70;
 				}
+
+				//This should fix sustain notes (basically calculates the height again)
+				for (sustainNote in unspawnNotes[i].tail) {
+					var oldNote:Note;
+					if (unspawnNotes.length > 0 && i != 0)
+						oldNote = unspawnNotes[i-1];
+					else
+						oldNote = null;
+
+					sustainNote.correctionOffset = swagNote.height / 2;
+					if(!PlayState.isPixelStage)
+					{
+						if(oldNote.isSustainNote)
+						{
+							oldNote.scale.y *= Note.SUSTAIN_SIZE / oldNote.frameHeight;
+							oldNote.scale.y /= playbackRate;
+							oldNote.updateHitbox();
+						}
+
+						if(ClientPrefs.data.downScroll)
+							sustainNote.correctionOffset = 0;
+					}
+					else if(oldNote.isSustainNote)
+					{
+						oldNote.scale.y /= playbackRate;
+						oldNote.updateHitbox();
+					}
+				}
 			}
 		}
 		else
@@ -2171,8 +2198,7 @@ class PlayState extends MusicBeatState
 				if (isPlayerStrumNote(player))
 				{
 					strumGroup.members[i].screenCenter(X);
-					strumGroup.members[i].x += playerNotePositionsFixed[i];
-					playerNotePositionsFixedStatic[i] = Std.int(strumGroup.members[i].x) - 20;
+					strumGroup.members[i].x += defaultPlayerNotePositions[i];
 				}
 				else
 				{
@@ -2182,27 +2208,34 @@ class PlayState extends MusicBeatState
 					strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
 				}
 			}
+			fixHitboxPos(true);
 		}
-		reloadControls("V Slice");
 		//hitbox.cameras = [camHUD];
 		hitbox.visible = false;
 	}
 
-	public function fixHitboxPos() {
-		var hitboxFixPos:Float = 10;
-		if (Note.maniaKeys == 7) hitboxFixPos = 13;
-		if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
-		if (Note.maniaKeys == 9) hitboxFixPos = 15;
+	public function fixHitboxPos(?keyCountIsDefault:Bool) {
+		if (keyCountIsDefault) {
+			hitbox.buttonLeft.x = Std.int(strumGroup.members[0].x) - 20;
+			hitbox.buttonDown.x = Std.int(strumGroup.members[1].x) - 20;
+			hitbox.buttonUp.x = Std.int(strumGroup.members[2].x) - 20;
+			hitbox.buttonRight.x = Std.int(strumGroup.members[3].x) - 20;
+		} else {
+			var hitboxFixPos:Float = 10;
+			if (Note.maniaKeys == 7) hitboxFixPos = 13;
+			if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
+			if (Note.maniaKeys == 9) hitboxFixPos = 15;
 
-		hitbox.buttonLeft.x = playerStrums.members[0].x - hitboxFixPos;
-		hitbox.buttonDown.x = playerStrums.members[1].x - hitboxFixPos;
-		hitbox.buttonUp.x = playerStrums.members[2].x - hitboxFixPos;
-		hitbox.buttonRight.x = playerStrums.members[3].x - hitboxFixPos;
-		if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = playerStrums.members[4].x - hitboxFixPos;
-		if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = playerStrums.members[5].x - hitboxFixPos;
-		if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = playerStrums.members[6].x - hitboxFixPos;
-		if (Note.maniaKeys >= 8) hitbox.buttonNote8.x = playerStrums.members[7].x - hitboxFixPos;
-		if (Note.maniaKeys == 9) hitbox.buttonNote9.x = playerStrums.members[8].x - hitboxFixPos;
+			hitbox.buttonLeft.x = playerStrums.members[0].x - hitboxFixPos;
+			hitbox.buttonDown.x = playerStrums.members[1].x - hitboxFixPos;
+			hitbox.buttonUp.x = playerStrums.members[2].x - hitboxFixPos;
+			hitbox.buttonRight.x = playerStrums.members[3].x - hitboxFixPos;
+			if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = playerStrums.members[4].x - hitboxFixPos;
+			if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = playerStrums.members[5].x - hitboxFixPos;
+			if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = playerStrums.members[6].x - hitboxFixPos;
+			if (Note.maniaKeys >= 8) hitbox.buttonNote8.x = playerStrums.members[7].x - hitboxFixPos;
+			if (Note.maniaKeys == 9) hitbox.buttonNote9.x = playerStrums.members[8].x - hitboxFixPos;
+		}
 	}
 
 	inline private function createCountdownSprite(image:String, antialias:Bool):FlxSprite

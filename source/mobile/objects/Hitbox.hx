@@ -53,10 +53,10 @@ class Hitbox extends MobileInputManager
 
 		if ((ClientPrefs.data.hitboxmode == 'V Slice' && CustomMode == null) || CustomMode == 'V Slice'){
 			if (Note.maniaKeys == 4) {
-				add(buttonLeft = createHint(PlayState.playerNotePositionsFixedStatic[0], 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
-				add(buttonDown = createHint(PlayState.playerNotePositionsFixedStatic[1], 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
-				add(buttonUp = createHint(PlayState.playerNotePositionsFixedStatic[2], 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
-				add(buttonRight = createHint(PlayState.playerNotePositionsFixedStatic[3], 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
+				add(buttonLeft = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFFC24B99, null, 'buttonLeft'));
+				add(buttonDown = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFF00FFFF, null, 'buttonDown'));
+				add(buttonUp = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
+				add(buttonRight = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
 			} else {
 				add(buttonLeft = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonLeft'));
 				add(buttonDown = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonDown'));
@@ -270,22 +270,18 @@ class Hitbox extends MobileInputManager
 		var hint:MobileButton = new MobileButton(X, Y);
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
 
-		var hintUp:FlxSprite = null;
-		var hintDown:FlxSprite = null;
 		if (ClientPrefs.data.hitboxhint) {
 			//Up Hint
-			hintUp = new FlxSprite();
-			hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
-			hintUp.screenCenter(flixel.util.FlxAxes.Y);
-			hintUp.y += tempOneY;
-			hintUp.draw();
+			hint.hintUp = new FlxSprite();
+			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
+			hint.hintUp.screenCenter(flixel.util.FlxAxes.Y);
+			hint.hintUp.y += tempOneY;
 
 			//Down Hint
-			hintDown = new FlxSprite();
-			hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
-			hintDown.screenCenter(flixel.util.FlxAxes.Y);
-			hintDown.y += tempTwoY;
-			hintDown.draw();
+			hint.hintDown = new FlxSprite();
+			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
+			hint.hintDown.screenCenter(flixel.util.FlxAxes.Y);
+			hint.hintDown.y += tempTwoY;
 		}
 
 		hint.solid = false;
@@ -297,16 +293,16 @@ class Hitbox extends MobileInputManager
 			onButtonDown.dispatch(hint, storedButtonsIDs.get(mapKey));
 			if (hint.alpha != ClientPrefs.data.hitboxalpha)
 				hint.alpha = ClientPrefs.data.hitboxalpha;
-			if (hintUp?.alpha != 0.00001 || hintDown?.alpha != 0.00001)
-				hintUp.alpha = hintDown.alpha = 0.00001;
+			if ((hint.hintUp?.alpha != 0.00001 || hint.hintDown?.alpha != 0.00001) && hint.hintUp != null && hint.hintDown != null)
+				hint.hintUp.alpha = hint.hintDown.alpha = 0.00001;
 		}
 		hint.onOut.callback = hint.onUp.callback = function()
 		{
 			onButtonUp.dispatch(hint, storedButtonsIDs.get(mapKey));
 			if (hint.alpha != 0.00001)
 				hint.alpha = 0.00001;
-			if (hintUp?.alpha != ClientPrefs.data.hitboxalpha || hintDown?.alpha != ClientPrefs.data.hitboxalpha)
-				hintUp.alpha = hintDown.alpha = ClientPrefs.data.hitboxalpha;
+			if ((hint.hintUp?.alpha != ClientPrefs.data.hitboxalpha || hint.hintDown?.alpha != ClientPrefs.data.hitboxalpha) && hint.hintUp != null && hint.hintDown != null)
+				hint.hintUp.alpha = hint.hintDown.alpha = ClientPrefs.data.hitboxalpha;
 		}
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;

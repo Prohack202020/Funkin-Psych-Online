@@ -231,6 +231,9 @@
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
 	<config:mac category_type="public.app-category.music-games" />
+	
+	<!-- Lime Fix -->
+	<haxedef name="lime_use_old_deltatime" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
