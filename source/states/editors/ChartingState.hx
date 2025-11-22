@@ -1701,128 +1701,6 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
-		if (controls.mobileControls) {
-			for (touch in FlxG.touches.list)
-			{
-				if (touch.x > gridBG.x
-					&& touch.x < gridBG.x + gridBG.width
-					&& touch.y > gridBG.y
-					&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
-				{
-					dummyArrow.visible = true;
-					dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
-					if (FlxG.keys.pressed.SHIFT)
-						dummyArrow.y = touch.y;
-					else
-						dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
-				}else{
-					dummyArrow.visible = false;
-				}
-	
-				mouseAction = NONE;
-				if (mousePressTime >= 0) {
-					if (touch.pressed) {
-						mouseAction = PRESSING;
-						mousePressTime += elapsed;
-					}
-					else {
-						if (Math.abs(touch.screenX - mouseActionOriginPos[0]) < 10 && Math.abs(touch.screenY - mouseActionOriginPos[1]) < 10 && mousePressTime < 0.2) {
-							mouseAction = CLICK;
-						}
-						mousePressTime = -1;
-					}
-				}
-	
-				if (touch.screenX < UI_box.x || mouseAction == PRESSING) {
-					//begin mouse actions, only outside of ui right-bar
-					if (touch.justPressed) {
-						mousePressTime = 0;
-						mouseActionOriginPos = [touch.screenX, touch.screenY];
-					}
-				
-					if (FlxG.mouse.pressedRight) {
-						mouseAction = FlxG.mouse.justPressedRight ? RIGHT_JUST_PRESS : RIGHT_PRESSING;
-						if (mouseAction == RIGHT_JUST_PRESS)
-							curSelectedNote = null;
-					}
-	
-					//highlight
-					if (mouseAction != RIGHT_PRESSING && touch.x > gridBG.x
-						&& touch.x < gridBG.x + gridBG.width
-						&& touch.y > gridBG.y
-						&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
-						dummyArrow.visible = true;
-						dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
-						if (FlxG.keys.pressed.SHIFT)
-							dummyArrow.y = touch.y;
-						else {
-							var gridmult = GRID_SIZE / (quantization / 16);
-							dummyArrow.y = Math.floor(touch.y / gridmult) * gridmult;
-						}
-					}
-					else {
-						dummyArrow.visible = false;
-					}
-	
-					var selectedNote = curSelectedNote;
-	
-					if (mouseAction != NONE) {
-						if (touch.overlaps(curRenderedNotes)) {
-							curRenderedNotes.forEachAlive(function(note:Note) {
-								if (touch.overlaps(note)) {
-									if (mouseAction == RIGHT_JUST_PRESS || mouseAction == CLICK)
-										selectNote(note);
-	
-									if (mouseAction == CLICK) {
-										if (FlxG.keys.pressed.ALT) {
-											curSelectedNote[3] = curNoteTypes[currentType];
-											updateGrid();
-										}
-										else if (selectedNote != null && curSelectedNote[0] == selectedNote[0] && curSelectedNote[1] == selectedNote[1]) {
-											deleteNote(note);
-										}
-									}
-							}
-							});
-						}
-						else {
-							if (mouseAction == CLICK) {
-								if (touch.x > gridBG.x
-									&& touch.x < gridBG.x + gridBG.width
-									&& touch.y > gridBG.y
-									&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
-									FlxG.log.add('added note');
-									addNote();
-								}
-							}
-						}
-					
-						if (mouseAction == RIGHT_PRESSING && curSelectedNote != null && curSelectedNote[1] > -1) {
-							var mouseSus = getStrumTime(touch.y * zoomList[curZoom]) + sectionStartTime() - curSelectedNote[0] - Conductor.stepCrochet;
-							var newMouseSus = mouseSus - (!FlxG.keys.pressed.SHIFT ? mouseSus % Conductor.stepCrochet : 0);
-							if (newMouseSus != curSelectedNote[2])
-								changeNoteSustain(newMouseSus, true);
-						}
-	
-						if (mouseAction == PRESSING) {
-							if (Note.maniaKeys > 9) {
-								camPos.x -= FlxG.mouse.deltaScreenX;
-							}
-							FlxG.sound.music.pause();
-							for (v in [vocals, opponentVocals]) {
-								if (v == null) continue;
-								v.pause();
-								v.time = FlxG.sound.music.time;
-							}
-							FlxG.sound.music.time -= getStrumTime(FlxG.mouse.deltaScreenY * zoomList[curZoom]);
-							if (camPos.x > strumLine.x + CAM_OFFSET) {
-								camPos.x = strumLine.x + CAM_OFFSET;
-							}
-						}
-					}
-				}
-			}
-		} else {
 			mouseAction = NONE;
 			if (mousePressTime >= 0) {
 				if (FlxG.mouse.pressed) {
@@ -1940,7 +1818,6 @@ class ChartingState extends MusicBeatState
 			}else{
 				dummyArrow.visible = false;
 			}
-		}
 
 		var blockInput:Bool = false;
 		for (inputText in blockPressWhileTypingOn) {
