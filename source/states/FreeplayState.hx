@@ -1153,7 +1153,11 @@ class FreeplayState extends MusicBeatState
 						if (!GameClient.isConnected()) {
 							persistentUpdate = false;
 							_substateIsModifiers = true;
+<<<<<<< HEAD
 							mobilePad.visible = false;
+=======
+							loadSong();
+>>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:
@@ -1345,6 +1349,20 @@ class FreeplayState extends MusicBeatState
 	}
 
 	var _ledSong:String = null;
+	function loadSong() {
+		var formatSong = Highscore.formatSong(getSongName().toLowerCase(), curDifficulty);
+		if (_ledSong != formatSong) {
+			trace('Loading song: ' + formatSong);
+			PlayState.loadSong(formatSong, getSongName().toLowerCase());
+		}
+		_ledSong = formatSong;
+
+		Song.updateManiaKeys(PlayState.SONG);
+		if (Note.maniaKeysStringList.contains(ClientPrefs.getGameplaySetting('mania'))) {
+			Note.maniaKeys = Std.parseInt(ClientPrefs.getGameplaySetting('mania').split('k')[0]);
+		}
+	}
+
 	function generateLeaderboard() {
 		topShit.clearRows();
 
@@ -1352,15 +1370,10 @@ class FreeplayState extends MusicBeatState
 			return;
 
 		try {
-			var formatSong = Highscore.formatSong(getSongName().toLowerCase(), curDifficulty);
-			if (_ledSong != formatSong) {
-				PlayState.loadSong(formatSong, getSongName().toLowerCase());
-			}
-			_ledSong = formatSong;
+			loadSong();
 
-			Song.updateManiaKeys(PlayState.SONG);
-			if (['4k', '5k', '6k', '7k', '8k', '9k'].contains(ClientPrefs.getGameplaySetting('mania'))) {
-				Note.maniaKeys = Std.parseInt(ClientPrefs.getGameplaySetting('mania').split('k')[0]);
+			if (!Note.rankedManiaKeysList.contains(Note.maniaKeys)) {
+				throw 'unranked';
 			}
 			
 			var uhhPage = curPage;
