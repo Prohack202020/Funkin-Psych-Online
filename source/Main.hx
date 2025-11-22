@@ -92,14 +92,22 @@ class Main extends Sprite
 		}
 		#end
 		
+		CoolUtil.showPopUp("Started", "Line 95 in Main.hx");
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
+		CoolUtil.showPopUp("Started", "Line97 in Main.hx");
 		Lib.current.addChild(new online.gui.Alert());
+		CoolUtil.showPopUp("Started", "Line 99 in Main.hx");
 		Lib.current.addChild(new online.gui.LoadingScreen());
+		CoolUtil.showPopUp("Started", "Line 101 in Main.hx");
 		
 		var daMain = new Main();
+		CoolUtil.showPopUp("Started", "Line 104 in Main.hx");
 		Lib.current.addChild(daMain);
+		CoolUtil.showPopUp("Started", "Line 106 in Main.hx");
 		Lib.current.setChildIndex(daMain, Lib.current.getChildIndex(view3D) + 1);
+		CoolUtil.showPopUp("Started", "Line 2108 in Main.hx");
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
+		CoolUtil.showPopUp("Started", "Line 110 in Main.hx");
 	}
 
 	public function new()
