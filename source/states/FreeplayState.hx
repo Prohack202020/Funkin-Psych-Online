@@ -1153,11 +1153,8 @@ class FreeplayState extends MusicBeatState
 						if (!GameClient.isConnected()) {
 							persistentUpdate = false;
 							_substateIsModifiers = true;
-<<<<<<< HEAD
 							mobilePad.visible = false;
-=======
 							loadSong();
->>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 							openSubState(new GameplayChangersSubstate());
 						}
 					case 2:

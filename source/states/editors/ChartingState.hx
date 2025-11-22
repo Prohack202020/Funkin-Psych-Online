@@ -343,7 +343,16 @@ class ChartingState extends MusicBeatState
 		UI_box.y = 25;
 		UI_box.scrollFactor.set();
 
-<<<<<<< HEAD
+		var boxBG = new FlxSprite(UI_box.x);
+		boxBG.makeGraphic(Std.int(FlxG.width - UI_box.x), FlxG.height, FlxColor.BLACK);
+		boxBG.alpha = 0.6;
+		boxBG.scrollFactor.set();
+		add(boxBG);
+
+		bpmTxt = new FlxText(1100, 50, 0, "", 16);
+		bpmTxt.scrollFactor.set();
+		add(bpmTxt);
+
 		if (controls.mobileControls)
 			text = "Up/Down - Change Conductor's strum time
 		\nLeft/Right - Go to the previous/next section
@@ -355,20 +364,6 @@ class ChartingState extends MusicBeatState
 		\nX - Stop/Resume song";
 		else
 			text = "W/S or Mouse Wheel - Change Conductor's strum time
-=======
-		var boxBG = new FlxSprite(UI_box.x);
-		boxBG.makeGraphic(Std.int(FlxG.width - UI_box.x), FlxG.height, FlxColor.BLACK);
-		boxBG.alpha = 0.6;
-		boxBG.scrollFactor.set();
-		add(boxBG);
-
-		bpmTxt = new FlxText(1100, 50, 0, "", 16);
-		bpmTxt.scrollFactor.set();
-		add(bpmTxt);
-
-		text =
-		"W/S or Mouse Wheel - Change Conductor's strum time
->>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 		\nA/D - Go to the previous/next section
 		\nLeft/Right - Change Snap
 		\nUp/Down - Change Conductor's Strum Time with Snapping
@@ -1706,49 +1701,9 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
-<<<<<<< HEAD
 		if (controls.mobileControls) {
 		for (touch in FlxG.touches.list)
 		{
-			if (touch.justPressed)
-			{
-				if (touch.overlaps(curRenderedNotes))
-				{
-					curRenderedNotes.forEachAlive(function(note:Note)
-					{
-						if (touch.overlaps(note))
-						{
-							if (mobilePad.buttonF.pressed)
-							{
-								selectNote(note);
-							}
-							else if (FlxG.keys.pressed.ALT)
-							{
-								selectNote(note);
-								curSelectedNote[3] = curNoteTypes[currentType];
-								updateGrid();
-							}
-							else
-							{
-								//trace('tryin to delete note...');
-								deleteNote(note);
-							}
-						}
-					});
-				}
-				else if (!mobilePad.buttonF.pressed)
-				{
-					if (touch.x > gridBG.x
-						&& touch.x < gridBG.x + gridBG.width
-						&& touch.y > gridBG.y
-						&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
-					{
-						FlxG.log.add('added note');
-						addNote();
-					}
-				}
-			}
-
 			if (touch.x > gridBG.x
 				&& touch.x < gridBG.x + gridBG.width
 				&& touch.y > gridBG.y
@@ -1756,29 +1711,117 @@ class ChartingState extends MusicBeatState
 			{
 				dummyArrow.visible = true;
 				dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
-				if (FlxG.keys.pressed.SHIFT || mobilePad.buttonY.pressed)
+				if (FlxG.keys.pressed.SHIFT)
 					dummyArrow.y = touch.y;
 				else
 					dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
 			}else{
 				dummyArrow.visible = false;
 			}
-		}
 
+			mouseAction = NONE;
+			if (mousePressTime >= 0) {
+				if (touch.pressed) {
+					mouseAction = PRESSING;
+					mousePressTime += elapsed;
+				}
+				else {
+					if (Math.abs(touch.screenX - mouseActionOriginPos[0]) < 10 && Math.abs(touch.screenY - mouseActionOriginPos[1]) < 10 && mousePressTime < 0.2) {
+						mouseAction = CLICK;
+					}
+					mousePressTime = -1;
+				}
+			}
+
+			if (touch.screenX < UI_box.x || mouseAction == PRESSING) {
+				//begin mouse actions, only outside of ui right-bar
+				if (touch.justPressed) {
+					mousePressTime = 0;
+					mouseActionOriginPos = [touch.screenX, touch.screenY];
+				}
+			
+				if (touch.pressedRight) {
+					mouseAction = touch.justPressedRight ? RIGHT_JUST_PRESS : RIGHT_PRESSING;
+					if (mouseAction == RIGHT_JUST_PRESS)
+						curSelectedNote = null;
+				}
+
+				//highlight
+				if (mouseAction != RIGHT_PRESSING && touch.x > gridBG.x
+					&& touch.x < gridBG.x + gridBG.width
+					&& touch.y > gridBG.y
+					&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
+					dummyArrow.visible = true;
+					dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
+					if (FlxG.keys.pressed.SHIFT)
+						dummyArrow.y = touch.y;
+					else {
+						var gridmult = GRID_SIZE / (quantization / 16);
+						dummyArrow.y = Math.floor(touch.y / gridmult) * gridmult;
+					}
+				}
+				else {
+					dummyArrow.visible = false;
+				}
+
+				var selectedNote = curSelectedNote;
+
+				if (mouseAction != NONE) {
+					if (touch.overlaps(curRenderedNotes)) {
+						curRenderedNotes.forEachAlive(function(note:Note) {
+							if (touch.overlaps(note)) {
+								if (mouseAction == RIGHT_JUST_PRESS || mouseAction == CLICK)
+									selectNote(note);
+
+								if (mouseAction == CLICK) {
+									if (FlxG.keys.pressed.ALT) {
+										curSelectedNote[3] = curNoteTypes[currentType];
+										updateGrid();
+									}
+									else if (selectedNote != null && curSelectedNote[0] == selectedNote[0] && curSelectedNote[1] == selectedNote[1]) {
+										deleteNote(note);
+									}
+								}
+						}
+						});
+					}
+					else {
+						if (mouseAction == CLICK) {
+							if (touch.x > gridBG.x
+								&& touch.x < gridBG.x + gridBG.width
+								&& touch.y > gridBG.y
+								&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
+								FlxG.log.add('added note');
+								addNote();
+							}
+						}
+					}
+				
+					if (mouseAction == RIGHT_PRESSING && curSelectedNote != null && curSelectedNote[1] > -1) {
+						var mouseSus = getStrumTime(touch.y * zoomList[curZoom]) + sectionStartTime() - curSelectedNote[0] - Conductor.stepCrochet;
+						var newMouseSus = mouseSus - (!FlxG.keys.pressed.SHIFT ? mouseSus % Conductor.stepCrochet : 0);
+						if (newMouseSus != curSelectedNote[2])
+							changeNoteSustain(newMouseSus, true);
+					}
+
+					if (mouseAction == PRESSING) {
+						if (Note.maniaKeys > 9) {
+							camPos.x -= touch.deltaScreenX;
+						}
+						FlxG.sound.music.pause();
+						for (v in [vocals, opponentVocals]) {
+							if (v == null) continue;
+							v.pause();
+							v.time = FlxG.sound.music.time;
+						}
+						FlxG.sound.music.time -= getStrumTime(touch.deltaScreenY * zoomList[curZoom]);
+						if (camPos.x > strumLine.x + CAM_OFFSET) {
+							camPos.x = strumLine.x + CAM_OFFSET;
+						}
+					}
+				}
+			}
 		} else {
-
-		if (FlxG.mouse.justPressed)
-		{
-			if (FlxG.mouse.overlaps(curRenderedNotes))
-			{
-				curRenderedNotes.forEachAlive(function(note:Note)
-				{
-					if (FlxG.mouse.overlaps(note))
-					{
-						if (FlxG.keys.pressed.CONTROL)
-						{
-							selectNote(note);
-=======
 		mouseAction = NONE;
 		if (mousePressTime >= 0) {
 			if (FlxG.mouse.pressed) {
@@ -1842,7 +1885,6 @@ class ChartingState extends MusicBeatState
 									deleteNote(note);
 								}
 							}
->>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 						}
 					});
 				}
@@ -3471,8 +3513,6 @@ class AttachedFlxText extends FlxText
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
 }
 
 enum MouseAction {
@@ -3481,5 +3521,4 @@ enum MouseAction {
 	PRESSING;
 	RIGHT_JUST_PRESS;
 	RIGHT_PRESSING;
->>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 }

@@ -1597,12 +1597,9 @@ class FunkinLua {
 		if(lua == null) {
 			return;
 		}
-<<<<<<< HEAD
-=======
 		// try {
 		// 	Lua.error(lua);
 		// } catch (exc) {}
->>>>>>> 6345f9a60d62e202d63ffd92f69af3d76f3ff457
 		Lua.close(lua);
 		lua = null;
 		#if HSCRIPT_ALLOWED
