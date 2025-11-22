@@ -651,17 +651,12 @@ class ClientPrefs {
 	}
 
 	public static inline function genArrowColorsExtraMap(?isPixel:Bool = false):Map<String, Array<Array<FlxColor>>> {
-		try {
-			var map = new Map();
-			for (keys in Note.maniaKeysList) {
-				if (keys == 4)
-					continue;
-				map.set('${keys}k', genArrowColors(keys, isPixel));
-			}
-			return map;
-		} catch(e:Dynamic) {
-			var map = new Map();
-			return map;
+		var map = new Map();
+		for (keys in Note.maniaKeysList) {
+			if (keys == 4)
+				continue;
+			map.set('${keys}k', genArrowColors(keys, isPixel));
 		}
+		return map;
 	}
 }
