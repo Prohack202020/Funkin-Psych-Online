@@ -199,30 +199,10 @@ class Notification extends Sprite implements ITabInteractable {
 
 		Thread.run(() -> {
 			var url = data.image.startsWith('/') ? FunkinNetwork.client.getURL(data.image) : data.image;
-			var imgData = ShitUtil.fetchBitmapBytesfromURL(url);
+			var iconData = ShitUtil.fetchBitmapBytesfromURL(url);
 
 			Waiter.putPersist(() -> {
-				var prevIcon = icon;
-				var iconData:Either<BitmapData, com.yagp.Gif>;
-
-				if (imgData == null)
-					iconData = Left(FunkinNetwork.getDefaultAvatar());
-				else if (!ShitUtil.isGIF(imgData))
-					iconData = Left(BitmapData.fromBytes(imgData));
-				else
-					iconData = Right(GifDecoder.parseBytes(imgData));
-
-				switch (iconData) {
-					case Left(v):
-						icon = new Bitmap(v);
-					case Right(v):
-						icon = new GifPlayerWrapper(new GifPlayer(v));
-					default:
-				}
-
-
-				addChildAt(icon, getChildIndex(prevIcon));
-				removeChild(prevIcon);
+				icon.bitmapData = BitmapData.fromBytes(iconData);
 
 				icon.x = 10;
 				icon.y =  10;
