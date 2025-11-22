@@ -1740,8 +1740,8 @@ class ChartingState extends MusicBeatState
 						mouseActionOriginPos = [touch.screenX, touch.screenY];
 					}
 				
-					if (touch.pressedRight) {
-						mouseAction = touch.justPressedRight ? RIGHT_JUST_PRESS : RIGHT_PRESSING;
+					if (FlxG.mouse.pressedRight) {
+						mouseAction = FlxG.mouse.justPressedRight ? RIGHT_JUST_PRESS : RIGHT_PRESSING;
 						if (mouseAction == RIGHT_JUST_PRESS)
 							curSelectedNote = null;
 					}
@@ -1806,7 +1806,7 @@ class ChartingState extends MusicBeatState
 	
 						if (mouseAction == PRESSING) {
 							if (Note.maniaKeys > 9) {
-								camPos.x -= touch.deltaScreenX;
+								camPos.x -= FlxG.mouse.deltaScreenX;
 							}
 							FlxG.sound.music.pause();
 							for (v in [vocals, opponentVocals]) {
@@ -1814,7 +1814,7 @@ class ChartingState extends MusicBeatState
 								v.pause();
 								v.time = FlxG.sound.music.time;
 							}
-							FlxG.sound.music.time -= getStrumTime(touch.deltaScreenY * zoomList[curZoom]);
+							FlxG.sound.music.time -= getStrumTime(FlxG.mouse.deltaScreenY * zoomList[curZoom]);
 							if (camPos.x > strumLine.x + CAM_OFFSET) {
 								camPos.x = strumLine.x + CAM_OFFSET;
 							}
