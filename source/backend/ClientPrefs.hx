@@ -645,7 +645,9 @@ class ClientPrefs {
 				arr.push(colColors.get(colArray[key]));
 			}
 			return arr;
-		} catch(e:Dynamic) {}
+		} catch(e:Dynamic) {
+			return [];
+		}
 	}
 
 	public static inline function genArrowColorsExtraMap(?isPixel:Bool = false):Map<String, Array<Array<FlxColor>>> {
@@ -657,6 +659,9 @@ class ClientPrefs {
 				map.set('${keys}k', genArrowColors(keys, isPixel));
 			}
 			return map;
-		} catch(e:Dynamic) {}
+		} catch(e:Dynamic) {
+			var map = new Map();
+			return map;
+		}
 	}
 }
