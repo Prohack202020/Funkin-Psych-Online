@@ -105,13 +105,17 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		CoolUtil.showPopUp("Started", "Line 108 in Main.hx");
 		#if mobile
 		#if android
 		StorageUtil.requestPermissions();
+		CoolUtil.showPopUp("Started", "Line 112 in Main.hx");
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
+		CoolUtil.showPopUp("Started", "Line 115 in Main.hx");
 		#end
 		backend.CrashHandler.init();
+		CoolUtil.showPopUp("Started", "Line 118 in Main.hx");
 
 		// Assets folder
 		#if mobile
@@ -119,6 +123,7 @@ class Main extends Sprite
 		if (!StorageUtil.areAssetsCopied("assets/"))
 			StorageUtil.copyAssetsFromAPK("assets/");
 		#end
+		CoolUtil.showPopUp("Started", "Line 126 in Main.hx");
 
 		#if (cpp && windows)
 		backend.Native.fixScaling();
@@ -146,6 +151,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		CoolUtil.showPopUp("Started", "Line 154 in Main.hx");
 		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
@@ -162,17 +168,21 @@ class Main extends Sprite
 		if (game.zoom == -1.0)
 			game.zoom = 1.0;
 		#end
+		CoolUtil.showPopUp("Started", "Line 171 in Main.hx");
 
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
 		#end
 		Mods.loadTopMod();
+		CoolUtil.showPopUp("Started", "Line 177 in Main.hx");
 
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
 		#end
+		CoolUtil.showPopUp("Started", "Line 182 in Main.hx");
 
 		CoolUtil.setDarkMode(true);
+		CoolUtil.showPopUp("Started", "Line 185 in Main.hx");
 
 		#if lumod
 		Lumod.addons.push(online.backend.LuaModuleSwap.LumodModuleAddon);
@@ -189,15 +199,21 @@ class Main extends Sprite
 		Lumod.classResolver = Deflection.resolveClass;
 		Lumod.initializeLuaCallbacks = false;
 		#end
+		CoolUtil.showPopUp("Started", "Line 202 in Main.hx");
 
 		#if hl
 		sys.ssl.Socket.DEFAULT_VERIFY_CERT = false;
 		#end
+		CoolUtil.showPopUp("Started", "Line 207 in Main.hx");
 	
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
+		CoolUtil.showPopUp("Started", "Line 210 in Main.hx");
 		Controls.instance = new Controls();
+		CoolUtil.showPopUp("Started", "Line 212 in Main.hx");
 		ClientPrefs.loadDefaultKeys();
+		CoolUtil.showPopUp("Started", "Line 214 in Main.hx");
 		addChild(new FlxGame(game.width, game.height, #if (mobile && MODS_ALLOWED) CopyState.checkExistingFiles() ? game.initialState : CopyState #else game.initialState #end, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		CoolUtil.showPopUp("Started", "Line 216 in Main.hx");
 
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
