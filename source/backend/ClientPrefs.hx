@@ -648,11 +648,13 @@ class ClientPrefs {
 
 	public static inline function genArrowColorsExtraMap(?isPixel:Bool = false):Map<String, Array<Array<FlxColor>>> {
 		var map = new Map();
-		for (keys in Note.maniaKeysList) {
-			if (keys == 4)
-				continue;
-			map.set('${keys}k', genArrowColors(keys, isPixel));
-		}
+		try {
+			for (keys in Note.maniaKeysList) {
+				if (keys == 4)
+					continue;
+				map.set('${keys}k', genArrowColors(keys, isPixel));
+			}
+		} catch(e:Dynamic) {}
 		return map;
 	}
 }
