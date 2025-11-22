@@ -2009,7 +2009,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var VSliceControls:Bool = false;
-	public var defaultPlayerStrum:Dynamic;
+	public var defaultPlayerStrum:FlxTypedGroup<StrumNote>;
 	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360];
 	public function startCountdown()
 	{
