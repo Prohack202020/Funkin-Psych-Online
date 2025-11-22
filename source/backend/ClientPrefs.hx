@@ -475,7 +475,7 @@ class ClientPrefs {
 			if(save.data.mobile != null) {
 				var loadedControls:Map<String, Array<MobileInputID>> = save.data.mobile;
 				for (control => keys in loadedControls)
-					if(mobileBinds.exists(control)) mobileBinds.set(control, keys);
+					/*if(mobileBinds.exists(control))*/ mobileBinds.set(control, keys);
 			}
 			reloadVolumeKeys();
 		}

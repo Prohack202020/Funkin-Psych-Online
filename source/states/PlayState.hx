@@ -2009,6 +2009,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var VSliceControls:Bool = false;
+	public var defaultPlayerStrum:Dynamic;
 	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360];
 	public function startCountdown()
 	{
@@ -2156,6 +2157,7 @@ class PlayState extends MusicBeatState
 					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
 					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.9 + (gap * i);
 					strumGroup.members[i].x = strumLineX;
+					defaultPlayerStrum = strumGroup;
 					fixHitboxPos();
 				} else {
 					strumGroup.members[i].visible = false;
@@ -2170,6 +2172,7 @@ class PlayState extends MusicBeatState
 				{
 					strumGroup.members[i].screenCenter(X);
 					strumGroup.members[i].x += defaultPlayerNotePositions[i];
+					defaultPlayerStrum = strumGroup;
 				}
 				else
 				{
@@ -2187,11 +2190,25 @@ class PlayState extends MusicBeatState
 
 	public function fixHitboxPos(?keyCountIsDefault:Bool) {
 		if (keyCountIsDefault) {
-			hitbox.buttonLeft.x = Std.int(playerStrums.members[0].x) - 20;
-			hitbox.buttonDown.x = Std.int(playerStrums.members[1].x) - 20;
-			hitbox.buttonUp.x = Std.int(playerStrums.members[2].x) - 20;
-			hitbox.buttonRight.x = Std.int(playerStrums.members[3].x) - 20;
+			hitbox.buttonLeft.x = Std.int(defaultPlayerStrum[0].x) - 20;
+			hitbox.buttonDown.x = Std.int(defaultPlayerStrum[1].x) - 20;
+			hitbox.buttonUp.x = Std.int(defaultPlayerStrum[2].x) - 20;
+			hitbox.buttonRight.x = Std.int(defaultPlayerStrum[3].x) - 20;
 		} else {
+			var hitboxFixPos:Float = 10;
+			if (Note.maniaKeys == 7) hitboxFixPos = 13;
+			if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
+			if (Note.maniaKeys == 9) hitboxFixPos = 15;
+
+			hitbox.buttonLeft.x = defaultPlayerStrum[0].x - hitboxFixPos;
+			hitbox.buttonDown.x = defaultPlayerStrum[1].x - hitboxFixPos;
+			hitbox.buttonUp.x = defaultPlayerStrum[2].x - hitboxFixPos;
+			hitbox.buttonRight.x = defaultPlayerStrum[3].x - hitboxFixPos;
+			if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = defaultPlayerStrum[4].x - hitboxFixPos;
+			if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = defaultPlayerStrum[5].x - hitboxFixPos;
+			if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = defaultPlayerStrum[6].x - hitboxFixPos;
+			if (Note.maniaKeys >= 8) hitbox.buttonNote8.x = defaultPlayerStrum[7].x - hitboxFixPos;
+			if (Note.maniaKeys == 9) hitbox.buttonNote9.x = defaultPlayerStrum[8].x - hitboxFixPos;
 		}
 	}
 

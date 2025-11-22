@@ -233,7 +233,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.switchState(() -> new TitleState());
 			}
 
-			if (controls.ACCEPT #if desktop || FlxG.mouse.justPressed #end)
+			if (controls.ACCEPT #if desktop || (FlxG.mouse.justPressed && FlxG.mouse.overlaps(menuItems.members[curSelected])) #end)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
