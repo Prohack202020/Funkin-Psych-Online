@@ -1,0 +1,59 @@
+name: Build PsychOnline + Release
+run-name: PsychOnline 0.13.2 Android Port
+on: workflow_dispatch
+
+permissions:
+  contents: write
+  discussions: write
+
+env:
+  PROJECT_NAME: PsychOnline
+  REPO_PATH: https://github.com/Prohack202020/Funkin-Psych-Online
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android
+            os: ubuntu-latest
+            buildArgs: "android -D officialBuild -final" 
+            setupCommand: sh ./setup/unix.sh
+            artifactName: androidBuild
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+            system: Android
+    uses: ./.github/workflows/build.yml
+    with:
+        name: ${{ matrix.name }}
+        os: ${{ matrix.os }}
+        setupCommand: ${{ matrix.setupCommand }}
+        buildArgs: ${{ matrix.buildArgs }}
+        artifactName: ${{ matrix.artifactName }}
+        artifactPath: ${{ matrix.artifactPath }}
+        system: ${{ matrix.system }}
+
+  Releaser:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download Android Build
+        uses: actions/download-artifact@main
+        with:
+           name: androidBuild
+           path: /home/runner
+
+      - name: Move Android File
+        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/PsychOnline-0.13.2-By-ArkoseLabs.apk
+
+      - name: Publish The Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "PsychOnline 0.13.2 Android"
+          tag_name: "0.13.2-android"
+          prerelease: false
+          files: |
+            /home/runner/*.apk
+            /home/runner/*.zip
+            /home/runner/*.tar
