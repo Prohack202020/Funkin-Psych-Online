@@ -95,6 +95,8 @@ class Hitbox extends MobileInputManager
 				currentHint = MobileData.hitboxModes.get(Custom).mania2;
 			if (Note.maniaKeys == 3 && MobileData.hitboxModes.get(Custom).mania3 != null)
 				currentHint = MobileData.hitboxModes.get(Custom).mania3;
+			if (Note.maniaKeys == 4 && MobileData.hitboxModes.get(Custom).mania4 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania4;
 			if (Note.maniaKeys == 5 && MobileData.hitboxModes.get(Custom).mania5 != null)
 				currentHint = MobileData.hitboxModes.get(Custom).mania5;
 			if (Note.maniaKeys == 6 && MobileData.hitboxModes.get(Custom).mania6 != null)
