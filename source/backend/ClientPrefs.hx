@@ -654,7 +654,7 @@ class ClientPrefs {
 			if (keys == 4)
 				continue;
 			try {
-				CoolUtil.showPopUp('' + genArrowColors(keys, isPixel), "Test");q
+				CoolUtil.showPopUp('' + genArrowColors(keys, isPixel), "Test");
 				map.set('${keys}k', genArrowColors(keys, isPixel));
 			} catch(e:Dynamic) {}
 		}
