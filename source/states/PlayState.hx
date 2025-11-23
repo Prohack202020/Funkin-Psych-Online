@@ -2151,7 +2151,7 @@ class PlayState extends MusicBeatState
 					var strumLineX:Float = 0;
 					if (isPlayerStrumNote(player))
 					{
-						if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
+						if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.85 + (gap * i);
 						else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (gap * i);
 						else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
 						else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
