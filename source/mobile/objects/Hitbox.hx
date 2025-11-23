@@ -283,17 +283,20 @@ class Hitbox extends MobileInputManager
 		hint.loadGraphic(createHintGraphic(Width, Height, Color));
 
 		if (ClientPrefs.data.hitboxhint && !ClientPrefs.data.VSliceControl) {
+			var doHeightFix:Bool = false;
+			if (Height == 144) doHeightFix = true;
+
 			//Up Hint
 			hint.hintUp = new FlxSprite();
-			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
+			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * (doHeightFix ? 0.060 : 0.020)), Color, true));
 			hint.hintUp.x = X;
-			hint.hintUp.offset.y -= (hint.height - hint.hintUp.height) / 2;
+			hint.hintUp.y = hint.y;
 
 			//Down Hint
 			hint.hintDown = new FlxSprite();
-			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
+			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * (doHeightFix ? 0.060 : 0.020)), Color, true));
 			hint.hintDown.x = X;
-			hint.hintDown.offset.y += (hint.height - hint.hintDown.height) / 2;
+			hint.hintDown.y = hint.y + hint.height / 1.020;
 		}
 
 		hint.solid = false;
