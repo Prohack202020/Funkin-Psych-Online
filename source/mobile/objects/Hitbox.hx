@@ -14,7 +14,7 @@ import openfl.geom.Matrix;
  * @author Mihai Alexandru (M.A. Jigsaw), KralOyuncu 2010x (ArkoseLabs)
  */
 
-@:build(mobile.macros.ButtonMacro.createExtraButtons(30)) //I think 10 is enough
+@:build(mobile.macros.ButtonMacro.createExtraButtons(60)) //I think 10 is enough
 class Hitbox extends MobileInputManager
 {
 	public var buttonLeft:MobileButton = new MobileButton(0, 0, [MobileInputID.HITBOX_NOTE_1, MobileInputID.NOTE_1]);
@@ -107,6 +107,10 @@ class Hitbox extends MobileInputManager
 				currentHint = MobileData.hitboxModes.get(Custom).mania8;
 			if (Note.maniaKeys == 9 && MobileData.hitboxModes.get(Custom).mania9 != null)
 				currentHint = MobileData.hitboxModes.get(Custom).mania9;
+			if (Note.maniaKeys == 20 && MobileData.hitboxModes.get(Custom).mania20 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania20;
+			if (Note.maniaKeys == 55 && MobileData.hitboxModes.get(Custom).mania55 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania55;
 
 			for (buttonData in currentHint)
 			{

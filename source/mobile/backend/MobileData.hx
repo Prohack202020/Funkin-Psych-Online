@@ -99,6 +99,8 @@ typedef CustomHitboxData =
 	mania7:Array<HitboxData>,
 	mania8:Array<HitboxData>,
 	mania9:Array<HitboxData>,
+	mania20:Array<HitboxData>,
+	mania55:Array<HitboxData>,
 	test:Array<HitboxData>
 }
 

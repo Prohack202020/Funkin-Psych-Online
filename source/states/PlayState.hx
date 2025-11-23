@@ -5080,12 +5080,20 @@ class PlayState extends MusicBeatState
 
 	private function onButtonPress(button:MobileButton, ids:Array<MobileInputID>):Void
 	{
-		if (ids.filter(id -> id.toString().startsWith("NOTE")).length > 0 || ids.filter(id -> id.toString().startsWith("HITBOX")).length > 0)
+		if (ids.filter(id -> id.toString().startsWith("NOTE")).length > 0 || ids.filter(id -> id.toString().startsWith("HITBOX")).length > 0 || ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0)
 		{
+			var itsExtra:Bool = false;
 			var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
-			callOnScripts('onButtonPressPre', [buttonCode]);
-			if (button.justPressed) keyPressed(buttonCode);
-			callOnScripts('onButtonPress', [buttonCode]);
+			if (ids[0].toString().startsWith('EXTRA'))
+				buttonCode = ids[0] - 52; //Fixes the hold notes (now you can actually use extra buttons as note key)
+				itsExtra = true;
+			}
+
+			if (itsExtra && buttonCode >= 0 || !itsExtra) {
+				callOnScripts('onButtonPressPre', [buttonCode]);
+				if (button.justPressed) keyPressed(buttonCode);
+				callOnScripts('onButtonPress', [buttonCode]);
+			}
 		}
 	}
 
