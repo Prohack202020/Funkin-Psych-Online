@@ -5085,7 +5085,7 @@ class PlayState extends MusicBeatState
 			var itsExtra:Bool = false;
 			var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
 			if (ids[0].toString().startsWith('EXTRA')) {
-				buttonCode = ids[0] - 52; //Fixes the hold notes (now you can actually use extra buttons as note key)
+				buttonCode = ids[0] - 53; //Fixes the hold notes (now you can actually use extra buttons as note key)
 				itsExtra = true;
 			}
 
@@ -5104,7 +5104,7 @@ class PlayState extends MusicBeatState
 			var itsExtra:Bool = false;
 			var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
 			if (ids[0].toString().startsWith('EXTRA')) {
-				buttonCode = ids[0] - 52; //Fixes the hold notes (now you can actually use extra buttons as note key)
+				buttonCode = ids[0] - 53; //Fixes the hold notes (now you can actually use extra buttons as note key)
 				itsExtra = true;
 			}
 
