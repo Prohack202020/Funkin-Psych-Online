@@ -30,6 +30,27 @@ class ButtonMacro {
 		return fields;
 	}
 
+	public static macro function createManiaButtons(startButton:Int, maniaButtons:Int):Array<Field> {
+		var fields = Context.getBuildFields();
+
+		for (i in startButton...maniaButtons + 1) {
+			var buttonName = 'buttonExtra$i';
+			var buttonID = 'NOTE_$i';
+			var buttonHitboxID = 'HITBOX_NOTE_$i';
+			var buttonType = macro :MobileButton;
+			var buttonExpr = macro new MobileButton(0, 0, [MobileInputID.$buttonHitboxID, MobileInputID.$buttonID]);
+
+			fields.push({
+				name: buttonName,
+				access: [APublic],
+				kind: FVar(buttonType, buttonExpr),
+				pos: Context.currentPos()
+			});
+		}
+
+		return fields;
+	}
+
 	public static macro function createButtons(letters:Array<String>):Array<Field> {
 		var fields = Context.getBuildFields();
 		var typePath:ComplexType = TPath({ pack: [], name: "MobileButton" });

@@ -200,6 +200,16 @@ class NotesSubState extends MusicBeatSubstate
 		NUMPADZERO => '0', NUMPADONE => '1', NUMPADTWO => '2', NUMPADTHREE => '3', NUMPADFOUR => '4', NUMPADFIVE => '5', NUMPADSIX => '6',
 		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
 
+	override function closeSubState() {
+		super.closeSubState();
+		removeMobilePad();
+		addMobilePad('NONE', 'B_C');
+		controls.isInSubstate = true;
+		mobilePad.buttonB.x = FlxG.width - 132;
+		mobilePad.buttonC.x = 0;
+		mobilePad.buttonC.y = FlxG.height - 135;
+	}
+
 	override function update(elapsed:Float) {
 		if (controls.BACK) {
 			if (GameClient.isConnected()) {

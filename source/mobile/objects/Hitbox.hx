@@ -89,6 +89,12 @@ class Hitbox extends MobileInputManager
 				currentHint = MobileData.hitboxModes.get(Custom).test;
 
 			//Extra Key Stuff
+			if (Note.maniaKeys == 1 && MobileData.hitboxModes.get(Custom).mania1 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania1;
+			if (Note.maniaKeys == 2 && MobileData.hitboxModes.get(Custom).mania2 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania2;
+			if (Note.maniaKeys == 3 && MobileData.hitboxModes.get(Custom).mania3 != null)
+				currentHint = MobileData.hitboxModes.get(Custom).mania3;
 			if (Note.maniaKeys == 5 && MobileData.hitboxModes.get(Custom).mania5 != null)
 				currentHint = MobileData.hitboxModes.get(Custom).mania5;
 			if (Note.maniaKeys == 6 && MobileData.hitboxModes.get(Custom).mania6 != null)
@@ -276,14 +282,14 @@ class Hitbox extends MobileInputManager
 			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintUp.screenCenter(flixel.util.FlxAxes.Y);
 			hint.hintUp.x = X;
-			hint.hintUp.y += -360;
+			hint.hintUp.y -= (hint.height - hint.label.height) / 2;
 
 			//Down Hint
 			hint.hintDown = new FlxSprite();
 			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintDown.screenCenter(flixel.util.FlxAxes.Y);
 			hint.hintDown.x = X;
-			hint.hintDown.y += 360;
+			hint.hintDown.y += (hint.height - hint.label.height) / 2;
 		}
 
 		hint.solid = false;
