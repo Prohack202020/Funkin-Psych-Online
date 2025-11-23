@@ -625,24 +625,26 @@ class ClientPrefs {
 	}
 
 	public static inline function genArrowColors(keys:Int, ?isPixel:Bool = false):Array<Array<FlxColor>> {
-		var colColors = isPixel ? [
-			'purple' => [0xFFE276FF, 0xFFFFF9FF, 0xFF60008D],
-			'blue' => [0xFF3DCAFF, 0xFFF4FFFF, 0xFF003060],
-			'odd' => [0xFFFFE600, 0xFFFFF5F0, 0xFF754D10],
-			'green' => [0xFF71E300, 0xFFF6FFE6, 0xFF003100],
-			'red' => [0xFFFF884E, 0xFFFFFAF5, 0xFF6C0000]
-		] : [
-			'purple' => [0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
-			'blue' => [0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],
-			'odd' => [0xFFFFE600, 0xFFFFFFFF, 0xFF754D10],
-			'green' => [0xFF12FA05, 0xFFFFFFFF, 0xFF0A4447],
-			'red' => [0xFFF9393F, 0xFFFFFFFF, 0xFF651038]
-		];
 		var arr = [];
-		var colArray = Note.getColArrayFromKeys(keys);
-		for (key in 0...keys) {
-			arr.push(colColors.get(colArray[key]));
-		}
+		try {
+			var colColors = isPixel ? [
+				'purple' => [0xFFE276FF, 0xFFFFF9FF, 0xFF60008D],
+				'blue' => [0xFF3DCAFF, 0xFFF4FFFF, 0xFF003060],
+				'odd' => [0xFFFFE600, 0xFFFFF5F0, 0xFF754D10],
+				'green' => [0xFF71E300, 0xFFF6FFE6, 0xFF003100],
+				'red' => [0xFFFF884E, 0xFFFFFAF5, 0xFF6C0000]
+			] : [
+				'purple' => [0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
+				'blue' => [0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],
+				'odd' => [0xFFFFE600, 0xFFFFFFFF, 0xFF754D10],
+				'green' => [0xFF12FA05, 0xFFFFFFFF, 0xFF0A4447],
+				'red' => [0xFFF9393F, 0xFFFFFFFF, 0xFF651038]
+			];
+			var colArray = Note.getColArrayFromKeys(keys);
+			for (key in 0...keys) {
+				arr.push(colColors.get(colArray[key]));
+			}
+		} catch(e:Dynamic) {}
 		return arr;
 	}
 
@@ -650,14 +652,11 @@ class ClientPrefs {
 		var map = new Map();
 		try {
 			for (keys in Note.maniaKeysList) {
-				CoolUtil.showPopUp('' + keys, "Test");
 				if (keys == 4)
 					continue;
-					CoolUtil.showPopUp('' + genArrowColors(keys, isPixel), "Test");
-					map.set('${keys}k', genArrowColors(keys, isPixel));
+				map.set('${keys}k', genArrowColors(keys, isPixel));
 			}
 		} catch(e:Dynamic) {}
-		CoolUtil.showPopUp('' + map, "Test");
 		return map;
 	}
 
