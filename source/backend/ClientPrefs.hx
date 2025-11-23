@@ -647,7 +647,7 @@ class ClientPrefs {
 	}
 
 	public static inline function genArrowColorsExtraMap(?isPixel:Bool = false):Map<String, Array<Array<FlxColor>>> {
-		var map:Map = new Map();
+		var map = new Map();
 		try {
 			for (keys in Note.maniaKeysList) {
 				CoolUtil.showPopUp('' + keys, "Test");
