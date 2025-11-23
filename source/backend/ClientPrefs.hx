@@ -650,10 +650,11 @@ class ClientPrefs {
 		var map:Map<String, Array<Array<FlxColor>>> = new Map();
 		var maniaKeysList:Array<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 55];
 		for (keys in maniaKeysList) {
+		    CoolUtil.showPopUp('' + keys, "Test");
 			if (keys == 4)
 				continue;
 			try {
-				CoolUtil.showPopUp('' + genArrowColors(keys, isPixel), "Test");
+				CoolUtil.showPopUp('' + genArrowColors(keys, isPixel), "Test");q
 				map.set('${keys}k', genArrowColors(keys, isPixel));
 			} catch(e:Dynamic) {}
 		}
