@@ -295,7 +295,7 @@ class Hitbox extends MobileInputManager
 			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintDown.screenCenter(flixel.util.FlxAxes.Y);
 			hint.hintDown.x = X;
-			hint.hintDown.y += ((hint.height - hint.hintDown.height) / 2) - 10;
+			hint.hintDown.y += ((hint.height - hint.hintDown.height) / 2) + 10;
 		}
 
 		hint.solid = false;
