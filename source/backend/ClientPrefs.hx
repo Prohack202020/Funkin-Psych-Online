@@ -647,7 +647,7 @@ class ClientPrefs {
 	}
 
 	public static inline function genArrowColorsExtraMap(?isPixel:Bool = false):Map<String, Array<Array<FlxColor>>> {
-		var map:Map<String, Array<Array<FlxColor>>> = new Map() = [];
+		var map:Map<String, Array<Array<FlxColor>>> = new Map();
 		var maniaKeysList:Array<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 55];
 		for (keys in maniaKeysList) {
 		    CoolUtil.showPopUp('' + keys, "Test");
