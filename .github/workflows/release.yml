@@ -19,7 +19,14 @@ jobs:
           - name: Android
             os: ubuntu-24.04
             buildArgs: "android -D officialBuild -final" 
-            setupCommand: sh ./setup/unix.sh
+            setupCommand: |
+              haxelib setup ~/haxelib
+              haxelib install hmm --quiet
+              haxelib run hmm install
+              haxelib run lime config ANDROID_SDK $ANDROID_HOME
+              haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+              haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+              haxelib run lime config ANDROID_SETUP true
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
             system: Android
