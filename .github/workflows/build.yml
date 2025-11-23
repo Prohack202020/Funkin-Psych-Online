@@ -44,8 +44,8 @@ jobs:
 
       - name: Setup Android NDK
         if: inputs.system == 'Android'
-        id: setup-ndk
         uses: nttld/setup-ndk@main
+        id: setup-ndk
         with:
           ndk-version: r27c
           add-to-path: false
@@ -53,21 +53,15 @@ jobs:
       - name: Install Libraries (Android)
         if: inputs.system == 'Android'
         run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install
-          haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
-          haxelib run lime config ANDROID_SETUP true
 
       - name: Configure Android
         if: inputs.system == 'Android'
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
+          haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
 
       - name: Compile
