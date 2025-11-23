@@ -2004,10 +2004,7 @@ class PlayState extends MusicBeatState
 		});
 
 		if (ClientPrefs.data.VSliceControl) VSliceControls = true;
-		if (VSliceControls) {
-			enableVSliceControls(0);
-			enableVSliceControls(1);
-		}
+		if (VSliceControls) enableVSliceControls();
 	}
 
 	public var VSliceControls:Bool = false;
@@ -2129,62 +2126,69 @@ class PlayState extends MusicBeatState
 	}
 
 	/* V-Slice Mobile Controls */
-	public function enableVSliceControls(player:Int) {
+	public function enableVSliceControls() {
 		//I took this from PsychEngine's discord server and make it to work with HScript Improved (.hsc), now I'm using it on source code 😂
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
 
 		reloadControls("V Slice");
+		hitbox.visible = false;
 		/* Actual Code */
-		var strumGroup = player == 1 ? playerStrums : opponentStrums;
-		for (i in 0...unspawnNotes.length)
-		{
-			if (!unspawnNotes[i].mustPress)
-				unspawnNotes[i].visible = false;
-		}
-		if (Note.maniaKeys > 4)
-		{
-			var strumLineX:Float = 0;
-			var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
-			var gap:Int = 150;
-			if (Note.maniaKeys == 9) gap = 140;
-			for (i in 0...Note.maniaKeys) {
+		for (player in 0...2) {
+			var strumGroup = player == 1 ? playerStrums : opponentStrums;
+			for (i in 0...unspawnNotes.length)
+			{
+				if (!unspawnNotes[i].mustPress)
+					unspawnNotes[i].visible = false;
+			}
+			if (Note.maniaKeys != 4)
+			{
 				var strumLineX:Float = 0;
-				if (isPlayerStrumNote(player))
-				{
-					if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
-					else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (gap * i);
-					else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
-					else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
-					else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.9 + (gap * i);
-					strumGroup.members[i].x = strumLineX;
-					fixHitboxPos(strumGroup);
-				} else {
-					strumGroup.members[i].visible = false;
-					strumGroup.members[i].x = 9999;
+				var strumWidth = 6 * Note.swagScaledWidth - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
+				var gap:Int = 150;
+				if (Note.maniaKeys == 9) gap = 140;
+				for (i in 0...Note.maniaKeys) {
+					var strumLineX:Float = 0;
+					if (isPlayerStrumNote(player))
+					{
+						if (Note.maniaKeys == 9) strumLineX = FlxG.width / 2 - strumWidth / 0.9 + (gap * i);
+						else if (Note.maniaKeys == 8) strumLineX = FlxG.width / 2 - strumWidth / 1 + (gap * i);
+						else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
+						else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
+						else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.9 + (gap * i);
+						strumGroup.members[i].x = strumLineX;
+					} else {
+						strumGroup.members[i].visible = false;
+						strumGroup.members[i].x = 9999;
+					}
 				}
 			}
-		}
-		else
-		{
-			for (i in 0...4) {
-				if (isPlayerStrumNote(player))
-				{
-					strumGroup.members[i].screenCenter(X);
-					strumGroup.members[i].x += defaultPlayerNotePositions[i];
-					fixHitboxPos(strumGroup, true);
+			else
+			{
+				for (i in 0...4) {
+					if (isPlayerStrumNote(player))
+					{
+						strumGroup.members[i].screenCenter(X);
+						strumGroup.members[i].x += defaultPlayerNotePositions[i];
+					}
+					else
+					{
+						strumGroup.members[i].y = 40;
+						strumGroup.members[i].x = 10 + (i * 65);
+						strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
+						strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
+					}
 				}
-				else
-				{
-					strumGroup.members[i].y = 40;
-					strumGroup.members[i].x = 10 + (i * 65);
-					strumGroup.members[i].scale.x = strumGroup.members[i].scale.x / 1.75;
-					strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
-				}
+			}
+
+			if (isPlayerStrumNote(player)) {
+				FunkinLua.trace('strum ' + player + ' is a player');
+				fixHitboxPos(strumGroup, (Note.maniaKeys == 4 ? true : false));
+			} else {
+				FunkinLua.trace('strum ' + player + ' is a opponent');
 			}
 		}
 		//hitbox.cameras = [camHUD];
-		hitbox.visible = false;
 	}
 
 	public function fixHitboxPos(strumGroup:FlxTypedGroup<StrumNote>, ?keyCountIsDefault:Bool) {

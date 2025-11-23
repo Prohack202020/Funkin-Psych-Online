@@ -201,9 +201,10 @@ class NotesSubState extends MusicBeatSubstate
 		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
 
 	override function closeSubState() {
-		super.closeSubState();
 		removeMobilePad();
+		super.closeSubState();
 		addMobilePad('NONE', 'B_C');
+		addMobilePadCamera();
 		controls.isInSubstate = true;
 		mobilePad.buttonB.x = FlxG.width - 132;
 		mobilePad.buttonC.x = 0;
@@ -211,7 +212,7 @@ class NotesSubState extends MusicBeatSubstate
 	}
 
 	override function update(elapsed:Float) {
-		if (controls.BACK) {
+		if (controls.BACK || mobilePad?.buttonB?.justPressed) {
 			if (GameClient.isConnected()) {
 				GameClient.send('updateArrColors', ClientPrefs.getArrowRGBCompleteMaps());
 			}
