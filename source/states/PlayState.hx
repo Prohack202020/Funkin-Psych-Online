@@ -2011,7 +2011,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var VSliceControls:Bool = false;
-	public var defaultPlayerStrum:Dynamic;
+	public var defaultPlayerStrum:FlxTypedGroup<StrumNote>;
 	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360];
 	public function startCountdown()
 	{
@@ -2175,6 +2175,7 @@ class PlayState extends MusicBeatState
 					strumGroup.members[i].screenCenter(X);
 					strumGroup.members[i].x += defaultPlayerNotePositions[i];
 					defaultPlayerStrum = strumGroup;
+					fixHitboxPos(true);
 				}
 				else
 				{
@@ -2184,7 +2185,6 @@ class PlayState extends MusicBeatState
 					strumGroup.members[i].scale.y = strumGroup.members[i].scale.y / 1.75;
 				}
 			}
-			fixHitboxPos(true);
 		}
 		//hitbox.cameras = [camHUD];
 		hitbox.visible = false;
