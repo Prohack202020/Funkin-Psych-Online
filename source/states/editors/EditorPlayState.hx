@@ -74,6 +74,7 @@ class EditorPlayState extends MusicBeatSubstate
 	public function new(playbackRate:Float)
 	{
 		super();
+		ClientPrefs.reloadKeyColors();
 		
 		/* setting up some important data */
 		this.playbackRate = playbackRate;

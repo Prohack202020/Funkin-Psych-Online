@@ -73,6 +73,7 @@ class NoteOffsetState extends MusicBeatState
 
 	override public function create()
 	{
+		ClientPrefs.reloadKeyColors();
 		// Cameras
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();

@@ -54,6 +54,7 @@ class NotesSubState extends MusicBeatSubstate
 
 	public function new() {
 		super();
+		ClientPrefs.reloadKeyColors();
 
 		isOpened = true;
 		
