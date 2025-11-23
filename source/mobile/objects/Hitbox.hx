@@ -293,7 +293,7 @@ class Hitbox extends MobileInputManager
 			hint.hintDown = new FlxSprite();
 			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), Color, true));
 			hint.hintDown.x = X;
-			hint.hintDown.offset.y += (hint.height - hint.hintUp.height) / 2;
+			hint.hintDown.offset.y += (hint.height - hint.hintDown.height) / 2;
 		}
 
 		hint.solid = false;
