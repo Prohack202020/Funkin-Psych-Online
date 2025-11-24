@@ -50,8 +50,7 @@ jobs:
           ndk-version: r27c
           add-to-path: false
 
-      - name: Install Libraries (Android)
-        if: inputs.system == 'Android'
+      - name: Install Libraries
         run: |
           haxelib install hmm --quiet
           haxelib run hmm install
