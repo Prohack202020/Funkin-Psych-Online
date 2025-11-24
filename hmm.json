@@ -6,13 +6,6 @@
       "version": "2.6.0"
     },
     {
-      "name": "lime",
-      "type": "git",
-      "ref": "main",
-      "url": "https://github.com/HomuHomu833-haxe-stuff/lime",
-      "platforms": ["android"]
-    },
-    {
     "name": "lime",
       "type": "git",
       "ref": "main",
@@ -44,14 +37,6 @@
       "name": "flixel-ui",
       "type": "haxelib",
       "version": "2.6.3"
-    },
-    {
-      "name": "hxcpp",
-      "type": "git",
-      "dir": null,
-      "ref": null,
-      "url": "https://github.com/th2l-devs/hxcpp",
-      "platforms": ["android"]
     },
     {
       "name": "hxcpp",
