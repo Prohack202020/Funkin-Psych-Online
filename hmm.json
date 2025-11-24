@@ -9,7 +9,15 @@
       "name": "lime",
       "type": "git",
       "ref": "main",
-      "url": "https://github.com/HomuHomu833-haxe-stuff/lime"
+      "url": "https://github.com/HomuHomu833-haxe-stuff/lime",
+      "platforms": ["android"]
+    },
+    {
+    "name": "lime",
+      "type": "git",
+      "ref": "main",
+      "url": "https://github.com/AlafandyPorting/lime-0.7.3",
+      "platforms": ["ios"]
     },
     {
       "name": "openfl",
@@ -42,7 +50,16 @@
       "type": "git",
       "dir": null,
       "ref": null,
-      "url": "https://github.com/th2l-devs/hxcpp"
+      "url": "https://github.com/th2l-devs/hxcpp",
+      "platforms": ["android"]
+    },
+    {
+      "name": "hxcpp",
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/AlafandyPorting/hxcpp",
+      "platforms": ["ios"]
     },
     {
       "name": "tjson",
