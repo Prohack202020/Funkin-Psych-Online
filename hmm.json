@@ -159,13 +159,12 @@
       "dir": null,
       "ref": "1966f8fbbbc509ed90d4b520f3c49c084fc92fd6",
       "url": "https://github.com/FunkinCrew/funkVis"
-    #if android
     },
     {
       "name": "extension-androidtools",
       "type": "haxelib",
       "version": "2.2.2"
-    #end
+      "platforms": ["android"]
     }
   ]
 }
