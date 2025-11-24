@@ -2,9 +2,7 @@ name: Build PsychOnline + Release
 run-name: PsychOnline 0.13.2 Mobile Port
 on: workflow_dispatch
 
-permissions:
-  contents: write
-  discussions: write
+permissions: write-all
 
 env:
   PROJECT_NAME: PsychOnline
