@@ -880,6 +880,11 @@ class FreeplayState extends MusicBeatState
 			searchString = searchString;
 		}
 
+		#if android
+		if (searchInputWait && FlxG.android.justReleased.BACK)
+			tempDisableInput();
+		#end
+
 		var shiftMult:Int = 1;
 		if(mobilePad.buttonZ.pressed || FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
@@ -1280,7 +1285,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		updateTexts(elapsed);
-		if (FlxG.keys.pressed.SHIFT && !selected) {
+		if (mobilePad.buttonZ.pressed || FlxG.keys.pressed.SHIFT && !selected) {
 			itemsCameraZoom = FlxMath.lerp(itemsCameraZoom, 0.65, elapsed * 10);
 			itemsCameraScrollX = FlxMath.lerp(itemsCameraScrollX, 150, elapsed * 10);
 		}

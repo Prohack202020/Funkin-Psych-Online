@@ -9,25 +9,25 @@ import openfl.events.KeyboardEvent;
 class SetupModsState extends MusicBeatState {
 	var items:FlxTypedSpriteGroup<FlxText>;
 
-    public function new(mods:Array<String>, fromOptions:Bool) {
-        super();
+	public function new(mods:Array<String>, fromOptions:Bool) {
+		super();
 
-        swagMods = mods;
+		swagMods = mods;
 		this.fromOptions = fromOptions;
-    }
+	}
 
 	var swagMods:Array<String> = [];
 
 	var curSelected = 0;
 	var inInput = false;
-    var modsInput:Array<String> = [];
+	var modsInput:Array<String> = [];
 
 	var selectLine:FlxSprite;
 	
 	var fromOptions:Bool = false;
 
-    override function create() {
-        super.create();
+	override function create() {
+		super.create();
 
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("In the Menus", "Mods URL Setup");
@@ -102,19 +102,27 @@ class SetupModsState extends MusicBeatState {
 
 		addMobilePad('UP_DOWN', 'A_B_C');
 		addMobilePadCamera();
-    }
+	}
 
-    override function update(elapsed:Float) {
-        super.update(elapsed);
+	override function update(elapsed:Float) {
+		super.update(elapsed);
 
-        if (disableInput) return;
+		#if android
+		if (inInput && disableInput && FlxG.android.justReleased.BACK) {
+			tempDisableInput();
+			inInput = FlxG.stage.window.textInputEnabled = false;
+			changeSelection(0);
+		}
+		#end
+
+		if (disableInput) return;
 
 		if (!inInput) {
 			if (controls.ACCEPT || (!controls.mobileControls && FlxG.mouse.justPressed)) {
 				inInput = FlxG.stage.window.textInputEnabled = true;
 				changeSelection(0);
 			}
-            
+			
 			if (controls.UI_UP_P || FlxG.mouse.wheel == 1)
 				changeSelection(-1);
 			else if (controls.UI_DOWN_P || FlxG.mouse.wheel == -1)
@@ -133,7 +141,7 @@ class SetupModsState extends MusicBeatState {
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				states.TitleState.playFreakyMusic();
 			}
-        }
+		}
 		else {
 			if ((!controls.mobileControls && FlxG.mouse.justPressedRight)) {
 				tempDisableInput();
@@ -141,9 +149,9 @@ class SetupModsState extends MusicBeatState {
 				changeSelection(0);
 			}
 		}
-    }
+	}
 
-    function changeSelection(difference:Int) {
+	function changeSelection(difference:Int) {
 		curSelected += difference;
 
 		if (curSelected >= swagMods.length) {
@@ -172,7 +180,7 @@ class SetupModsState extends MusicBeatState {
 				item.color = FlxColor.LIME;
 			item.screenCenter(X);
 		}
-    }
+	}
 
 	function getItemName(item:Int) {
 		if (item == curSelected && inInput)
