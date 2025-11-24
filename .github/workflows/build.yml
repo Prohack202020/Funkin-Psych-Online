@@ -53,7 +53,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib run hmm install --quiet
 
       - name: Configure Android
         if: inputs.system == 'Android'
