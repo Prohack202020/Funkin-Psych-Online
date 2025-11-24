@@ -8,7 +8,7 @@ permissions:
 
 env:
   PROJECT_NAME: PsychOnline
-  REPO_PATH: https://github.com/Prohack202020/Funkin-Psych-Online
+  REPO_PATH: https://github.com/Engines-Team/Funkin-Psych-Online
 
 jobs:
   build:
@@ -22,6 +22,12 @@ jobs:
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
             system: Android
+          - name: iOS
+            os: macos-15
+            buildArgs: "ios -final -nosign"
+            artifactName: iOS
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+            system: iOS
     uses: ./.github/workflows/build.yml
     with:
         name: ${{ matrix.name }}
@@ -46,13 +52,21 @@ jobs:
       - name: Move Android File
         run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/PsychOnline-0.13.2-By-ArkoseLabs.apk
 
+      - name: Download iOS Build
+        uses: actions/download-artifact@main
+        with:
+          name: iOS
+          path: ${{ github.workspace }}
+
+      - name: Move iOS File
+        run: mv ${{ github.workspace }}/${{ env.PROJECT_NAME }}.ipa /home/runner/${{ env.PROJECT_NAME }}-iOS.ipa
+
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "PsychOnline 0.13.2 Android"
-          tag_name: "0.13.2-android"
+          name: "PsychOnline 0.13.2 Mobile"
+          tag_name: "0.13.2-mobile"
           prerelease: false
           files: |
             /home/runner/*.apk
-            /home/runner/*.zip
-            /home/runner/*.tar
+            /home/runner/*.ipa
