@@ -58,10 +58,10 @@ class Hitbox extends MobileInputManager
 				add(buttonUp = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFF12FA05, null, 'buttonUp'));
 				add(buttonRight = createHint(0, 0, 140, Std.int(FlxG.height * 1), 0xFFF9393F, null, 'buttonRight'));
 			} else {
-				add(buttonLeft = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonLeft'));
-				add(buttonDown = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonDown'));
-				add(buttonUp = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonUp'));
-				add(buttonRight = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonRight'));
+				if (Note.maniaKeys >= 1) add(buttonLeft = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonLeft'));
+				if (Note.maniaKeys >= 2) add(buttonDown = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonDown'));
+				if (Note.maniaKeys >= 3) add(buttonUp = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonUp'));
+				if (Note.maniaKeys >= 4) add(buttonRight = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonRight'));
 				if (Note.maniaKeys >= 5) add(buttonNote5 = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonNote5'));
 				if (Note.maniaKeys >= 6) add(buttonNote6 = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonNote6'));
 				if (Note.maniaKeys >= 7) add(buttonNote7 = createHint(0, 0, 110, Std.int(FlxG.height * 1), 0xFFFFFFFF, null, 'buttonNote7'));

@@ -2182,10 +2182,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if (isPlayerStrumNote(player)) {
-				FunkinLua.trace('strum ' + player + ' is a player');
 				fixHitboxPos(strumGroup, (Note.maniaKeys == 4 ? true : false));
-			} else {
-				FunkinLua.trace('strum ' + player + ' is a opponent');
 			}
 		}
 		//hitbox.cameras = [camHUD];
@@ -2203,10 +2200,10 @@ class PlayState extends MusicBeatState
 			if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
 			if (Note.maniaKeys == 9) hitboxFixPos = 15;
 
-			hitbox.buttonLeft.x = strumGroup.members[0].x - hitboxFixPos;
-			hitbox.buttonDown.x = strumGroup.members[1].x - hitboxFixPos;
-			hitbox.buttonUp.x = strumGroup.members[2].x - hitboxFixPos;
-			hitbox.buttonRight.x = strumGroup.members[3].x - hitboxFixPos;
+			if (Note.maniaKeys >= 1) hitbox.buttonLeft.x = strumGroup.members[0].x - hitboxFixPos;
+			if (Note.maniaKeys >= 2) hitbox.buttonDown.x = strumGroup.members[1].x - hitboxFixPos;
+			if (Note.maniaKeys >= 3) hitbox.buttonUp.x = strumGroup.members[2].x - hitboxFixPos;
+			if (Note.maniaKeys >= 4) hitbox.buttonRight.x = strumGroup.members[3].x - hitboxFixPos;
 			if (Note.maniaKeys >= 5) hitbox.buttonNote5.x = strumGroup.members[4].x - hitboxFixPos;
 			if (Note.maniaKeys >= 6) hitbox.buttonNote6.x = strumGroup.members[5].x - hitboxFixPos;
 			if (Note.maniaKeys >= 7) hitbox.buttonNote7.x = strumGroup.members[6].x - hitboxFixPos;

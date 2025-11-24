@@ -498,27 +498,29 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 	var hasStage:Bool = false;
 	function checkStage() {
-		if (GameClient.room.state.stageName == "") {
-			hasStage = true;
-			return;
-		}
+		try {
+			if (GameClient.room.state.stageName == "") {
+				hasStage = true;
+				return;
+			}
 
-		if (FileSystem.exists(Paths.mods('${GameClient.room.state.stageMod}/stages/${GameClient.room.state.stageName}.json')) ||
-			OpenFlAssets.exists(Paths.getPath('stages/${GameClient.room.state.stageName}.json'), TEXT)) {
-			hasStage = true;
-			return;
-		}
+			if (FileSystem.exists(Paths.mods('${GameClient.room.state.stageMod}/stages/${GameClient.room.state.stageName}.json')) ||
+				OpenFlAssets.exists(Paths.getPath('stages/${GameClient.room.state.stageName}.json'), TEXT)) {
+				hasStage = true;
+				return;
+			}
 
-		if (GameClient.room.state.stageURL != null) {
-			hasStage = false;
+			if (GameClient.room.state.stageURL != null) {
+				hasStage = false;
 
-			OnlineMods.downloadMod(GameClient.room.state.stageURL, false, (_) -> {
-				if (destroyed)
-					return;
+				OnlineMods.downloadMod(GameClient.room.state.stageURL, false, (_) -> {
+					if (destroyed)
+						return;
 
-				checkStage();
-			});
-		}
+					checkStage();
+				});
+			}
+		} catch(e:Dynamic) {}
 	}
 
 	function checkNoteSkin(player:Player, ?manualDownload:Bool = false) {
