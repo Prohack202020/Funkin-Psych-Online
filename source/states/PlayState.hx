@@ -2156,7 +2156,7 @@ class PlayState extends MusicBeatState
 						else if (Note.maniaKeys == 7) strumLineX = FlxG.width / 2 - strumWidth / 1.2 + (gap * i);
 						else if (Note.maniaKeys == 6) strumLineX = FlxG.width / 2 - strumWidth / 1.5 + (gap * i);
 						else if (Note.maniaKeys == 5) strumLineX = FlxG.width / 2 - strumWidth / 1.9 + (gap * i);
-						strumGroup.members[i].x = strumLineX;
+						if (Note.maniaKeys >= 5) strumGroup.members[i].x = strumLineX;
 					} else {
 						strumGroup.members[i].visible = false;
 						strumGroup.members[i].x = 9999;

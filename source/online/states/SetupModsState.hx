@@ -108,7 +108,7 @@ class SetupModsState extends MusicBeatState {
 		super.update(elapsed);
 
 		#if android
-		if (inInput && disableInput && FlxG.android.justReleased.BACK) {
+		if (disableInput && FlxG.android.justReleased.BACK) {
 			tempDisableInput();
 			inInput = FlxG.stage.window.textInputEnabled = false;
 			changeSelection(0);

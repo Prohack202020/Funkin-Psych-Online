@@ -880,11 +880,6 @@ class FreeplayState extends MusicBeatState
 			searchString = searchString;
 		}
 
-		#if android
-		if (searchInputWait && FlxG.android.justReleased.BACK)
-			tempDisableInput();
-		#end
-
 		var shiftMult:Int = 1;
 		if(mobilePad.buttonZ.pressed || FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
@@ -1043,6 +1038,14 @@ class FreeplayState extends MusicBeatState
 					openSubState(selState);
 				}
 			}
+
+			#if android
+			if (searchInputWait && FlxG.android.justPressed.BACK) {
+				searchString = '';
+				search();
+				tempDisableInput();
+			}
+			#end
 
 			if (controls.BACK)
 			{
