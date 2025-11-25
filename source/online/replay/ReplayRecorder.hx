@@ -140,7 +140,18 @@ class ReplayRecorder extends FlxBasic {
 					}
 				}
 			}
+		 
+		for (id => binds in state.controls.mobilepadBinds) {
+			for (bind in binds) {
+				if (REGISTER_BINDS.contains(id)) {
+					if (controllerIds.exists(bind))
+						controllerIds.get(bind).push(id);
+					else
+						controllerIds.set(bind, [id]);
+				}
+			}
 		}
+	}
 
 		state.add(this);
 
