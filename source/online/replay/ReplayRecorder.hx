@@ -71,7 +71,8 @@ class ReplayRecorder extends FlxBasic {
 
 	var keyboardIds:Map<FlxKey, Array<String>> = [];
 	var controllerIds:Map<FlxGamepadInputID, Array<String>> = [];
-
+	var mobilepadIds:Map<MobileInputID, Array<String>> = [];
+	
 	public function new(state:PlayState) {
 		super();
 
@@ -130,6 +131,17 @@ class ReplayRecorder extends FlxBasic {
 			}
 		}
 
+		//exclusive for taunts
+		if (mobilepadIds.exists(TAUNT)) {
+			if (keyboardIds.get(TAUNT).contains('taunt')) {
+				for (key in state.keysArray) {
+					if (keyboardIds.get(TAUNT).contains(key)) {
+						keyboardIds.get(TAUNT).remove('taunt');
+					}
+				}
+			}
+		}
+
 		state.add(this);
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -147,12 +159,17 @@ class ReplayRecorder extends FlxBasic {
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 	}
 
+	
 	function onKeyDown(e:KeyboardEvent) {
 		recordKey(Conductor.songPosition, keyboardIds.get(e.keyCode), e.keyCode, 0, true);
+	else
+		recordKey(Conductor.songPosition, mobilepadIds.get(e.keyCode), e.keyCode, 0, true);
     }
 
 	function onKeyUp(e:KeyboardEvent) {
 		recordKey(Conductor.songPosition, keyboardIds.get(e.keyCode), e.keyCode, 1, true);
+	else
+		recordKey(Conductor.songPosition, mobilepadIds.get(e.keyCode), e.keyCode, 1, true);
 	}
 
 	var _gamepad:FlxGamepad;
