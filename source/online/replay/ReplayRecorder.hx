@@ -161,28 +161,33 @@ class ReplayRecorder extends FlxBasic {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
+		CoolUtil.showPopUp('line 164');
+
 		//get Variables on update bc I wanna check them
 		var hitbox:Hitbox = state.hitbox;
 		var mobilePad:MobilePad = state.mobilePad;
+		CoolUtil.showPopUp('line 169');
 
 		//Null Check
 		if (hitbox == null)
 			isHitboxNull = true;
 		if (mobilePad == null)
 			isMobilePadNull = true;
+		
+		CoolUtil.showPopUp('line 177');
 
-		if(hitbox != null)
+		if(hitbox != null && isHitboxNull)
 		{
-			FunkinLua.trace("mobile controls init.");
+			CoolUtil.showPopUp("mobile controls init.");
 			isHitboxNull = false;
 			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
-			FunkinLua.trace("succeed.");
+			CoolUtil.showPopUp("succeed.");
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile controls but failed.");
-			FunkinLua.trace("Tried to init replay recorder for mobile controls but failed.");
+			CoolUtil.showPopUp("Tried to init replay recorder for mobile controls but failed.");
 		}
 
 		if (FlxG.gamepads.numActiveGamepads > 0) {
@@ -230,6 +235,7 @@ class ReplayRecorder extends FlxBasic {
 	function recordKeyMobileC(time:Float, IDs:Array<MobileInputID>, move:Int) {
 		if (IDs == null || IDs.length < 0)
 			return;
+		CoolUtil.showPopUp(IDs);
 
 		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
 		{
@@ -274,6 +280,8 @@ class ReplayRecorder extends FlxBasic {
 
 			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
 				continue;
+
+			CoolUtil.showPopUp(time + idName + move);
 
 			data.inputs.push([time, idName, move]);
 		}
