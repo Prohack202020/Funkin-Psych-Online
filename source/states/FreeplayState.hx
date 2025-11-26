@@ -1040,7 +1040,7 @@ class FreeplayState extends MusicBeatState
 			}
 
 			#if android
-			if (searchInputWait && FlxG.android.justPressed.BACK) {
+			if (FlxG.android.justPressed.BACK) {
 				searchString = '';
 				search();
 				tempDisableInput();

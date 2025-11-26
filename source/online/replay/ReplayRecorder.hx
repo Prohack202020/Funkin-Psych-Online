@@ -171,15 +171,18 @@ class ReplayRecorder extends FlxBasic {
 		if (mobilePad == null)
 			isMobilePadNull = true;
 
-		if(hitbox != null && isHitboxNull)
+		if(hitbox != null)
 		{
+			FunkinLua.trace("mobile controls init.");
 			isHitboxNull = false;
 			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
+			FunkinLua.trace("succeed.");
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile controls but failed.");
+			FunkinLua.trace("Tried to init replay recorder for mobile controls but failed.");
 		}
 
 		if (FlxG.gamepads.numActiveGamepads > 0) {
