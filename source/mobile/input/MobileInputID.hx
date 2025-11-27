@@ -83,14 +83,13 @@ enum abstract MobileInputID(Int) from Int to Int {
 	@:to
 	public inline function toString():String {
 		var stringShit:String = toStringMap.get(this);
-		var extraFix:Int = Std.parseInt(stringShit.split("EXTRA_")[1]);
 		var keys = Note.maniaKeys;
 		if (keys == 4) {
 			switch (stringShit) {
-				'NOTE_1': return 'NOTE_LEFT';
-				'NOTE_2': return 'NOTE_DOWN';
-				'NOTE_3': return 'NOTE_UP';
-				'NOTE_4': return 'NOTE_RIGHT';
+				case 'NOTE_1': return 'NOTE_LEFT';
+				case 'NOTE_2': return 'NOTE_DOWN';
+				case 'NOTE_3': return 'NOTE_UP';
+				case 'NOTE_4': return 'NOTE_RIGHT';
 			}
 		}
 		else {
