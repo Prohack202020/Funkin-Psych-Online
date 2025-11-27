@@ -9,12 +9,12 @@ jobs:
       matrix:
         include:
           - name: Android
-            os: macos-26
+            os: macos-15
             buildArgs: "android -ONLY_ARM64"
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
-            os: macos-26
+            os: macos-15
             buildArgs: "ios -final -nosign"
             artifactName: iOSBuild
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
