@@ -9,7 +9,7 @@
       "name": "lime",
       "type": "git",
       "ref": "main",
-      "url": "https://github.com/HomuHomu833-haxe-stuff/lime"
+      "url": "https://github.com/AlafandyPorting/lime-0.7.3"
     },
     {
       "name": "openfl",
@@ -42,7 +42,7 @@
       "type": "git",
       "dir": null,
       "ref": null,
-      "url": "https://github.com/HomuHomu833-haxe-stuff/hxcpp"
+      "url": "https://github.com/AlafandyPorting/hxcpp"
     },
     {
       "name": "tjson",
