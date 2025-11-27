@@ -8,10 +8,10 @@
 	<architecture exclude="arm64-v8a" if="ONLY_ARMV7" />
 	<define name="debugBuild" if="termux" />
 
-	<app title="FNF': Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
+	<app title="FNF Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 
 	<section if="alternativePackage">
-		<app title="FNF': Psych Online KO Port" file="PsychOnline" main="Main" version="0.6.0" packageName="com.kraloyuncuports.psychonline" package="com.kraloyuncuports.psychonline" company="KralOyuncuPorts" />
+		<app title="FNF Psych Online KO Port" file="PsychOnline" main="Main" version="0.6.0" packageName="com.kraloyuncuports.psychonline" package="com.kraloyuncuports.psychonline" company="KralOyuncuPorts" />
 	</section>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
@@ -245,12 +245,5 @@
 		<icon path="art/thumb-rect.png" size='32' />
 		<icon path="art/thumb-rect.png" size='64' />
 		<icon path="art/thumb-rect.png" />
-	</section>
-
-	<section unless="mobile">
-		<icon path="art/icon16.png" size='16'/>
-		<icon path="art/icon32.png" size='32'/>
-		<icon path="art/icon64.png" size='64'/>
-		<icon path="art/iconOG.png" />
 	</section>
 </project>
