@@ -235,7 +235,7 @@ class ReplayRecorder extends FlxBasic {
 	function recordKeyMobileC(time:Float, IDs:Array<MobileInputID>, move:Int) {
 		if (IDs == null || IDs.length < 0)
 			return;
-		CoolUtil.showPopUp(IDs, 'test');
+		CoolUtil.showPopUp(IDs[0].toString().toLowerCase(), 'test');
 
 		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
 		{
