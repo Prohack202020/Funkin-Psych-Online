@@ -86,10 +86,10 @@ enum abstract MobileInputID(Int) from Int to Int {
 		var keys = Note.maniaKeys;
 		if (keys == 4) {
 			switch (stringShit) {
-				case 'NOTE_1': return 'NOTE_LEFT';
-				case 'NOTE_2': return 'NOTE_DOWN';
-				case 'NOTE_3': return 'NOTE_UP';
-				case 'NOTE_4': return 'NOTE_RIGHT';
+				case 'NOTE_1': stringShit = 'NOTE_LEFT';
+				case 'NOTE_2': stringShit = 'NOTE_DOWN';
+				case 'NOTE_3': stringShit = 'NOTE_UP';
+				case 'NOTE_4': stringShit = 'NOTE_RIGHT';
 			}
 		}
 		else {
@@ -98,12 +98,12 @@ enum abstract MobileInputID(Int) from Int to Int {
 				var countFix:Int = Std.parseInt(fixedStringShit.split("EXTRA_")[1]);
 				fixedStringShit = fixedStringShit.replace('EXTRA_', 'NOTE_');
 
-				if (countFix > 9 && extraFix <= keys)
-					return '${keys}K_' + fixedStringShit;
+				if (countFix > 9 && countFix <= keys)
+					stringShit = '${keys}K_' + fixedStringShit;
 			} else if (stringShit.startsWith("NOTE_")) {
-				var countFix:Int = Std.parseInt(fixedStringShit.split("NOTE_")[1]);
+				var countFix:Int = Std.parseInt(stringShit.split("NOTE_")[1]);
 				if (countFix <= keys)
-					return '${keys}K_' + stringShit;
+					stringShit = '${keys}K_' + stringShit;
 			}
 		}
 
