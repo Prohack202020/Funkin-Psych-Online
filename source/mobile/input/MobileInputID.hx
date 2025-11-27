@@ -88,7 +88,7 @@ enum abstract MobileInputID(Int) from Int to Int {
 	];
 
 	@:to
-	public inline function toString():String {
+	public function toString():String {
 		var stringShit:String = toStringMap.get(this);
 		var extraFix:Int = Std.parseInt(stringShit.split("EXTRA_")[1]);
 		var keys = Note.maniaKeys;
