@@ -23,7 +23,7 @@ on:
         type: string
 
 env:
-  HAXE_VERSION: 4.3.7
+  HAXE_VERSION: 4.3.6
   PROJECT_NAME: PsychOnline
 
 jobs:
