@@ -1,60 +1,28 @@
-name: Build Psych Online With Mac OS
+name: Build Psych Online Mobile
 
 on: workflow_dispatch
 
 jobs:
-  buildAndroid:
-    runs-on: macos-15 #Use mac os for lower compiling time (this matters if you're not compiling the project on local too)
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Retrieve Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            export/release/android/haxe
-            export/release/android/obj
-          key: ${{ runner.os }}-cache
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.6
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r29-beta1
-
-      - name: Install Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install
-          haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
-          haxelib run lime config ANDROID_SETUP true
-
-      - name: Setup HXCPP Tools
-        run: |
-          cd .haxelib/hxcpp/git/tools/hxcpp
-          haxe compile.hxml
-          cd ../../../../..
-
-      - name: Compile
-        run: haxelib run lime build Project.xml android -D ONLY_ARM64 -D HXCPP_M64
-
-      - name: Publish Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: androidBuild
-          path: 'export/release/android/bin/app/build/outputs/apk/release/*.apk'
-          if-no-files-found: error
+  Build:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android
+            os: macos-26
+            buildArgs: "android -ONLY_ARM64"
+            artifactName: androidBuild
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: iOS
+            os: macos-26
+            buildArgs: "ios -eval -nosign"
+            artifactName: iOSBuild
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+    uses: ./.github/workflows/build.yml
+    with:
+        name: ${{ matrix.name }}
+        os: ${{ matrix.os }}
+        buildArgs: ${{ matrix.buildArgs }}
+        assetType: ${{ matrix.assetType }}
+        artifactName: ${{ matrix.artifactName }}
+        artifactPath: ${{ matrix.artifactPath }}

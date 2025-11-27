@@ -75,15 +75,15 @@ class StorageUtil
 		/* Hardcoded Storage Types, these types cannot be changed by Custom Type */
 		switch(curStorageType) {
 			case 'EXTERNAL':
-				daPath = '/storage/emulated/0/.Psych Online';
+				daPath = AndroidEnvironment.getExternalStorageDirectory() + '/.' + lime.app.Application.current.meta.get('file');
 			case 'EXTERNAL_OBB':
-				daPath = '/storage/emulated/0/Android/obb/' + Application.current.meta.get('packageName');
+				daPath = AndroidContext.getObbDir();
 			case 'EXTERNAL_MEDIA':
-				daPath = '/storage/emulated/0/Android/media/' + Application.current.meta.get('packageName');
+				daPath = AndroidEnvironment.getExternalStorageDirectory() + '/Android/media/' + lime.app.Application.current.meta.get('packageName');
 			case 'EXTERNAL_DATA':
 				daPath = AndroidContext.getExternalFilesDir();
 			default:
-				daPath = getExternalDirectory(curStorageType) + '.Psych Online';
+				daPath = getExternalDirectory(curStorageType) + '/.' + lime.app.Application.current.meta.get('file');
 		}
 
 		daPath = Path.addTrailingSlash(daPath);

@@ -13,6 +13,7 @@
 * Leaderboards
 * Erect/Nightmare Difficulty Support
 * Multi-Key Support
+* Mobile Support (Android and iOS)
 
 ### Planned
 * Further Psych Engine 1.0 Mod Support (1.0.0 is no longer planned sorry, too much work!) 
