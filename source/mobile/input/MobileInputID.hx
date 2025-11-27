@@ -1,6 +1,7 @@
 package mobile.input;
 
 import flixel.system.macros.FlxMacroUtil;
+import objects.Note;
 
 /**
  * A high-level list of unique values for mobile input buttons.
@@ -79,16 +80,7 @@ enum abstract MobileInputID(Int) from Int to Int {
 		return fromStringMap.exists(s) ? fromStringMap.get(s) : NONE;
 	}
 
-	public static var fixedReturn:Map<String, String> = [
-		'1K_NOTE_1'		=> 'NOTE_LEFT',
-
-		'2k_NOTE_1'		=> 'NOTE_LEFT',
-		'2K_NOTE_2'		=> 'NOTE_DOWN',
-
-		'3K_NOTE_1'		=> 'NOTE_LEFT',
-		'3K_NOTE_2'		=> 'NOTE_DOWN',
-		'3K_NOTE_3'		=> 'NOTE_UP',
-
+	public var fixedReturn:Map<String, String> = [
 		'NOTE_1'		=> 'NOTE_LEFT',
 		'NOTE_2'	=> 'NOTE_DOWN',
 		'NOTE_3'		=> 'NOTE_UP',
@@ -98,14 +90,25 @@ enum abstract MobileInputID(Int) from Int to Int {
 	@:to
 	public inline function toString():String {
 		var stringShit:String = toStringMap.get(this);
+		var extraFix:Int = Std.parseInt(stringShit.split("EXTRA_")[1]);
 		var keys = Note.maniaKeys;
-		for (i in 0...keys) {
-			if (keys == 4)
-				stringShit = fixedReturn.get('NOTE_${i + 1}')!
-			else
-				stringShit = fixedReturn.get('${keys}K_NOTE_${i + 1}');
+		if (keys == 4)
+			if (fixedReturn.exists(stringShit)) return fixedReturn.get(stringShit);
+		else {
+			if (stringShit.startsWith("EXTRA_")) {
+				var fixedStringShit:String = stringShit;
+				var countFix:Int = Std.parseInt(fixedStringShit.split("EXTRA_")[1]);
+				fixedStringShit = fixedStringShit.replace('EXTRA_', 'NOTE_');
+
+				if (countFix > 9 && extraFix <= keys)
+					return '${keys}K_' + fixedStringShit;
+			} else if (stringShit.startsWith("NOTE_")) {
+				var countFix:Int = Std.parseInt(fixedStringShit.split("NOTE_")[1]);
+				if (countFix <= keys)
+					return '${keys}K_' + stringShit;
+			}
 		}
-	
+
 		return stringShit;
 	}
 }
