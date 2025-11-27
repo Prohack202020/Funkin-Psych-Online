@@ -161,12 +161,12 @@ class ReplayRecorder extends FlxBasic {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		CoolUtil.showPopUp('line 164');
+		CoolUtil.showPopUp('line 164', 'test');
 
 		//get Variables on update bc I wanna check them
 		var hitbox:Hitbox = state.hitbox;
 		var mobilePad:MobilePad = state.mobilePad;
-		CoolUtil.showPopUp('line 169');
+		CoolUtil.showPopUp('line 169', 'test');
 
 		//Null Check
 		if (hitbox == null)
@@ -174,20 +174,20 @@ class ReplayRecorder extends FlxBasic {
 		if (mobilePad == null)
 			isMobilePadNull = true;
 		
-		CoolUtil.showPopUp('line 177');
+		CoolUtil.showPopUp('line 177', 'test');
 
 		if(hitbox != null && isHitboxNull)
 		{
-			CoolUtil.showPopUp("mobile controls init.");
+			CoolUtil.showPopUp("mobile controls init.", 'test');
 			isHitboxNull = false;
 			hitbox.onButtonDown.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 0));
 			hitbox.onButtonUp.add((button:MobileButton, ids:Array<MobileInputID>) -> recordKeyMobileC(Conductor.songPosition, ids, 1));
-			CoolUtil.showPopUp("succeed.");
+			CoolUtil.showPopUp("succeed.", 'test');
 		}
 		else
 		{
 			trace("Tried to init replay recorder for mobile controls but failed.");
-			CoolUtil.showPopUp("Tried to init replay recorder for mobile controls but failed.");
+			CoolUtil.showPopUp("Tried to init replay recorder for mobile controls but failed.", 'test');
 		}
 
 		if (FlxG.gamepads.numActiveGamepads > 0) {
@@ -235,7 +235,7 @@ class ReplayRecorder extends FlxBasic {
 	function recordKeyMobileC(time:Float, IDs:Array<MobileInputID>, move:Int) {
 		if (IDs == null || IDs.length < 0)
 			return;
-		CoolUtil.showPopUp(IDs);
+		CoolUtil.showPopUp(IDs, 'test');
 
 		if(IDs.length == 1 && !REGISTER_BINDS.contains(IDs[0].toString().toLowerCase()))
 		{
@@ -281,7 +281,7 @@ class ReplayRecorder extends FlxBasic {
 			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
 				continue;
 
-			CoolUtil.showPopUp(time + idName + move);
+			CoolUtil.showPopUp(time + idName + move, 'test');
 
 			data.inputs.push([time, idName, move]);
 		}
