@@ -9,7 +9,15 @@
       "name": "lime",
       "type": "git",
       "ref": "main",
-      "url": "https://github.com/HomuHomu833-haxe-stuff/lime"
+      "url": "https://github.com/HomuHomu833-haxe-stuff/lime",
+      "platforms": ["android", "desktop"]
+    },
+    {
+      "name": "lime",
+      "type": "git",
+      "ref": "main",
+      "url": "https://github.com/AlafandyPorting/lime-0.7.3",
+      "platforms": ["ios"]
     },
     {
       "name": "openfl",
