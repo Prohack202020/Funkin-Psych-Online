@@ -87,7 +87,7 @@ enum abstract MobileInputID(Int) from Int to Int {
 		var keys = Note.maniaKeys;
 		if (keys == 4) {
 			switch (stringShit) {
-				NOTE_1': return 'NOTE_LEFT';
+				'NOTE_1': return 'NOTE_LEFT';
 				'NOTE_2': return 'NOTE_DOWN';
 				'NOTE_3': return 'NOTE_UP';
 				'NOTE_4': return 'NOTE_RIGHT';
