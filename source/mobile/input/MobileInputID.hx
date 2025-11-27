@@ -74,21 +74,21 @@ enum abstract MobileInputID(Int) from Int to Int {
 	var HITBOX_NOTE_9 = 51;
 	var TAUNT = 52;
 
-	@:from
-	public static inline function fromString(s:String) {
-		s = s.toUpperCase();
-		return fromStringMap.exists(s) ? fromStringMap.get(s) : NONE;
-	}
-
-	public var fixedReturn:Map<String, String> = [
+	public inline var fixedReturn:Map<String, String> = [
 		'NOTE_1'		=> 'NOTE_LEFT',
 		'NOTE_2'	=> 'NOTE_DOWN',
 		'NOTE_3'		=> 'NOTE_UP',
 		'NOTE_4'		=> 'NOTE_RIGHT'
 	];
 
+	@:from
+	public static inline function fromString(s:String) {
+		s = s.toUpperCase();
+		return fromStringMap.exists(s) ? fromStringMap.get(s) : NONE;
+	}
+
 	@:to
-	public function toString():String {
+	public inline function toString():String {
 		var stringShit:String = toStringMap.get(this);
 		var extraFix:Int = Std.parseInt(stringShit.split("EXTRA_")[1]);
 		var keys = Note.maniaKeys;
