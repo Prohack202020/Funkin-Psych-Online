@@ -8,8 +8,10 @@
 	<architecture exclude="arm64-v8a" if="ONLY_ARMV7" />
 	<define name="debugBuild" if="termux" />
 
-	<app title="FNF': Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
+	<app title="FNF Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 
+	<section if="alternativePackage">
+		<app title="FNF Psych Online KO Port" file="PsychOnline" main="Main" version="0.6.0" packageName="com.kraloyuncuports.psychonline" package="com.kraloyuncuports.psychonline" company="KralOyuncuPorts" />
 	<section if="ios">
 		<app title="FNF Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 	</section>
@@ -244,14 +246,14 @@
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 
+	<assets path='art/iconOG.png' rename='icon.png' if="linux || mac" />
+	<section unless="mobile">
+		<icon path="art/thumb-rect.png" size='16' />
+		<icon path="art/thumb-rect.png" size='32' />
+		<icon path="art/thumb-rect.png" size='64' />
+		<icon path="art/thumb-rect.png" />
 	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
 	
 	<icon path="art/thumb-rect.png" if="mobile" />
-
-	<section unless="mobile">
-		<icon path="art/icon16.png" size='16'/>
-		<icon path="art/icon32.png" size='32'/>
-		<icon path="art/icon64.png" size='64'/>
-		<icon path="art/iconOG.png" />
 	</section>
 </project>
