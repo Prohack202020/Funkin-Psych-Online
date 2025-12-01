@@ -65,7 +65,7 @@ class MobileConfig {
 		trace('' + folder);
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
 
-		#if BMC_FILE_SUPPORT if (FileSystem.exists(folder)) #end
+		#if mobile_controls_file_support if (FileSystem.exists(folder)) #end
 		for (file in readDirectoryPart2(folder))
 		{
 			if (Path.extension(file) == 'json')
@@ -73,7 +73,7 @@ class MobileConfig {
 				file = Path.join([folder, Path.withoutDirectory(file)]);
 
 				var str:String;
-				#if BMC_FILE_SUPPORT
+				#if mobile_controls_file_support
 				if (FileSystem.exists(file))
 					str = File.getContent(file);
 				else #end
@@ -97,7 +97,7 @@ class MobileConfig {
 	{
 		var dirs:Array<String> = [];
 
-		#if BMC_FILE_SUPPORT
+		#if mobile_controls_file_support
 		return FileSystem.readDirectory(directory);
 		#else
 		var dirs:Array<String> = [];
