@@ -1,62 +1,103 @@
-package mobile.backend;
+package mobile;
 
-import haxe.ds.Map;
 import haxe.Json;
 import haxe.io.Path;
-import openfl.utils.Assets;
 import flixel.util.FlxSave;
+import openfl.utils.Assets;
 
-class MobileData
+using StringTools;
+
+enum ButtonsModes
 {
+	ACTION;
+	DPAD;
+	HITBOX;
+}
+
+class MobileConfig {
 	public static var actionModes:Map<String, MobileButtonsData> = new Map();
 	public static var dpadModes:Map<String, MobileButtonsData> = new Map();
 	public static var hitboxModes:Map<String, CustomHitboxData> = new Map();
+	public static var mobileFolderPath:String = 'mobile/';
 
 	public static var save:FlxSave;
 
-	public static function init()
+	public static function init(saveName:String, savePath:String, mobilePath:String = 'mobile/', folders:Array<String>, modes:Array<ButtonsModes>)
 	{
 		save = new FlxSave();
-		save.bind('MobileControls', CoolUtil.getSavePath());
+		save.bind(saveName, savePath);
+		if (mobilePath != null || mobilePath != '') mobileFolderPath = (mobilePath.endsWith('/') ? mobilePath : mobilePath + '/');
 
-		readDirectory(Paths.getPreloadPath('mobile/MobilePad/DPadModes'), dpadModes);
-		readDirectory(Paths.getPreloadPath('mobile/Hitbox/HitboxModes'), hitboxModes);
-		readDirectory(Paths.getPreloadPath('mobile/MobilePad/ActionModes'), actionModes);
-		#if MODS_ALLOWED
-		for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/MobilePad/'))
-		{
-			readDirectory(Path.join([folder, 'DPadModes']), dpadModes);
-			readDirectory(Path.join([folder, 'ActionModes']), actionModes);
-		}
-		for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/Hitbox/'))
-		{
-			readDirectory(Path.join([folder, 'HitboxModes']), hitboxModes);
-		}
-		#end
-	}
-
-	static function readDirectory(folder:String, map:Dynamic)
-	{
-		folder = folder.contains(':') ? folder.split(':')[1] : folder;
-
-		#if MODS_ALLOWED if (FileSystem.exists(folder)) #end
-		for (file in readDirectoryPlus(folder))
-		{
-			var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
-			if (Path.extension(fileWithNoLib) == 'json')
-			{
-				file = Path.join([folder, Path.withoutDirectory(file)]);
-				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
-				var json:MobileButtonsData = cast Json.parse(str);
-				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));
-				map.set(mapKey, json);
+		var intNumber:Int = -1;
+		for (i in folders) {
+			intNumber++;
+			switch (modes[intNumber]) {
+				case ACTION:
+					readDirectoryPart1(mobileFolderPath + i, actionModes, ACTION);
+					#if MODS_ALLOWED
+					for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/MobilePad/')) {
+						trace('called');
+						readDirectoryPart1(Path.join([folder, 'ActionModes']), actionModes, ACTION);
+					}
+					#end
+				case DPAD:
+					readDirectoryPart1(mobileFolderPath + i, dpadModes, DPAD);
+					#if MODS_ALLOWED
+					for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/MobilePad/')) {
+						trace('called');
+						readDirectoryPart1(Path.join([folder, 'DPadModes']), dpadModes, DPAD);
+					}
+					#end
+				case HITBOX:
+					readDirectoryPart1(mobileFolderPath + i, hitboxModes, HITBOX);
+					#if MODS_ALLOWED
+					for (folder in Mods.directoriesWithFile(Paths.getPreloadPath(), 'mobile/Hitbox/')) {
+						trace('called');
+						readDirectoryPart1(Path.join([folder, 'HitboxModes']), hitboxModes, HITBOX);
+					}
+					#end
 			}
 		}
 	}
 
-	static function readDirectoryPlus(directory:String):Array<String>
+	static function readDirectoryPart1(folder:String, map:Dynamic, mode:ButtonsModes)
 	{
-		#if MODS_ALLOWED
+		trace('' + folder);
+		folder = folder.contains(':') ? folder.split(':')[1] : folder;
+
+		#if BMC_FILE_SUPPORT if (FileSystem.exists(folder)) #end
+		for (file in readDirectoryPart2(folder))
+		{
+			if (Path.extension(file) == 'json')
+			{
+				file = Path.join([folder, Path.withoutDirectory(file)]);
+
+				var str:String;
+				#if BMC_FILE_SUPPORT
+				if (FileSystem.exists(file))
+					str = File.getContent(file);
+				else #end
+					str = Assets.getText(file);
+
+				if (mode == HITBOX) {
+					var json:CustomHitboxData = cast Json.parse(str);
+					var mapKey:String = Path.withoutDirectory(Path.withoutExtension(file));
+					map.set(mapKey, json);
+				}
+				else if (mode == ACTION || mode == DPAD) {
+					var json:MobileButtonsData = cast Json.parse(str);
+					var mapKey:String = Path.withoutDirectory(Path.withoutExtension(file));
+					map.set(mapKey, json);
+				}
+			}
+		}
+	}
+
+	static function readDirectoryPart2(directory:String):Array<String>
+	{
+		var dirs:Array<String> = [];
+
+		#if BMC_FILE_SUPPORT
 		return FileSystem.readDirectory(directory);
 		#else
 		var dirs:Array<String> = [];
@@ -107,6 +148,7 @@ typedef CustomHitboxData =
 typedef HitboxData =
 {
 	button:String, // what Hitbox Button should be used, must be a valid Hitbox Button var from Hitbox as a string.
+	buttonIDs:Array<String>, // what Hitbox Button Iad should be used, If you're using a the library for PsychEngine 0.7 Versions, This is useful.
 	//if custom ones isn't setted these will be used
 	x:Dynamic, // the button's X position on screen.
 	y:Dynamic, // the button's Y position on screen.
@@ -144,9 +186,11 @@ typedef HitboxData =
 typedef ButtonsData =
 {
 	button:String, // what MobileButton should be used, must be a valid MobileButton var from MobilePad as a string.
+	buttonIDs:Array<String>, // what MobileButton Button Iad should be used, If you're using a the library for PsychEngine 0.7 Versions, This is useful.
 	graphic:String, // the graphic of the button, usually can be located in the MobilePad xml.
 	x:Float, // the button's X position on screen.
 	y:Float, // the button's Y position on screen.
 	color:String, // the button color, default color is white.
-	bg:String // the button background for MobilePad, default background is `bg`.
+	bg:String, // the button background for MobilePad, default background is `bg`.
+	scale:Null<Float> // the button scale, default scale is 1.
 }

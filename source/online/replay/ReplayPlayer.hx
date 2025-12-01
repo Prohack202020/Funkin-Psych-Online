@@ -45,7 +45,7 @@ class ReplayPlayer extends FlxBasic {
 
     var _key:String = null;
     override function update(elapsed:Float) {
-        var shiftMult = (state.mobilePad?.buttonY?.pressed == true || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+        var shiftMult = (state.mobilePad?.getButtonFromName('buttonY')?.pressed == true || FlxG.keys.pressed.SHIFT) ? 3 : 1;
         if (state.controls.UI_LEFT) {
 			if (state.playbackRate - elapsed * 0.25 * shiftMult > 0)
 				state.playbackRate -= elapsed * 0.25 * shiftMult;
@@ -61,7 +61,7 @@ class ReplayPlayer extends FlxBasic {
             }
 			state.botplayTxt.text = data.player + "'s\nREPLAY\n" + '(${CoolUtil.floorDecimal(state.playbackRate, 2)}x)';
         }
-        else if (state.mobilePad?.buttonX?.justPressed == true || state.controls.RESET) {
+        else if (state.mobilePad?.getButtonFromName('buttonX')?.justPressed == true || state.controls.RESET) {
 			state.playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 			state.botplayTxt.text = data.player + "'s\nREPLAY\n";
         }

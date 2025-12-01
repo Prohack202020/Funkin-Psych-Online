@@ -2,6 +2,7 @@
   "buttons": [
     {
       "button": "buttonG",
+      "buttonIDs": ["G"],
       "graphic": "g",
       "x": 660,
       "y": 596,
@@ -9,6 +10,7 @@
     },
     {
       "button": "buttonV",
+      "buttonIDs": ["V"],
       "graphic": "v",
       "x": 784,
       "y": 472,
@@ -16,6 +18,7 @@
     },
     {
       "button": "buttonD",
+      "buttonIDs": ["D"],
       "graphic": "d",
       "x": 784,
       "y": 596,
@@ -23,6 +26,7 @@
     },
     {
       "button": "buttonX",
+      "buttonIDs": ["X"],
       "graphic": "x",
       "x": 908,
       "y": 472,
@@ -30,6 +34,7 @@
     },
     {
       "button": "buttonC",
+      "buttonIDs": ["C"],
       "graphic": "c",
       "x": 908,
       "y": 596,
@@ -37,6 +42,7 @@
     },
     {
       "button": "buttonY",
+      "buttonIDs": ["Y"],
       "graphic": "y",
       "x": 1032,
       "y": 472,
@@ -44,6 +50,7 @@
     },
     {
       "button": "buttonB",
+      "buttonIDs": ["B"],
       "graphic": "b",
       "x": 1032,
       "y": 596,
@@ -51,6 +58,7 @@
     },
     {
       "button": "buttonZ",
+      "buttonIDs": ["Z"],
       "graphic": "z",
       "x": 1156,
       "y": 472,
@@ -58,6 +66,7 @@
     },
     {
       "button": "buttonA",
+      "buttonIDs": ["A"],
       "graphic": "a",
       "x": 1156,
       "y": 596,

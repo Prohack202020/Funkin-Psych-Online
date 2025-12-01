@@ -530,7 +530,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		if(!blockInput && !animationDropDown.dropPanel.visible) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.SPACE || mobilePad.buttonA.justPressed && UI_mainbox.selected_tab_id == 'Character') {
+			if(FlxG.keys.justPressed.SPACE || mobilePad.getButtonFromName('buttonA').justPressed && UI_mainbox.selected_tab_id == 'Character') {
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
 				daText.resetDialogue();
 				updateTextBox();
@@ -539,7 +539,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			//lots of Ifs lol get trolled
 			var offsetAdd:Int = 1;
 			var speed:Float = 300;
-			if(FlxG.keys.pressed.SHIFT || mobilePad.buttonZ.pressed) {
+			if(FlxG.keys.pressed.SHIFT || mobilePad.getButtonFromName('buttonZ').pressed) {
 				speed = 1200;
 				offsetAdd = 10;
 			}
@@ -559,8 +559,8 @@ class DialogueCharacterEditorState extends MusicBeatState
 			if(UI_mainbox.selected_tab_id == 'Animations' && curSelectedAnim != null && character.dialogueAnimations.exists(curSelectedAnim)) {
 				var moved:Bool = false;
 				var animShit:DialogueAnimArray = character.dialogueAnimations.get(curSelectedAnim);
-				var controlArrayLoop:Array<Bool> = [FlxG.keys.justPressed.A || mobilePad.buttonLeft2.justPressed, FlxG.keys.justPressed.W || mobilePad.buttonUp2.justPressed, FlxG.keys.justPressed.D || mobilePad.buttonRight2.justPressed, FlxG.keys.justPressed.S || mobilePad.buttonDown2.justPressed];
-				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT || mobilePad.buttonLeft.justPressed, FlxG.keys.justPressed.UP || mobilePad.buttonUp.justPressed, FlxG.keys.justPressed.RIGHT || mobilePad.buttonRight.justPressed, FlxG.keys.justPressed.DOWN || mobilePad.buttonDown.justPressed];
+				var controlArrayLoop:Array<Bool> = [FlxG.keys.justPressed.A || mobilePad.getButtonFromName('buttonLeft2').justPressed, FlxG.keys.justPressed.W || mobilePad.getButtonFromName('buttonUp2').justPressed, FlxG.keys.justPressed.D || mobilePad.getButtonFromName('buttonRight2').justPressed, FlxG.keys.justPressed.S || mobilePad.getButtonFromName('buttonDown2').justPressed];
+				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT || mobilePad.getButtonFromName('buttonLeft').justPressed, FlxG.keys.justPressed.UP || mobilePad.getButtonFromName('buttonUp').justPressed, FlxG.keys.justPressed.RIGHT || mobilePad.getButtonFromName('buttonRight').justPressed, FlxG.keys.justPressed.DOWN || mobilePad.getButtonFromName('buttonDown').justPressed];
 				for (i in 0...controlArrayLoop.length) {
 					if(controlArrayLoop[i]) {
 						if(i % 2 == 1) {
@@ -598,7 +598,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 				camGame.zoom += elapsed * camGame.zoom;
 				if(camGame.zoom > 1) camGame.zoom = 1;
 			}
-			if(FlxG.keys.justPressed.H || mobilePad.buttonY.justPressed) {
+			if(FlxG.keys.justPressed.H || mobilePad.getButtonFromName('buttonY').justPressed) {
 				if(UI_mainbox.selected_tab_id == 'Animations') {
 					currentGhosts++;
 					if(currentGhosts > 2) currentGhosts = 0;
@@ -611,7 +611,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 					hudGroup.visible = !hudGroup.visible;
 				}
 			}
-			if(FlxG.keys.justPressed.R || mobilePad.buttonX.justPressed) {
+			if(FlxG.keys.justPressed.R || mobilePad.getButtonFromName('buttonX').justPressed) {
 				camGame.zoom = 1;
 				mainGroup.setPosition(0, 0);
 				hudGroup.visible = true;
@@ -673,7 +673,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 				}
 			}
 
-			if(FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end || mobilePad.buttonB.justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end || mobilePad.getButtonFromName('buttonB').justPressed) {
 				FlxG.switchState(() -> new states.editors.MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 				transitioning = true;

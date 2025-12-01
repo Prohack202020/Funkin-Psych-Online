@@ -36,7 +36,7 @@ class LeavePie extends FlxTypedSpriteGroup<FlxSprite> {
 	override function update(elapsed) {
 		super.update(elapsed);
 
-		if ((Std.isOfType(getState(), states.PlayState) && getState().mobilePad?.buttonP?.pressed == true) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
+		if ((Std.isOfType(getState(), states.PlayState) && getState().mobilePad?.getButtonFromName('buttonP')?.pressed == true) || getState().controls.pressed('back') && !ChatBox.instance.focused) {
 			exitTip.alpha = 1;
 			pieDial.amount += elapsed * 2;
 			pieDial.visible = true;

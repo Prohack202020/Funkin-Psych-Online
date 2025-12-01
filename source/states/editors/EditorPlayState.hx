@@ -172,7 +172,7 @@ class EditorPlayState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if(#if android FlxG.android.justReleased.BACK #else mobilePad.buttonP.justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE)
+		if(#if android FlxG.android.justReleased.BACK #else mobilePad.getButtonFromName('buttonP').justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE)
 		{
 			hitbox.visible = false;
 			endSong();
@@ -755,20 +755,24 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 	}
 
-	private function onButtonPress(button:MobileButton, ids:Array<MobileInputID>):Void
+	private function onButtonPress(button:MobileButton, ids:Array<String>):Void
 	{
-		if (ids.filter(id -> id.toString().startsWith("NOTE")).length > 0 || ids.filter(id -> id.toString().startsWith("HITBOX")).length > 0)
+		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith("HITBOX")).length > 0 || ids.filter(id -> id.startsWith("EXTRA")).length > 0)
 		{
-			var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+			var buttonCodeStr:String = ids[0];
+			var buttonCodeStrFixed = buttonCodeStr.replace(" ", "");
+			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
 			if (button.justPressed) keyPressed(buttonCode);
 		}
 	}
 
-	private function onButtonRelease(button:MobileButton, ids:Array<MobileInputID>):Void
+	private function onButtonRelease(button:MobileButton, ids:Array<String>):Void
 	{
-		if (ids.filter(id -> id.toString().startsWith("NOTE")).length > 0 || ids.filter(id -> id.toString().startsWith("HITBOX")).length > 0)
+		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith("HITBOX")).length > 0 || ids.filter(id -> id.startsWith("EXTRA")).length > 0)
 		{
-			var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+			var buttonCodeStr:String = ids[0];
+			var buttonCodeStrFixed = buttonCodeStr.replace(" ", "");
+			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
 			if(buttonCode > -1) keyReleased(buttonCode);
 		}
 	}

@@ -295,7 +295,7 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			else if (mobilePad.buttonE.justPressed || controls.justPressed('debug_1'))
+			else if (mobilePad.getButtonFromName('buttonE').justPressed || controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				FlxG.switchState(() -> new MasterEditorMenu());

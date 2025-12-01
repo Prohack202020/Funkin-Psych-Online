@@ -472,7 +472,7 @@ class SkinsState extends MusicBeatState {
 			Conductor.songPosition = music.time;
 		}
 
-        if (mobilePad.buttonX.pressed || FlxG.keys.pressed.SHIFT) {
+        if (mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.SHIFT) {
 			if (character.members[0] != null) {
 				if (controls.NOTE_UP) {
 					character.members[0].playAnim("singUP");
@@ -501,7 +501,7 @@ class SkinsState extends MusicBeatState {
 			}
         }
 
-		if (mobilePad.buttonV.justPressed || FlxG.keys.justPressed.CONTROL) {
+		if (mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.CONTROL) {
 			if (selectTimer != null)
 				selectTimer.active = false;
 
@@ -574,18 +574,18 @@ class SkinsState extends MusicBeatState {
 			});
 		}
 
-		if (mobilePad.buttonD.justPressed || FlxG.keys.justPressed.EIGHT) {
+		if (mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.EIGHT) {
 			Mods.currentModDirectory = charactersMod.get(charactersName[curCharacter]);
 			switchState(() -> new CharacterEditorState(charactersName[curCharacter], false, true));
 		}
 
-		if (mobilePad.buttonC.justPressed || FlxG.keys.justPressed.TAB) {
+		if (mobilePad.getButtonFromName('buttonC').justPressed || FlxG.keys.justPressed.TAB) {
 			flipped = !flipped;
 			skipStaticDestroy = true;
 			LoadingState.loadAndSwitchState(new SkinsState());
 		}
 
-		if (mobilePad.buttonY.justPressed || FlxG.keys.justPressed.F1) {
+		if (mobilePad.getButtonFromName('buttonY').justPressed || FlxG.keys.justPressed.F1) {
 			switch (Main.repoHost) {
 				case 'github':
 					RequestSubstate.requestURL("https://github.com/Snirozu/Funkin-Psych-Online/wiki#skins", true);
@@ -596,7 +596,7 @@ class SkinsState extends MusicBeatState {
 			}
 		}
 
-		if (mobilePad.buttonZ.justPressed || FlxG.keys.justPressed.F2) {
+		if (mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.F2) {
 			switchState(() -> new DownloaderState('collection:110039'));
 		}
 

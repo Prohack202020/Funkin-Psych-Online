@@ -2,6 +2,7 @@
   "buttons": [
     {
       "button": "buttonC",
+      "buttonIDs": ["C"],
       "graphic": "c",
       "x": 1032,
       "y": 596,
@@ -9,6 +10,7 @@
     },
     {
       "button": "buttonB",
+      "buttonIDs": ["B"],
       "graphic": "b",
       "x": 1156,
       "y": 596,
@@ -16,6 +18,7 @@
     },
     {
       "button": "buttonM",
+      "buttonIDs": ["M"],
       "graphic": "m",
       "x": 908,
       "y": 472,
@@ -23,6 +26,7 @@
     },
     {
       "button": "buttonT",
+      "buttonIDs": ["T"],
       "graphic": "t",
       "x": 1032,
       "y": 472,
@@ -30,6 +34,7 @@
     },
     {
       "button": "buttonY",
+      "buttonIDs": ["Y"],
       "graphic": "y",
       "x": 1156,
       "y": 472,

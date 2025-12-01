@@ -2,6 +2,7 @@
   "buttons": [
     {
       "button": "buttonB",
+      "buttonIDs": ["B"],
       "graphic": "b",
       "x": 1148,
       "y": 585,

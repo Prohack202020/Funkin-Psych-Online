@@ -349,17 +349,17 @@ class DialogueEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.SPACE || mobilePad.buttonY.justPressed) {
+			if(FlxG.keys.justPressed.SPACE || mobilePad.getButtonFromName('buttonY').justPressed) {
 				reloadText(false);
 			}
-			if(FlxG.keys.justPressed.ESCAPE || mobilePad.buttonB.justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE || mobilePad.getButtonFromName('buttonB').justPressed) {
 				FlxG.switchState(() -> new states.editors.MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];
-			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobilePad.buttonUp.justPressed, FlxG.keys.justPressed.S || mobilePad.buttonDown.justPressed];
-			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobilePad.buttonRight.justPressed, FlxG.keys.justPressed.A || mobilePad.buttonLeft.justPressed];
+			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobilePad.getButtonFromName('buttonUp').justPressed, FlxG.keys.justPressed.S || mobilePad.getButtonFromName('buttonDown').justPressed];
+			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobilePad.getButtonFromName('buttonRight').justPressed, FlxG.keys.justPressed.A || mobilePad.getButtonFromName('buttonLeft').justPressed];
 			for (i in 0...controlAnim.length) {
 				if(controlAnim[i] && character.jsonFile.animations.length > 0) {
 					curAnim -= negaMult[i];
@@ -382,7 +382,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 			}
 
-			if(FlxG.keys.justPressed.O || mobilePad.buttonA.justPressed ) {
+			if(FlxG.keys.justPressed.O || mobilePad.getButtonFromName('buttonA').justPressed ) {
 				dialogueFile.dialogue.remove(dialogueFile.dialogue[curSelected]);
 				if(dialogueFile.dialogue.length < 1) //You deleted everything, dumbo!
 				{
@@ -391,7 +391,7 @@ class DialogueEditorState extends MusicBeatState
 					];
 				}
 				changeText();
-			} else if(FlxG.keys.justPressed.P || mobilePad.buttonX.justPressed) {
+			} else if(FlxG.keys.justPressed.P || mobilePad.getButtonFromName('buttonX').justPressed) {
 				dialogueFile.dialogue.insert(curSelected + 1, copyDefaultLine());
 				changeText(1);
 			}

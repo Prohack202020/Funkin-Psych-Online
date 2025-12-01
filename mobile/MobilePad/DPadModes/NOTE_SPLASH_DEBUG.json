@@ -2,6 +2,7 @@
   "buttons": [
     {
       "button": "buttonUp",
+      "buttonIDs": ["UP"],
       "graphic": "up",
       "x": 0,
       "y": 127,
@@ -9,6 +10,7 @@
     },
     {
       "button": "buttonLeft",
+      "buttonIDs": ["LEFT"],
       "graphic": "left",
       "x": 0,
       "y": 2,
@@ -16,6 +18,7 @@
     },
     {
       "button": "buttonRight",
+      "buttonIDs": ["RIGHT"],
       "graphic": "right",
       "x": 127,
       "y": 2,
@@ -23,6 +26,7 @@
     },
     {
       "button": "buttonDown",
+      "buttonIDs": ["DOWN"],
       "graphic": "down",
       "x": 127,
       "y": 127,
@@ -30,6 +34,7 @@
     },
     {
       "button": "buttonUp2",
+      "buttonIDs": ["UP2"],
       "graphic": "up",
       "x": 127,
       "y": 395,
@@ -37,6 +42,7 @@
     },
     {
       "button": "buttonLeft2",
+      "buttonIDs": ["LEFT2"],
       "graphic": "left",
       "x": 0,
       "y": 395,
@@ -44,6 +50,7 @@
     },
     {
       "button": "buttonRight2",
+      "buttonIDs": ["RIGHT2"],
       "graphic": "right",
       "x": 1156,
       "y": 395,
@@ -51,6 +58,7 @@
     },
     {
       "button": "buttonDown2",
+      "buttonIDs": ["DOWN2"],
       "graphic": "down",
       "x": 1030,
       "y": 395,

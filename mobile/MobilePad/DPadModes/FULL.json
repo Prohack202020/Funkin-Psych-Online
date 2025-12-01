@@ -2,6 +2,7 @@
   "buttons": [
     {
       "button": "buttonUp",
+      "buttonIDs": ["UP"],
       "graphic": "up",
       "x": 105,
       "y": 372,
@@ -9,6 +10,7 @@
     },
     {
       "button": "buttonLeft",
+      "buttonIDs": ["LEFT"],
       "graphic": "left",
       "x": 0,
       "y": 477,
@@ -16,6 +18,7 @@
     },
     {
       "button": "buttonRight",
+      "buttonIDs": ["RIGHT"],
       "graphic": "right",
       "x": 207,
       "y": 477,
@@ -23,6 +26,7 @@
     },
     {
       "button": "buttonDown",
+      "buttonIDs": ["DOWN"],
       "graphic": "down",
       "x": 105,
       "y": 585,

@@ -272,32 +272,32 @@ class MenuCharacterEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end || mobilePad.buttonB.justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end || mobilePad.getButtonFromName('buttonB').justPressed) {
 				FlxG.switchState(() -> new states.editors.MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 			}
 
 			var shiftMult:Int = 1;
-			if(FlxG.keys.pressed.SHIFT || mobilePad.buttonA.pressed) shiftMult = 10;
+			if(FlxG.keys.pressed.SHIFT || mobilePad.getButtonFromName('buttonA').pressed) shiftMult = 10;
 
-			if(FlxG.keys.justPressed.LEFT || mobilePad.buttonLeft.justPressed) {
+			if(FlxG.keys.justPressed.LEFT || mobilePad.getButtonFromName('buttonLeft').justPressed) {
 				characterFile.position[0] += shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.RIGHT || mobilePad.buttonRight.justPressed) {
+			if(FlxG.keys.justPressed.RIGHT || mobilePad.getButtonFromName('buttonRight').justPressed) {
 				characterFile.position[0] -= shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.UP || mobilePad.buttonUp.justPressed) {
+			if(FlxG.keys.justPressed.UP || mobilePad.getButtonFromName('buttonUp').justPressed) {
 				characterFile.position[1] += shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.DOWN || mobilePad.buttonDown.justPressed) {
+			if(FlxG.keys.justPressed.DOWN || mobilePad.getButtonFromName('buttonDown').justPressed) {
 				characterFile.position[1] -= shiftMult;
 				updateOffset();
 			}
 
-			if(FlxG.keys.justPressed.SPACE || mobilePad.buttonC.justPressed && curTypeSelected == 1) {
+			if(FlxG.keys.justPressed.SPACE || mobilePad.getButtonFromName('buttonC').justPressed && curTypeSelected == 1) {
 				grpWeekCharacters.members[curTypeSelected].animation.play('confirm', true);
 			}
 		}

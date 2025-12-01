@@ -93,7 +93,7 @@ class Controls
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
-	public var mobileBinds:Map<String, Array<MobileInputID>>;
+	public var mobileBinds:Map<String, Array<String>>;
 	public function justPressed(key:String)
 	{
 		if (moodyBlues != null && moodyBlues.ALLOWED_BINDS.contains(key)) {
@@ -198,55 +198,55 @@ class Controls
 	public var requestedHitbox(get, default):Hitbox; // for PlayState and EditorPlayState
 	public var mobileControls(get, never):Bool;
 
-	private function mobilePadPressed(keys:Array<MobileInputID>):Bool
+	private function mobilePadPressed(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedInstance.mobilePad != null)
-			if (requestedInstance.mobilePad.anyPressed(keys) == true)
+			if (requestedInstance.mobilePad.buttonPressed(keys) == true)
 				return true;
 
 		return false;
 	}
 
-	private function mobilePadJustPressed(keys:Array<MobileInputID>):Bool
+	private function mobilePadJustPressed(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedInstance.mobilePad != null)
-			if (requestedInstance.mobilePad.anyJustPressed(keys) == true)
+			if (requestedInstance.mobilePad.buttonJustPressed(keys) == true)
 				return true;
 
 		return false;
 	}
 
-	private function mobilePadJustReleased(keys:Array<MobileInputID>):Bool
+	private function mobilePadJustReleased(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedInstance.mobilePad != null)
-			if (requestedInstance.mobilePad.anyJustReleased(keys) == true)
+			if (requestedInstance.mobilePad.buttonJustReleased(keys) == true)
 				return true;
 
 		return false;
 	}
 
-	private function hitboxPressed(keys:Array<MobileInputID>):Bool
+	private function hitboxPressed(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedHitbox != null)
-			if (requestedHitbox.anyPressed(keys))
+			if (requestedHitbox.buttonPressed(keys))
 				return true;
 
 		return false;
 	}
 
-	private function hitboxJustPressed(keys:Array<MobileInputID>):Bool
+	private function hitboxJustPressed(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedHitbox != null)
-			if (requestedHitbox.anyJustPressed(keys))
+			if (requestedHitbox.buttonJustPressed(keys))
 				return true;
 
 		return false;
 	}
 
-	private function hitboxJustReleased(keys:Array<MobileInputID>):Bool
+	private function hitboxJustReleased(keys:Array<String>):Bool
 	{
 		if (keys != null && requestedHitbox != null)
-			if (requestedHitbox.anyJustReleased(keys))
+			if (requestedHitbox.buttonJustReleased(keys))
 				return true;
 
 		return false;

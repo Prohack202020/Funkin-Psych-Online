@@ -181,9 +181,9 @@ class NotesSubState extends MusicBeatSubstate
 
 		addMobilePad('NONE', 'B_C');
 		controls.isInSubstate = true;
-		mobilePad.buttonB.x = FlxG.width - 132;
-		mobilePad.buttonC.x = 0;
-		mobilePad.buttonC.y = FlxG.height - 135;
+		mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
+		mobilePad.getButtonFromName('buttonC').x = 0;
+		mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
 	}
 
 	function updateTip()
@@ -206,13 +206,13 @@ class NotesSubState extends MusicBeatSubstate
 		addMobilePad('NONE', 'B_C');
 		addMobilePadCamera();
 		controls.isInSubstate = true;
-		mobilePad.buttonB.x = FlxG.width - 132;
-		mobilePad.buttonC.x = 0;
-		mobilePad.buttonC.y = FlxG.height - 135;
+		mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
+		mobilePad.getButtonFromName('buttonC').x = 0;
+		mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
 	}
 
 	override function update(elapsed:Float) {
-		if (controls.BACK || mobilePad?.buttonB?.justPressed) {
+		if (controls.BACK || mobilePad?.getButtonFromName('buttonB')?.justPressed) {
 			if (GameClient.isConnected()) {
 				GameClient.send('updateArrColors', ClientPrefs.getArrowRGBCompleteMaps());
 			}
@@ -498,7 +498,7 @@ class NotesSubState extends MusicBeatSubstate
 				}
 			} 
 		}
-		else if(mobilePad.buttonC.justPressed || controls.RESET && hexTypeNum < 0)
+		else if(mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET && hexTypeNum < 0)
 		{
 			if(FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER))
 			{

@@ -127,6 +127,10 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
 
+	<!-- Add Mobile Controls (Made by me -ArkoseLabs) -->
+	<haxelib name="mobile-controls"/>
+	<haxedef name="mobile_controls_file_support"/>
+
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED" />
@@ -234,6 +238,7 @@
 	
 	<!-- Lime Fix -->
 	<haxedef name="lime_use_old_deltatime" />
+	<haxedef name="lime_disable_motion_sensors" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

@@ -2,7 +2,7 @@ package mobile.psychlua;
 
 import lime.ui.Haptic;
 import flixel.util.FlxSave;
-import mobile.backend.TouchFunctions;
+import mobile.TouchUtil;
 import psychlua.CustomSubstate;
 import psychlua.FunkinLua;
 
@@ -14,45 +14,45 @@ class MobileFunctions
 		var lua:State = funk.lua;
 
 		//Use them for 8k charts or something
-		Lua_helper.add_callback(lua, 'HitboxPressed', function(button:String):Bool
+		Lua_helper.add_callback(lua, 'hitboxPressed', function(button:String):Bool
 		{
 			return PlayState.checkHBoxPress(button, 'pressed');
 		});
 
-		Lua_helper.add_callback(lua, 'HitboxJustPressed', function(button:String):Bool
+		Lua_helper.add_callback(lua, 'hitboxJustPressed', function(button:String):Bool
 		{
 			return PlayState.checkHBoxPress(button, 'justPressed');
 		});
 
-		Lua_helper.add_callback(lua, 'HitboxReleased', function(button:String):Bool
+		Lua_helper.add_callback(lua, 'hitboxReleased', function(button:String):Bool
 		{
 			return PlayState.checkHBoxPress(button, 'released');
 		});
 
-		Lua_helper.add_callback(lua, 'HitboxJustReleased', function(button:String):Bool
+		Lua_helper.add_callback(lua, 'hitboxJustReleased', function(button:String):Bool
 		{
 			return PlayState.checkHBoxPress(button, 'justReleased');
 		});
 
 		//OMG
-		Lua_helper.add_callback(lua, 'mobilePadPressed', function(buttonPostfix:String):Bool
+		Lua_helper.add_callback(lua, 'mobilePadPressed', function(button:String):Bool
 		{
-			return PlayState.checkMPadPress(buttonPostfix, 'pressed');
+			return PlayState.checkMPadPress(button, 'pressed');
 		});
 
-		Lua_helper.add_callback(lua, 'mobilePadJustPressed', function(buttonPostfix:String):Bool
+		Lua_helper.add_callback(lua, 'mobilePadJustPressed', function(button:String):Bool
 		{
-			return PlayState.checkMPadPress(buttonPostfix, 'justPressed');
+			return PlayState.checkMPadPress(button, 'justPressed');
 		});
 
-		Lua_helper.add_callback(lua, 'mobilePadReleased', function(buttonPostfix:String):Bool
+		Lua_helper.add_callback(lua, 'mobilePadReleased', function(button:String):Bool
 		{
-			return PlayState.checkMPadPress(buttonPostfix, 'released');
+			return PlayState.checkMPadPress(button, 'released');
 		});
 
-		Lua_helper.add_callback(lua, 'mobilePadJustReleased', function(buttonPostfix:String):Bool
+		Lua_helper.add_callback(lua, 'mobilePadJustReleased', function(button:String):Bool
 		{
-			return PlayState.checkMPadPress(buttonPostfix, 'justReleased');
+			return PlayState.checkMPadPress(button, 'justReleased');
 		});
 
 		Lua_helper.add_callback(lua, 'addMobilePad', function(DPad:String, Action:String, ?addToCustomSubstate:Bool = false, ?posAtCustomSubstate:Int = -1):Void
@@ -80,13 +80,6 @@ class MobileFunctions
 		Lua_helper.add_callback(lua, "MobileC", function(enabled:Bool = false):Void
 		{
 			MusicBeatState.getState().hitbox.visible = enabled;
-		});
-
-		//Backwards Compability
-		Lua_helper.add_callback(lua, 'getCurMobilecMode', function():String
-		{
-			var curMode:String = 'HITBOX';
-			return curMode;
 		});
 
 		//better support
@@ -130,9 +123,9 @@ class MobileFunctions
 			return Haptic.vibrate(period, duration);
 		});
 
-		Lua_helper.add_callback(lua, "touchJustPressed", TouchFunctions.touchJustPressed);
-		Lua_helper.add_callback(lua, "touchPressed", TouchFunctions.touchPressed);
-		Lua_helper.add_callback(lua, "touchJustReleased", TouchFunctions.touchJustReleased);
+		Lua_helper.add_callback(lua, "touchJustPressed", TouchUtil.justPressed);
+		Lua_helper.add_callback(lua, "touchPressed", TouchUtil.pressed);
+		Lua_helper.add_callback(lua, "touchJustReleased", TouchUtil.justReleased);
 		Lua_helper.add_callback(lua, "touchPressedObject", function(object:String):Bool
 		{
 			var obj = PlayState.instance.getLuaObject(object);
@@ -141,7 +134,7 @@ class MobileFunctions
 				funk.luaTrace('touchPressedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchPressed;
+			return TouchUtil.overlaps(obj) && TouchUtil.pressed;
 		});
 
 		Lua_helper.add_callback(lua, "touchJustPressedObject", function(object:String):Bool
@@ -152,7 +145,7 @@ class MobileFunctions
 				funk.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustPressed;
+			return TouchUtil.overlaps(obj) && TouchUtil.justPressed;
 		});
 
 		Lua_helper.add_callback(lua, "touchJustReleasedObject", function(object:String):Bool
@@ -163,7 +156,7 @@ class MobileFunctions
 				funk.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustReleased;
+			return TouchUtil.overlaps(obj) && TouchUtil.justReleased;
 		});
 
 		Lua_helper.add_callback(lua, "touchOverlapsObject", function(object:String):Bool
@@ -174,7 +167,7 @@ class MobileFunctions
 				funk.luaTrace('touchOverlapsObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj);
+			return TouchUtil.overlaps(obj);
 		});
 		#end
 	}

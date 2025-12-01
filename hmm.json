@@ -9,7 +9,7 @@
       "name": "lime",
       "type": "git",
       "ref": "main",
-      "url": "https://github.com/AlafandyPorting/lime-0.7.3"
+      "url": "https://github.com/HomuHomu833-haxe-stuff/lime"
     },
     {
       "name": "openfl",
@@ -161,9 +161,9 @@
       "url": "https://github.com/FunkinCrew/funkVis"
     },
     {
-      "name": "extension-androidtools",
+      "name": "mobile-controls",
       "type": "haxelib",
-      "version": "2.2.2"
+      "version": "0.1.0"
     }
   ]
 }
