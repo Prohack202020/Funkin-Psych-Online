@@ -3,18 +3,15 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: "Release name (e.g. many fixes or daily update)"
+        description: "Release name (e.g. `many fixes`)"
         required: true
       tag_name:
-        description: "Release tag (e.g. v0.13.3 or bugfix)"
+        description: "Release tag (e.g. `v0.13.3 or bugfix`)"
         required: true
       prerelease:
         description: "Is this a prerelease?"
         required: true
         type: boolean
-      custom_message:
-        description: "Optional pre-changelog message"
-        required: false
 
 permissions:
   contents: write
@@ -26,47 +23,6 @@ env:
   NAME: ${{ github.event.inputs.name }}
 
 jobs:
-  ensure-tag:
-    name: Create Tag (if needed)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Fetch all tags
-        run: git fetch --tags
-
-      - name: Set tag name
-        id: tagger
-        run: echo "tag_name=${{ github.event.inputs.tag_name }}" >> $GITHUB_OUTPUT
-
-      - name: Create and push tag
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git tag ${{ github.event.inputs.tag_name }}
-          git push origin ${{ github.event.inputs.tag_name }}
-
-      - name: Prepare pre-changelog message
-        id: pre_changelog_message
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Preparing a pre-changelog message..."
-
-          BODY=""
-
-          if [ -n "${{ github.event.inputs.custom_message }}" ]; then
-            BODY="${{ github.event.inputs.custom_message }}\n${BODY}"
-          fi
-
-          {
-            echo "body<<EOF"
-            echo -e "$BODY"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-          echo -e "Final pre-changelog message:\n\n$BODY"
-
   build:
     name: ${{ matrix.name }}
     needs: ensure-tag
