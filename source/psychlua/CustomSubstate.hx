@@ -99,12 +99,10 @@ class CustomSubstate extends MusicBeatSubstate
 		super.destroy();
 	}
 
-	public static function insertLuaMpad(?pos:Int = -1)
+	public static function insertObject(?pos:Int = -1, tagObject:FlxObject)
 	{
 		if(instance != null)
 		{
-			var tagObject:FlxObject = PlayState.instance.luaMobilePad;
-
 			if(tagObject != null)
 			{
 				if(pos < 0) instance.add(tagObject);

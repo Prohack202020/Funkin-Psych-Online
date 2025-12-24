@@ -216,25 +216,20 @@ class ExtraFunctions
 
 		// File management
 		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
-			#if MODS_ALLOWED
 			if(absolute)
 			{
-				return FileSystem.exists(filename);
+				return FunkinFileSystem.exists(filename);
 			}
 
+			#if MODS_ALLOWED
 			var path:String = Paths.modFolders(filename);
-			if(FileSystem.exists(path))
+			if(FunkinFileSystem.exists(path))
 			{
 				return true;
 			}
-			return FileSystem.exists(Paths.getPath('assets/$filename', TEXT));
-			#else
-			if(absolute)
-			{
-				return Assets.exists(filename);
-			}
-			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
 			#end
+
+			return FunkinFileSystem.exists(Paths.getPath('assets/$filename', TEXT));
 		});
 		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
 		{
@@ -344,26 +339,30 @@ class ExtraFunctions
 		}
 
 		//Custom return thing
-		for (num in 1...31) {
-			if (MusicBeatState.getState().hitbox != null) {
-				var hitbox:Dynamic = MusicBeatState.getState().hitbox.getButtonFromName('buttonExtra' + num);
-				if (key.toUpperCase() == hitbox.returnedKey) {
-					if (Reflect.getProperty(hitbox, type)) {
+		if (MusicBeatState.getState().mobileManager.hitbox != null) {
+			var hitbox:FunkinHitbox = MusicBeatState.getState().mobileManager.hitbox;
+			for (num in 0...hitbox.hints.length+1) {
+				var hitboxButton:Dynamic = hitbox.hints[num];
+				if (key.toUpperCase() == hitboxButton.returnedKey)
+					if (Reflect.getProperty(hitboxButton, type))
 						return true;
-					}
-				}
 			}
 		}
 
-		//For mobilePad, this is useful if you're using the V-Slice Mobile Control (Not Added Yet)
-		for (num in 1...31) {
-			if (MusicBeatState.getState().mobilePad != null) {
-				var mobilePad:Dynamic = MusicBeatState.getState().mobilePad.getButtonFromName('buttonExtra' + num);
-				if (key.toUpperCase() == mobilePad.returnedKey) {
-					if (Reflect.getProperty(mobilePad, type)) {
+		if (MusicBeatState.getState().mobileManager.mobilePad != null) {
+			var mobilePad:FunkinMobilePad = MusicBeatState.getState().mobileManager.mobilePad;
+			for (num in 0...mobilePad.dpads.length+1) {
+				var mobilePadButton:Dynamic = mobilePad.dpads[num];
+				if (key.toUpperCase() == mobilePadButton.returnedKey)
+					if (Reflect.getProperty(mobilePadButton, type))
 						return true;
-					}
-				}
+			}
+
+			for (num in 0...mobilePad.actions.length+1) {
+				var mobilePadButton:Dynamic = mobilePad.actions[num];
+				if (key.toUpperCase() == mobilePadButton.returnedKey)
+					if (Reflect.getProperty(mobilePadButton, type))
+						return true;
 			}
 		}
 		return false;

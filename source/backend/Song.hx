@@ -137,18 +137,13 @@ class Song
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 		#if MODS_ALLOWED
 		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
-		if (FileSystem.exists(moddyFile)) {
-			rawJson = File.getContent(moddyFile).trim();
+		if (FunkinFileSystem.exists(moddyFile)) {
+			rawJson = FunkinFileSystem.getText(moddyFile).trim();
 		}
 		#end
 
 		if (rawJson == null) {
-			#if sys
-			if (FileSystem.exists(Paths.json(formattedFolder + '/' + formattedSong)))
-				rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong));
-			#else
-			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong));
-			#end
+			rawJson = FunkinFileSystem.getText(Paths.json(formattedFolder + '/' + formattedSong));
 
 			if (rawJson == null) {
 				throw new haxe.Exception("Missing file: " + Paths.json(formattedFolder + '/' + formattedSong));

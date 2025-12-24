@@ -136,11 +136,11 @@ class Character extends FlxSprite {
 
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
-		if (!FileSystem.exists(path)) {
+		if (!FunkinFileSystem.exists(path)) {
 			path = Paths.getPreloadPath(characterPath);
 		}
 
-		if (!FileSystem.exists(path))
+		if (!FunkinFileSystem.exists(path))
 		#else
 		var path:String = Paths.getPreloadPath(characterPath);
 		if (!Assets.exists(path))
@@ -151,12 +151,8 @@ class Character extends FlxSprite {
 			path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json'); // If a character couldn't be found, change him to BF just to prevent a crash
 		}
 
-		#if MODS_ALLOWED
-		var rawJson = File.getContent(path);
-		#else
-		var rawJson = Assets.getText(path);
-		#end
-
+		var rawJson = FunkinFileSystem.getText(path);
+		if (rawJson == null) return null;
 		return cast Json.parse(rawJson);
 	}
 
@@ -183,7 +179,7 @@ class Character extends FlxSprite {
 				#if MODS_ALLOWED
 				var modAnimToFind:String = Paths.modFolders('images/' + imageFile + '/Animation.json');
 				var animToFind:String = Paths.getPath('images/' + imageFile + '/Animation.json', TEXT);
-				if (FileSystem.exists(modAnimToFind) || FileSystem.exists(animToFind) || Assets.exists(animToFind))
+				if (FunkinFileSystem.exists(modAnimToFind) || FunkinFileSystem.exists(animToFind) || Assets.exists(animToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + imageFile + '/Animation.json', TEXT)))
 				#end

@@ -262,7 +262,7 @@ class ModsMenuState extends MusicBeatState
 		startX -= 100;
 		buttonDelete = new FlxButton(startX, 0, "DEL", function() {
 			var path = haxe.io.Path.join([Paths.mods(), modsList[curSelected][0]]);
-			if(FileSystem.exists(path) && FileSystem.isDirectory(path))
+			if(FunkinFileSystem.exists(path) && FileSystem.isDirectory(path))
 			{
 				trace('Trying to delete directory ' + path);
 				try
@@ -358,7 +358,7 @@ class ModsMenuState extends MusicBeatState
 		// removeButton = new FlxButton(startX, 620, "Delete Selected Mod", function()
 		// {
 		// 	var path = haxe.io.Path.join([Paths.mods(), modsList[curSelected][0]]);
-		// 	if(FileSystem.exists(path) && FileSystem.isDirectory(path))
+		// 	if(FunkinFileSystem.exists(path) && FileSystem.isDirectory(path))
 		// 	{
 		// 		trace('Trying to delete directory ' + path);
 		// 		try
@@ -406,7 +406,7 @@ class ModsMenuState extends MusicBeatState
 		while (i < modsList.length)
 		{
 			var values:Array<Dynamic> = modsList[i];
-			if(!FileSystem.exists(Paths.mods(values[0])))
+			if(!FunkinFileSystem.exists(Paths.mods(values[0])))
 			{
 				modsList.remove(modsList[i]);
 				continue;
@@ -424,9 +424,9 @@ class ModsMenuState extends MusicBeatState
 			//Don't ever cache the icons, it's a waste of loaded memory
 			var loadedIcon:BitmapData = null;
 			var iconToUse:String = Paths.mods(values[0] + '/pack.png');
-			if(FileSystem.exists(iconToUse))
+			if(FunkinFileSystem.exists(iconToUse))
 			{
-				loadedIcon = BitmapData.fromFile(iconToUse);
+				loadedIcon = FunkinFileSystem.getBitmapData(iconToUse);
 			}
 
 			newMod.icon = new AttachedSprite();
@@ -465,7 +465,7 @@ class ModsMenuState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
-		addMobilePad('UP_DOWN', 'B');
+		mobileManager.addMobilePad('UP_DOWN', 'B');
 
 		super.create();
 	}
@@ -789,7 +789,7 @@ class ModsMenuState extends MusicBeatState
 
 		if(fullPath != null)
 		{
-			var rawZip:String = File.getContent(fullPath);
+			var rawZip:String = FunkinFileSystem.getText(fullPath);
 			if(rawZip != null)
 			{
 				MusicBeatState.resetState();
@@ -877,9 +877,9 @@ class ModMetadata
 			this.runsGlobally = pack.runsGlobally ?? false;
 
 			var path:String = Paths.mods('$folder/data/settings.json');
-			if(FileSystem.exists(path))
+			if(FunkinFileSystem.exists(path))
 			{
-				var data:String = File.getContent(path);
+				var data:String = FunkinFileSystem.getText(path);
 				try
 				{
 					settings = tjson.TJSON.parse(data);

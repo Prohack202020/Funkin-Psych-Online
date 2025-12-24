@@ -98,7 +98,7 @@ class DialogueEditorState extends MusicBeatState
 		daText.setScale(0.7);
 		add(daText);
 		changeText();
-		addMobilePad("FULL", "A_B_X_Y");
+		mobileManager.addMobilePad("FULL", "A_B_X_Y");
 		super.create();
 	}
 
@@ -349,17 +349,17 @@ class DialogueEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.SPACE || mobilePad.getButtonFromName('buttonY').justPressed) {
+			if(FlxG.keys.justPressed.SPACE || mobileManager.mobilePad.getButtonFromName('buttonY').justPressed) {
 				reloadText(false);
 			}
-			if(FlxG.keys.justPressed.ESCAPE || mobilePad.getButtonFromName('buttonB').justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE || mobileManager.mobilePad.getButtonFromName('buttonB').justPressed) {
 				FlxG.switchState(() -> new states.editors.MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];
-			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobilePad.getButtonFromName('buttonUp').justPressed, FlxG.keys.justPressed.S || mobilePad.getButtonFromName('buttonDown').justPressed];
-			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobilePad.getButtonFromName('buttonRight').justPressed, FlxG.keys.justPressed.A || mobilePad.getButtonFromName('buttonLeft').justPressed];
+			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobileManager.mobilePad.getButtonFromName('buttonUp').justPressed, FlxG.keys.justPressed.S || mobileManager.mobilePad.getButtonFromName('buttonDown').justPressed];
+			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed, FlxG.keys.justPressed.A || mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed];
 			for (i in 0...controlAnim.length) {
 				if(controlAnim[i] && character.jsonFile.animations.length > 0) {
 					curAnim -= negaMult[i];
@@ -382,7 +382,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 			}
 
-			if(FlxG.keys.justPressed.O || mobilePad.getButtonFromName('buttonA').justPressed ) {
+			if(FlxG.keys.justPressed.O || mobileManager.mobilePad.getButtonFromName('buttonA').justPressed ) {
 				dialogueFile.dialogue.remove(dialogueFile.dialogue[curSelected]);
 				if(dialogueFile.dialogue.length < 1) //You deleted everything, dumbo!
 				{
@@ -391,7 +391,7 @@ class DialogueEditorState extends MusicBeatState
 					];
 				}
 				changeText();
-			} else if(FlxG.keys.justPressed.P || mobilePad.getButtonFromName('buttonX').justPressed) {
+			} else if(FlxG.keys.justPressed.P || mobileManager.mobilePad.getButtonFromName('buttonX').justPressed) {
 				dialogueFile.dialogue.insert(curSelected + 1, copyDefaultLine());
 				changeText(1);
 			}
@@ -482,7 +482,7 @@ class DialogueEditorState extends MusicBeatState
 		if(_file.__path != null) fullPath = _file.__path;
 
 		if(fullPath != null) {
-			var rawJson:String = File.getContent(fullPath);
+			var rawJson:String = FunkinFileSystem.getText(fullPath);
 			if(rawJson != null) {
 				var loadedDialog:DialogueFile = cast Json.parse(rawJson);
 				if(loadedDialog.dialogue != null && loadedDialog.dialogue.length > 0) //Make sure it's really a dialogue file

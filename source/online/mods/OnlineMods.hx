@@ -25,7 +25,7 @@ class OnlineMods {
 	public static function checkMods() {
 		var needMods:Array<String> = [];
 		for (mod in Mods.getModDirectories()) {
-			if (!FileSystem.exists(Paths.mods(mod + "/mod_url.txt"))) {
+			if (!FunkinFileSystem.exists(Paths.mods(mod + "/mod_url.txt"))) {
 				needMods.push(mod);
 			}
 		}
@@ -38,11 +38,11 @@ class OnlineMods {
 	}
 
 	public static function getModURL(mod:String) {
-		if (!FileSystem.exists(Paths.mods(mod + "/mod_url.txt")) || StringTools.trim(File.getContent(Paths.mods(mod + "/mod_url.txt"))) == "") {
+		if (!FunkinFileSystem.exists(Paths.mods(mod + "/mod_url.txt")) || StringTools.trim(FunkinFileSystem.getText(Paths.mods(mod + "/mod_url.txt"))) == "") {
 			return null;
 		}
 
-		return StringTools.trim(File.getContent(Paths.mods(mod + "/mod_url.txt")));
+		return StringTools.trim(FunkinFileSystem.getText(Paths.mods(mod + "/mod_url.txt")));
 	}
 
 	public static function saveModURL(mod:String, url:String) {
@@ -224,7 +224,7 @@ class OnlineMods {
 			return;
 		}
 
-		if (FileSystem.exists(Paths.mods(modName))) {
+		if (FunkinFileSystem.exists(Paths.mods(modName))) {
 			try {
 				FileUtils.removeFiles(parentFolder);
 			}
@@ -280,25 +280,25 @@ class OnlineMods {
 					continue;
 				}
 
-				if (!FileSystem.exists(Path.directory(Path.join([parentFolder, entry.fileName.substring(beginFolder.length)])))) {
+				if (!FunkinFileSystem.exists(Path.directory(Path.join([parentFolder, entry.fileName.substring(beginFolder.length)])))) {
 					FileSystem.createDirectory(Path.join([parentFolder, Path.directory(entry.fileName).substring(beginFolder.length)]));
 				}
 				File.saveBytes(Path.join([parentFolder, entry.fileName.substring(beginFolder.length)]), Reader.unzip(entry));
 			}
 		}
 
-		if ((gbMod != null ? gbMod.rootCategory == "Skins" : false) && !FileSystem.exists(Paths.mods(modName + '/pack.json'))) {
+		if ((gbMod != null ? gbMod.rootCategory == "Skins" : false) && !FunkinFileSystem.exists(Paths.mods(modName + '/pack.json'))) {
 			var isLegacy = false;
-			if (FileSystem.exists(Paths.mods(modName + '/images/BOYFRIEND.png'))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/images/BOYFRIEND.png'))) {
 				Sys.println("Legacy mod detected! (Converting)");
 
 				FileSystem.createDirectory(Paths.mods(modName + '/images/characters/'));
 				FileSystem.rename(Paths.mods(modName + '/images/BOYFRIEND.png'), Paths.mods(modName + '/images/characters/BOYFRIEND.png'));
-				if (FileSystem.exists(Paths.mods(modName + '/images/BOYFRIEND.xml')))
+				if (FunkinFileSystem.exists(Paths.mods(modName + '/images/BOYFRIEND.xml')))
 					FileSystem.rename(Paths.mods(modName + '/images/BOYFRIEND.xml'), Paths.mods(modName + '/images/characters/BOYFRIEND.xml'));
 
-				if (!FileSystem.exists(Paths.mods(modName + '/images/icons/icon-bf.png'))
-					&& FileSystem.exists(Paths.mods(modName + '/images/iconGrid.png'))) {
+				if (!FunkinFileSystem.exists(Paths.mods(modName + '/images/icons/icon-bf.png'))
+					&& FunkinFileSystem.exists(Paths.mods(modName + '/images/iconGrid.png'))) {
 					FileSystem.createDirectory(Paths.mods(modName + '/images/icons/'));
 					var iconGrid = BitmapData.fromBytes(File.getBytes(Paths.mods(modName + '/images/iconGrid.png')));
 					var byteArray:ByteArray = new ByteArray();
@@ -312,7 +312,7 @@ class OnlineMods {
 			File.saveContent(Paths.mods(modName + '/pack.json'), Json.stringify({
 				name: (gbMod != null ? gbMod.name : modName),
 				description: (gbMod != null ? gbMod.pageDownload : ""),
-				runsGlobally: FileSystem.exists(Paths.mods(modName + '/songs/')) ? false : isLegacy
+				runsGlobally: FunkinFileSystem.exists(Paths.mods(modName + '/songs/')) ? false : isLegacy
 			}));
 		}
 		else { // if (/*(gbMod != null ? gbMod.rootCategory == "Executables" : */isExecutable) { // sometimes dum dum people put their non-exe mods to that section
@@ -324,10 +324,10 @@ class OnlineMods {
 				}
 			}
 
-			if (FileSystem.exists(Paths.mods(modName + '/mods/pack.json')))
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/mods/pack.json')))
 				FileSystem.deleteFile(Paths.mods(modName + '/mods/pack.json'));
 
-			if (FileSystem.exists(Paths.mods(modName + '/mods'))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/mods'))) {
 				for (file in FileSystem.readDirectory(Paths.mods(modName + '/mods'))) {
 					if (FileSystem.isDirectory(Path.join([Paths.mods(modName + '/mods'), file]))
 						&& !Mods.ignoreModFolders.contains(file)) {
@@ -338,31 +338,31 @@ class OnlineMods {
 				FileUtils.cut(Paths.mods(modName + '/mods'), Paths.mods(modName + "/"));
 			}
 
-			if (FileSystem.exists(Paths.mods(modName + '/assets')))
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/assets')))
 				FileUtils.cut(Paths.mods(modName + '/assets'), Paths.mods(modName + "/"));
 
-			if (FileSystem.exists(Paths.mods(modName + '/shared')))
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/shared')))
 				FileUtils.cut(Paths.mods(modName + '/shared'), Paths.mods(modName + "/"));
 
-			if (FileSystem.exists(Paths.mods(modName + '/data/songData'))) // special for mario madness hehe
+			if (FunkinFileSystem.exists(Paths.mods(modName + '/data/songData'))) // special for mario madness hehe
 				FileUtils.cut(Paths.mods(modName + '/data/songData'), Paths.mods(modName + "/data/"));
 
 			// exclude alphabets because they change like every psych engine version so they cause bugs
-			if (FileSystem.exists(Paths.mods(modName + "/images/alphabet.png")) || FileSystem.exists(Paths.mods(modName + "/images/alphabet.xml"))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + "/images/alphabet.png")) || FunkinFileSystem.exists(Paths.mods(modName + "/images/alphabet.xml"))) {
 				FileSystem.deleteFile(Paths.mods(modName + "/images/alphabet.png"));
 				FileSystem.deleteFile(Paths.mods(modName + "/images/alphabet.xml"));
 			}
 
 			//...and also health bar and time bar
-			if (FileSystem.exists(Paths.mods(modName + "/images/healthBar.png"))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + "/images/healthBar.png"))) {
 				FileSystem.deleteFile(Paths.mods(modName + "/images/healthBar.png"));
 			}
-			if (FileSystem.exists(Paths.mods(modName + "/images/timeBar.png"))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + "/images/timeBar.png"))) {
 				FileSystem.deleteFile(Paths.mods(modName + "/images/timeBar.png"));
 			}
 
 			//get yo ass outta here
-			if (FileSystem.exists(Paths.mods(modName + "/weeks/weekList.txt"))) {
+			if (FunkinFileSystem.exists(Paths.mods(modName + "/weeks/weekList.txt"))) {
 				FileSystem.deleteFile(Paths.mods(modName + "/weeks/weekList.txt"));
 			}
 
@@ -418,7 +418,7 @@ class OnlineMods {
 				diffsToAdd[_normalIndex] = "Normal";
 			}
 
-			if (!FileSystem.exists(Paths.mods(modName + "/weeks/"))) {
+			if (!FunkinFileSystem.exists(Paths.mods(modName + "/weeks/"))) {
 				FileSystem.createDirectory(Paths.mods(modName + "/weeks/"));
 			}
 			
@@ -434,7 +434,7 @@ class OnlineMods {
 							FileSystem.rename(path, path = Path.join(pathSplit));
 						}
 
-						var json = Json.parse(File.getContent(path));
+						var json = Json.parse(FunkinFileSystem.getText(path));
 						var songs:Array<Array<Dynamic>> = json.songs;
 						for (song in songs) {
 							songsToAdd.remove(formatSongName(song[0]));
@@ -462,7 +462,7 @@ class OnlineMods {
 			});
 		}
 
-		if (!FileSystem.exists(Paths.mods(modName + '/pack.json')))
+		if (!FunkinFileSystem.exists(Paths.mods(modName + '/pack.json')))
 			File.saveContent(Paths.mods(modName + '/pack.json'), Json.stringify({
 				name: (gbMod != null ? gbMod.name : modName),
 				description: (gbMod != null ? gbMod.pageDownload : ""),

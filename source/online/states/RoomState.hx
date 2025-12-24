@@ -489,9 +489,9 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 		GameClient.send("status", "In the Lobby");
 
-		addMobilePad('FULL', 'B_C_Y_T_M');
-		addMobilePadCamera();
-		mobilePad.y -= 300;
+		mobileManager.addMobilePad('FULL', 'B_C_Y_T_M');
+		mobileManager.addMobilePadCamera();
+		mobileManager.mobilePad.y -= 300;
 
 		registerMessages();
 	}
@@ -504,7 +504,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 				return;
 			}
 
-			if (FileSystem.exists(Paths.mods('${GameClient.room.state.stageMod}/stages/${GameClient.room.state.stageName}.json')) ||
+			if (FunkinFileSystem.exists(Paths.mods('${GameClient.room.state.stageMod}/stages/${GameClient.room.state.stageName}.json')) ||
 				OpenFlAssets.exists(Paths.getPath('stages/${GameClient.room.state.stageName}.json'), TEXT)) {
 				hasStage = true;
 				return;
@@ -524,7 +524,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 	}
 
 	function checkNoteSkin(player:Player, ?manualDownload:Bool = false) {
-		if (!FileSystem.exists(Paths.mods(player.noteSkinMod)) && player.noteSkinURL != null) {
+		if (!FunkinFileSystem.exists(Paths.mods(player.noteSkinMod)) && player.noteSkinURL != null) {
 			OnlineMods.downloadMod(player.noteSkinURL, manualDownload, function(_) {
 				Mods.updatedOnState = false;
 				Mods.parseList();
@@ -558,7 +558,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		mobilePad.getButtonFromName('buttonLeft').visible = mobilePad.getButtonFromName('buttonRight').visible = mobilePad.getButtonFromName('buttonUp').visible = mobilePad.getButtonFromName('buttonDown').visible = mobilePad.getButtonFromName('buttonT').visible = mobilePad.getButtonFromName('buttonM').visible = mobilePad.getButtonFromName('buttonY').pressed;
+		mobileManager.mobilePad.getButtonFromName('buttonLeft').visible = mobileManager.mobilePad.getButtonFromName('buttonRight').visible = mobileManager.mobilePad.getButtonFromName('buttonUp').visible = mobileManager.mobilePad.getButtonFromName('buttonDown').visible = mobileManager.mobilePad.getButtonFromName('buttonT').visible = mobileManager.mobilePad.getButtonFromName('buttonM').visible = mobileManager.mobilePad.getButtonFromName('buttonY').pressed;
 
 		if (FlxG.keys.justPressed.F11) {
 			GameClient.reconnect();
@@ -677,18 +677,18 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 
 			// trace('playerHold = ' + playerHold + ', oppHold = ' + oppHold);
 
-			if (mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.ALT) { // useless, but why not?
-				var suffix = (mobilePad.getButtonFromName('buttonM').pressed || FlxG.keys.pressed.CONTROL) ? 'miss' : '';
-				if (mobilePad.getButtonFromName('buttonLeft').justPressed || controls.NOTE_LEFT_P) {
+			if (mobileManager.mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.ALT) { // useless, but why not?
+				var suffix = (mobileManager.mobilePad.getButtonFromName('buttonM').pressed || FlxG.keys.pressed.CONTROL) ? 'miss' : '';
+				if (mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed || controls.NOTE_LEFT_P) {
 					playerAnim('singLEFT' + suffix);
 				}
-				if (mobilePad.getButtonFromName('buttonRight').justPressed || controls.NOTE_RIGHT_P) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed || controls.NOTE_RIGHT_P) {
 					playerAnim('singRIGHT' + suffix);
 				}
-				if (mobilePad.getButtonFromName('buttonUp').justPressed || controls.NOTE_UP_P) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonUp').justPressed || controls.NOTE_UP_P) {
 					playerAnim('singUP' + suffix);
 				}
-				if (mobilePad.getButtonFromName('buttonDown').justPressed || controls.NOTE_DOWN_P) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonDown').justPressed || controls.NOTE_DOWN_P) {
 					playerAnim('singDOWN' + suffix);
 				}
 				if (controls.TAUNT) {
@@ -718,7 +718,7 @@ class RoomState extends MusicBeatState #if interpret implements interpret.Interp
 				}
 			}
 			
-			if (((!FlxG.keys.pressed.ALT || !mobilePad.getButtonFromName('buttonY').pressed) && controls.ACCEPT) || FlxG.mouse.justPressed) {
+			if (((!FlxG.keys.pressed.ALT || !mobileManager.mobilePad.getButtonFromName('buttonY').pressed) && controls.ACCEPT) || FlxG.mouse.justPressed) {
 				switch (curSelected) {
 					case 0:
 						openSubState(new RoomSettingsSubstate());
@@ -1182,7 +1182,7 @@ class LobbyCharacter extends FlxTypedGroup<FlxObject> {
 			character = null;
 		}
 
-		if (FileSystem.exists(Paths.mods(player.skinMod))) {
+		if (FunkinFileSystem.exists(Paths.mods(player.skinMod))) {
 			if (player.skinMod != null)
 				Mods.currentModDirectory = player.skinMod;
 

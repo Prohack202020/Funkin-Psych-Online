@@ -131,7 +131,7 @@ class DownloaderState extends MusicBeatState {
 
 		loadNextPage(true);
 
-		addMobilePad('LEFT_RIGHT', 'B');
+		mobileManager.addMobilePad('LEFT_RIGHT', 'B');
 	}
 
 	function loadNextPage(?value:Int = 0, ?newSearch:Bool = false) {
@@ -305,10 +305,10 @@ class DownloaderState extends MusicBeatState {
 			}
 
 			if (!LoadingScreen.loading) {
-				if (FlxG.mouse.wheel == 1 || (mobilePad.getButtonFromName('buttonLeft').justPressed || FlxG.keys.justPressed.Q)) {
+				if (FlxG.mouse.wheel == 1 || (mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed || FlxG.keys.justPressed.Q)) {
 					loadNextPage(-1);
 				}
-				if (FlxG.mouse.wheel == -1 || (mobilePad.getButtonFromName('buttonRight').justPressed || FlxG.keys.justPressed.E)) {
+				if (FlxG.mouse.wheel == -1 || (mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed || FlxG.keys.justPressed.E)) {
 					loadNextPage(1);
 				}
 				
@@ -353,6 +353,7 @@ class DownloaderState extends MusicBeatState {
 			if (controls.ACCEPT || FlxG.mouse.justPressed) {
 				if (curSelected == -1) {
 					searchInput.hasFocus = true;
+					FlxG.stage.window.textInputEnabled = true;
 				}
 				else if (curSelected >= 0 && items.length - 1 >= curSelected) {
 					if (FlxG.mouse.justPressed) {

@@ -9,7 +9,7 @@
       "name": "lime",
       "type": "git",
       "ref": "main",
-      "url": "https://github.com/HomuHomu833-haxe-stuff/lime"
+      "url": "https://github.com/ArkoseLabsOfficial/lime"
     },
     {
       "name": "openfl",
@@ -162,8 +162,17 @@
     },
     {
       "name": "mobile-controls",
-      "type": "haxelib",
-      "version": "0.1.0"
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/Prohack101010/mobile-controls-dev"
+    },
+    {
+      "name": "extension-androidtools",
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/MAJigsaw77/extension-androidtools"
     }
   ]
 }

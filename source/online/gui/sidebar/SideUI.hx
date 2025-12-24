@@ -73,7 +73,7 @@ class SideUI extends WSprite {
 
 		instance = this;
 
-		for (file in FileSystem.readDirectory('assets/images/sidebar')) {
+		for (file in FunkinFileSystem.readDirectory('assets/images/sidebar')) {
 			Paths.excludeAsset('assets/images/sidebar/' + file);
 		}
 

@@ -43,7 +43,7 @@ class ErrorHandledShader extends FlxShader implements IErrorHandler
 		var errMsg:String = "";
 		var dateNow:String = Date.now().toString().replace(" ", "_").replace(":", "'");
 
-		if (!FileSystem.exists('./crash/'))
+		if (!FunkinFileSystem.exists('./crash/'))
 			FileSystem.createDirectory('./crash/');
 
 		var crashLogPath:String = './crash/shader_${shaderName}_${dateNow}.txt';

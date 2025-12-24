@@ -58,7 +58,7 @@ class TopPlayerSubstate extends MusicBeatSubstate {
 		keysTxt.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(keysTxt);
 
-		addMobilePad('FULL', 'A_B');
+		mobileManager.addMobilePad('FULL', 'A_B');
 		controls.isInSubstate = true;
     }
 

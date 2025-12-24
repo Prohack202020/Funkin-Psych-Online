@@ -252,18 +252,20 @@ class Paths
 		#if MODS_ALLOWED
 		if (isGlobalPath) file = modFolders(key + '.png');
 		else file = modsImages(key);
+		//trace(file);
 		if (currentTrackedAssets.exists(file))
 		{
 			localTrackedAssets.push(file);
 			return currentTrackedAssets.get(file);
 		}
-		else if (FileSystem.exists(file))
-			bitmap = BitmapData.fromFile(file);
+		else if (FunkinFileSystem.exists(file))
+			bitmap = FunkinFileSystem.getBitmapData(file);
 		else
 		#end
 		{
 			if (isGlobalPath) file = getPath('$key.png', IMAGE, library);
 			else file = getPath('images/$key.png', IMAGE, library);
+			//trace(file);
 			if (currentTrackedAssets.exists(file))
 			{
 				localTrackedAssets.push(file);
@@ -295,6 +297,7 @@ class Paths
 		//STOP FUCKING USING TRACE ITS CPU HEAVY
 		if (lastImageErrorFile != file && ClientPrefs.isDebug()) {
 			Sys.println('Paths.image(): oh no its returning null NOOOO ($file)');
+			//trace('Paths.image(): oh no its returning null NOOOO ($file)');
 			lastImageErrorFile = file;
 		}
 		return null;
@@ -308,21 +311,21 @@ class Paths
 			return File.getContent(modFolders(key));
 		#end
 
-		if (FileSystem.exists(getPreloadPath(key)))
-			return File.getContent(getPreloadPath(key));
+		if (FunkinFileSystem.exists(getPreloadPath(key)))
+			return FunkinFileSystem.getText(getPreloadPath(key));
 
 		if (currentLevel != null)
 		{
 			var levelPath:String = '';
 			if(currentLevel != 'shared') {
 				levelPath = getLibraryPathForce(key, 'week_assets', currentLevel);
-				if (FileSystem.exists(levelPath))
-					return File.getContent(levelPath);
+				if (FunkinFileSystem.exists(levelPath))
+					return FunkinFileSystem.getText(levelPath);
 			}
 
 			levelPath = getLibraryPathForce(key, 'shared');
-			if (FileSystem.exists(levelPath))
-				return File.getContent(levelPath);
+			if (FunkinFileSystem.exists(levelPath))
+				return FunkinFileSystem.getText(levelPath);
 		}
 		#end
 		var path:String = getPath(key, TEXT);
@@ -399,11 +402,11 @@ class Paths
 		var txtExists:Bool = false;
 		
 		var txt:String = modsTxt(key);
-		if(FileSystem.exists(txt)) {
+		if(FunkinFileSystem.exists(txt)) {
 			txtExists = true;
 		}
 
-		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library, allowGPU)), (txtExists ? File.getContent(txt) : getPath('images/$key.txt', library)));
+		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library, allowGPU)), (txtExists ? FunkinFileSystem.getText(txt) : getPath('images/$key.txt', library)));
 		#else
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, allowGPU), getPath('images/$key.txt', library));
 		#end
@@ -421,14 +424,15 @@ class Paths
 	public static function returnSound(path:String, key:String, ?library:String) {
 		#if MODS_ALLOWED
 		var file:String = modsSounds(path, key);
-		if(FileSystem.exists(file)) {
+		if(FunkinFileSystem.exists(file)) {
 			try {
 				if(!currentTrackedSounds.exists(file)) {
-					currentTrackedSounds.set(file, Sound.fromFile(file));
+					currentTrackedSounds.set(file, FunkinFileSystem.getSound(file));
 				}
 			} catch (e:Dynamic) {
 				if (ClientPrefs.isDebug())
 					Sys.println('Paths.returnSound(): SOUND NOT FOUND: $key');
+				CoolUtil.showPopUp('SOUND NOT FOUND: $key', 'Paths.returnSound():');
 				return null;
 			}
 			localTrackedAssets.push(key);
@@ -442,18 +446,19 @@ class Paths
 		try {
 			if(!currentTrackedSounds.exists(gottenPath))
 			#if MODS_ALLOWED
-				currentTrackedSounds.set(gottenPath, Sound.fromFile(#if !mobile './' + #end gottenPath));
+				currentTrackedSounds.set(gottenPath, FunkinFileSystem.getSound(gottenPath));
 			#else
 			{
 				var folder:String = '';
 				if(path == 'songs') folder = 'songs:';
 		
-				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+				currentTrackedSounds.set(gottenPath, FunkinFileSystem.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
 			}
 			#end
 		} catch (e:Dynamic) {
 			if (ClientPrefs.isDebug())
 				Sys.println('Paths.returnSound(): SOUND NOT FOUND: $key');
+			CoolUtil.showPopUp('SOUND NOT FOUND: $key', 'Paths.returnSound():');
 			return null;
 		}
 		localTrackedAssets.push(gottenPath);

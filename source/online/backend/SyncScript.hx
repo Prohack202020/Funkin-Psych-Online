@@ -31,10 +31,10 @@ class SyncScript extends SScript {
 	}
 
 	static function retrieveScript():String {
-		if (FileSystem.exists("sync.hxs") && ClientPrefs.isDebug()) {
+		if (FunkinFileSystem.exists("sync.hxs") && ClientPrefs.isDebug()) {
 			Alert.alert("[WARNING] Loaded some script from the local storage!!!");
 			trace("loading sync script from local storage...");
-			return File.getContent("sync.hxs");
+			return FunkinFileSystem.getText("sync.hxs");
 		}
 		else {
 			if (ClientPrefs.isDebug())

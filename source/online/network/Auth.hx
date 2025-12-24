@@ -21,11 +21,11 @@ class Auth {
     public static function load() {
 		savePath = lime.system.System.applicationStorageDirectory + 'peo_auth.json';
 
-		if (!FileSystem.exists(savePath))
+		if (!FunkinFileSystem.exists(savePath))
 			generateSave();
 
 		try {
-			saveData = Json.parse(File.getContent(savePath));
+			saveData = Json.parse(FunkinFileSystem.getText(savePath));
 		} catch(e) {
 			trace("Couldn't load peo_auth.json! More info: " + e);
 			generateSave();
@@ -51,7 +51,7 @@ class Auth {
     }
 
 	public static function generateSave() {
-		if (!FileSystem.exists(Path.directory(savePath)))
+		if (!FunkinFileSystem.exists(Path.directory(savePath)))
 			FileSystem.createDirectory(Path.directory(savePath));
 
 		File.saveContent(savePath, Json.stringify({
@@ -64,7 +64,7 @@ class Auth {
 		saveData.id = authID = id;
 		saveData.token = authToken = token;
 
-		if ((saveData.id == null || saveData.token == null) && FileSystem.exists(savePath))
+		if ((saveData.id == null || saveData.token == null) && FunkinFileSystem.exists(savePath))
 			FileSystem.deleteFile(savePath);
 
 		#if mobile

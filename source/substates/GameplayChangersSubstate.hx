@@ -175,11 +175,11 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		if (GameClient.isConnected()) {
 			GameClient.room.state.gameplaySettings.onChange(receiveChange);
-			MusicBeatState.getState().mobilePad.visible = false;
+			MusicBeatState.getState().mobileManager.mobilePad.visible = false;
 		}
 
-		addMobilePad('FULL', 'A_B_C');
-		addMobilePadCamera();
+		mobileManager.addMobilePad('FULL', 'A_B_C');
+		mobileManager.addMobilePadCamera();
 	}
 
 	function receiveChange(_:Dynamic, __:Dynamic) {
@@ -221,7 +221,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		if (controls.BACK) {
 			controls.isInSubstate = false;
 			if (GameClient.isConnected())
-				MusicBeatState.getState().mobilePad.visible = true;
+				MusicBeatState.getState().mobileManager.mobilePad.visible = true;
 			close();
 			ClientPrefs.saveSettings();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -335,7 +335,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if(mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET)
+			if(mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET)
 			{
 				for (i in 0...optionsArray.length)
 				{

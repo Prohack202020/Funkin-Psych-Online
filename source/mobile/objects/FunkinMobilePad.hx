@@ -1,6 +1,6 @@
 package mobile.objects;
 
-import mobile.MobilePad as OGMobilePad;
+import mobile.MobilePad;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
@@ -8,15 +8,15 @@ import openfl.utils.Assets;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-class FunkinMobilePad extends OGMobilePad {
-	override public function createVirtualButton(buttonIDs:Array<String>, x:Float, y:Float, framePath:String, ?scale:Float = 1.0, ?ColorS:Int = 0xFFFFFF):MobileButton {
+class FunkinMobilePad extends MobilePad {
+	override public function createVirtualButton(x:Float, y:Float, framePath:String, ?scale:Float = 1.0, ?ColorS:Int = 0xFFFFFF):MobileButton {
 		var frames:FlxGraphic;
 
 		final path:String = MobileConfig.mobileFolderPath + 'MobilePad/Textures/$framePath.png';
 		#if MODS_ALLOWED
 		final modsPath:String = Paths.modFolders('mobile/MobilePad/Textures/$framePath.png');
-		if(sys.FileSystem.exists(modsPath))
-			frames = FlxGraphic.fromBitmapData(BitmapData.fromFile(modsPath));
+		if(FunkinFileSystem.exists(modsPath))
+			frames = FlxGraphic.fromBitmapData(FunkinFileSystem.getBitmapData(modsPath));
 		else #end if(Assets.exists(path))
 			frames = FlxGraphic.fromBitmapData(Assets.getBitmapData(path));
 		else
@@ -38,9 +38,6 @@ class FunkinMobilePad extends OGMobilePad {
 		button.tag = framePath.toUpperCase();
 
 		if (ColorS != -1) button.color = ColorS;
-		button.IDs = buttonIDs;
-		button.onDown.callback = () -> onButtonDown.dispatch(button, buttonIDs);
-		button.onOut.callback = button.onUp.callback = () -> onButtonUp.dispatch(button, buttonIDs);
 		return button;
 	}
 

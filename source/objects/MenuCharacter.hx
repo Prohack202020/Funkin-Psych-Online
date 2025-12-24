@@ -50,25 +50,19 @@ class MenuCharacter extends FlxSprite
 				var characterPath:String = 'images/menucharacters/' + character + '.json';
 				var rawJson = null;
 
+				var path:String = '';
 				#if MODS_ALLOWED
-				var path:String = Paths.modFolders(characterPath);
-				if (!FileSystem.exists(path)) {
+				path = Paths.modFolders(characterPath);
+				if (!FunkinFileSystem.exists(path))
+				#end
+				{
 					path = Paths.getPreloadPath(characterPath);
 				}
 
-				if(!FileSystem.exists(path)) {
+				if(!FunkinFileSystem.exists(path)) {
 					path = Paths.getPreloadPath('images/menucharacters/' + DEFAULT_CHARACTER + '.json');
 				}
-				rawJson = File.getContent(path);
-
-				#else
-				var path:String = Paths.getPreloadPath(characterPath);
-				if(!Assets.exists(path)) {
-					path = Paths.getPreloadPath('images/menucharacters/' + DEFAULT_CHARACTER + '.json');
-				}
-				rawJson = Assets.getText(path);
-				#end
-				
+				rawJson = FunkinFileSystem.getText(path);
 				var charFile:MenuCharacterFile = cast Json.parse(rawJson);
 				frames = Paths.getSparrowAtlas('menucharacters/' + charFile.image);
 				animation.addByPrefix('idle', charFile.idle_anim, 24);

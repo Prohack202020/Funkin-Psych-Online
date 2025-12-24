@@ -1,6 +1,5 @@
 package mobile.options;
 
-import mobile.backend.MobileScaleMode;
 import flixel.input.keyboard.FlxKey;
 import options.BaseOptionsMenu;
 import options.Option;
@@ -33,7 +32,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		option.changeValue = 0.1;
 		option.decimals = 1;
 		option.onChange = () -> {
-			mobilePad.alpha = curOption.getValue();
+			mobileManager.mobilePad.alpha = curOption.getValue();
 			ClientPrefs.toggleVolumeKeys();
 		};
 		addOption(option);
@@ -102,7 +101,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		option = new Option('Wide Screen Mode',
 			'If checked, The game will stetch to fill your whole screen. (WARNING: Can result in bad visuals & break some mods that resizes the game/cameras)',
 			'wideScreen', 'bool');
-		option.onChange = () -> FlxG.scaleMode = new MobileScaleMode();
+		option.onChange = () -> ScreenUtil.wideScreen.enabled = ClientPrefs.data.wideScreen;
 		addOption(option);
 		#end
 
@@ -115,6 +114,15 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		);
 		addOption(option);
 		#end
+
+		/* doesn't work fine for now
+		option = new Option('Tweak Menu',
+			'If checked, A mod menu for Psych Online will be shown.\n(WARNING: Do not use this use this for hacking)',
+			'showTweakMenu',
+			'bool');
+		option.onChange = () -> Main.toggleTweakMenu(ClientPrefs.data.showTweakMenu);
+		addOption(option);
+		*/
 		super();
 	}
 
@@ -125,8 +133,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		if (ClientPrefs.data.storageType != lastStorageType) {
 			File.saveContent(lime.system.System.applicationStorageDirectory + 'storagetype.txt', ClientPrefs.data.storageType);
 			ClientPrefs.saveSettings();
-			CoolUtil.showPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
-			lime.system.System.exit(0);
+			StorageUtil.initExternalStorageDirectory();
 		}
 		#end
 	}

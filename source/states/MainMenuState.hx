@@ -179,7 +179,7 @@ class MainMenuState extends MusicBeatState
 			online.backend.DateEvent.isHalloween = true;
 		}
 
-		addMobilePad("UP_DOWN", "A_B_E");
+		mobileManager.addMobilePad("UP_DOWN", "A_B_E");
 
 		super.create();
 	}
@@ -295,7 +295,7 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			else if (mobilePad.getButtonFromName('buttonE').justPressed || controls.justPressed('debug_1'))
+			else if (mobileManager.mobilePad.getButtonFromName('buttonE').justPressed || controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				FlxG.switchState(() -> new MasterEditorMenu());

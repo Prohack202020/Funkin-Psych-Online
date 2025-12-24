@@ -114,14 +114,7 @@ class FlxSprite3D extends ObjectContainer3D {
 			return usedBitmaps.get(graphic.key);
 		}
 
-		var bitmap:BitmapData = null;
-		try {
-			bitmap = Assets.getBitmapData(graphic.key, false);
-		}
-		catch (exc) {}
-		if (bitmap == null && FileSystem.exists(graphic.key)) {
-			bitmap = BitmapData.fromFile(graphic.key);
-		}
+		var bitmap:BitmapData = FunkinFileSystem.getBitmapData(graphic.key);
 		usedBitmaps.set(graphic.key, bitmap ?? sprite.pixels);
 		return bitmap;
 	}

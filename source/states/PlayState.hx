@@ -576,16 +576,13 @@ class PlayState extends MusicBeatState
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camOther = new FlxCamera();
-		luaMpadCam = new FlxCamera();
 		camLoading = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
-		luaMpadCam.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
-		FlxG.cameras.add(luaMpadCam, false);
 		FlxG.cameras.add(camLoading, false);
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
@@ -891,7 +888,7 @@ class PlayState extends MusicBeatState
 		preloadTasks.push(() -> {
 			var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getPreloadPath(), 'scripts/');
 			for (folder in foldersToCheck)
-				for (file in FileSystem.readDirectory(folder))
+				for (file in FunkinFileSystem.readDirectory(folder))
 				{
 					if(file.toLowerCase().endsWith('.lua'))
 						new FunkinLua(folder + file);
@@ -962,7 +959,7 @@ class PlayState extends MusicBeatState
 
 			// if online player is defined
 			if (player != null) {
-				if (FileSystem.exists(Paths.mods(player.skinMod)) && !(isRight ? SONG.player1 : SONG.player2).startsWith(player.skinName)) {
+				if (FunkinFileSystem.exists(Paths.mods(player.skinMod)) && !(isRight ? SONG.player1 : SONG.player2).startsWith(player.skinName)) {
 					if (player.skinMod != null)
 						Mods.currentModDirectory = player.skinMod;
 
@@ -1299,7 +1296,7 @@ class PlayState extends MusicBeatState
 		preloadTasks.push(() -> {
 			var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getPreloadPath(), 'data/' + songName + '/');
 			for (folder in foldersToCheck)
-				for (file in FileSystem.readDirectory(folder)) {
+				for (file in FunkinFileSystem.readDirectory(folder)) {
 					if (file.toLowerCase().endsWith('.lua'))
 						new FunkinLua(folder + file);
 					#if HSCRIPT_ALLOWED
@@ -1468,6 +1465,11 @@ class PlayState extends MusicBeatState
 		loaderGroup.add(asyncLoop);
 
 		orderOffset = 2;
+
+		mobileManager.addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE',
+										(GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
+		mobileManager.addMobilePadCamera();
+		addPlayStateHitbox();
 
 		super.create();
 	}
@@ -1693,7 +1695,7 @@ class PlayState extends MusicBeatState
 		var luaFile:String = 'characters/' + name + '.lua';
 		#if MODS_ALLOWED
 		var replacePath:String = Paths.modFolders(luaFile);
-		if(FileSystem.exists(replacePath))
+		if(FunkinFileSystem.exists(replacePath))
 		{
 			luaFile = replacePath;
 			doPush = true;
@@ -1701,7 +1703,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			luaFile = Paths.getPreloadPath(luaFile);
-			if(FileSystem.exists(luaFile))
+			if(FunkinFileSystem.exists(luaFile))
 				doPush = true;
 		}
 		#else
@@ -1732,7 +1734,7 @@ class PlayState extends MusicBeatState
 		var doPush:Bool = false;
 		var scriptFile:String = 'characters/' + name + '.hx';
 		var replacePath:String = Paths.modFolders(scriptFile);
-		if(FileSystem.exists(replacePath))
+		if(FunkinFileSystem.exists(replacePath))
 		{
 			scriptFile = replacePath;
 			doPush = true;
@@ -1740,7 +1742,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			scriptFile = Paths.getPreloadPath(scriptFile);
-			if(FileSystem.exists(scriptFile))
+			if(FunkinFileSystem.exists(scriptFile))
 				doPush = true;
 		}
 		
@@ -1809,7 +1811,7 @@ class PlayState extends MusicBeatState
 
 		var filepath:String = Paths.video(name);
 		#if sys
-		if(!FileSystem.exists(filepath))
+		if(!FunkinFileSystem.exists(filepath))
 		#else
 		if(!OpenFlAssets.exists(filepath))
 		#end
@@ -1857,7 +1859,7 @@ class PlayState extends MusicBeatState
 		var fileName:String = Paths.video(name);
 
 		#if sys
-		if (FileSystem.exists(fileName))
+		if (FunkinFileSystem.exists(fileName))
 		#else
 		if (OpenFlAssets.exists(fileName))
 		#end
@@ -1994,32 +1996,9 @@ class PlayState extends MusicBeatState
 			// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 		}
 
-		addMobileControls();
-		addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
-		addMobilePadCamera();
-		if (replayData == null) {
-			hitbox.onButtonDown.add(onButtonPress);
-			hitbox.onButtonUp.add(onButtonRelease);
-			hitbox.onButtonDown.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 0));
-			hitbox.onButtonUp.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 1));
-		}
-		if (replayData == null && !cpuControlled)
-			hitbox.visible = true;
-		hitbox.forEachAlive((button) ->
-		{
-			if (mobilePad.getButtonFromName('buttonT') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonT'));
-			if (mobilePad.getButtonFromName('buttonC') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonC'));
-			if (mobilePad.getButtonFromName('buttonP') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonP'));
-		});
-
-		if (ClientPrefs.data.VSliceControl) VSliceControls = true;
-		if (VSliceControls) enableVSliceControls();
+		if (ClientPrefs.data.VSliceControl && Note.maniaKeys != 20 && Note.maniaKeys != 55) enableVSliceControls();
 	}
 
-	public var VSliceControls:Bool = false;
 	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360];
 	public function startCountdown()
 	{
@@ -2143,16 +2122,9 @@ class PlayState extends MusicBeatState
 		// Credit: @allaxnofake (Discord)
 		// https://discord.com/channels/922849922175340586/1395222169037836430 (This link sends you to directly the original post)
 
-		reloadControls("V Slice");
-		hitbox.visible = false;
 		/* Actual Code */
 		for (player in 0...2) {
 			var strumGroup = player == 1 ? playerStrums : opponentStrums;
-			for (i in 0...unspawnNotes.length)
-			{
-				if (!unspawnNotes[i].mustPress)
-					unspawnNotes[i].visible = false;
-			}
 			if (Note.maniaKeys != 4)
 			{
 				var strumLineX:Float = 0;
@@ -2192,48 +2164,36 @@ class PlayState extends MusicBeatState
 					}
 				}
 			}
-
 			if (isPlayerStrumNote(player)) {
+				for (i in 0...unspawnNotes.length)
+				{
+					if (player == 1 && !unspawnNotes[i].mustPress || player == 0 && unspawnNotes[i].mustPress)
+						unspawnNotes[i].visible = false;
+				}
 				fixHitboxPos(strumGroup, (Note.maniaKeys == 4 ? true : false));
 			}
 		}
-		//hitbox.cameras = [camHUD];
+		reloadPlayStateHitbox("V Slice");
+		//mobileManager.hitbox.cameras = [camHUD];
 	}
 
+	public static var hitboxPositions:Array<Float> = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 	public function fixHitboxPos(strumGroup:FlxTypedGroup<StrumNote>, ?keyCountIsDefault:Bool) {
 		if (keyCountIsDefault) {
-			if (hitbox.getButtonFromName('buttonNote1') != null)
-				hitbox.getButtonFromName('buttonNote1').x = Std.int(strumGroup.members[0].x) - 20;
-			if (hitbox.getButtonFromName('buttonNote2') != null)
-				hitbox.getButtonFromName('buttonNote2').x = Std.int(strumGroup.members[1].x) - 20;
-			if (hitbox.getButtonFromName('buttonNote3') != null)
-				hitbox.getButtonFromName('buttonNote3').x = Std.int(strumGroup.members[2].x) - 20;
-			if (hitbox.getButtonFromName('buttonNote4') != null)
-				hitbox.getButtonFromName('buttonNote4').x = Std.int(strumGroup.members[3].x) - 20;
+			hitboxPositions[0] = Std.int(strumGroup.members[0].x) - 20;
+			hitboxPositions[1] = Std.int(strumGroup.members[1].x) - 20;
+			hitboxPositions[2] = Std.int(strumGroup.members[2].x) - 20;
+			hitboxPositions[3] = Std.int(strumGroup.members[3].x) - 20;
 		} else {
 			var hitboxFixPos:Float = 10;
 			if (Note.maniaKeys == 7) hitboxFixPos = 13;
 			if (Note.maniaKeys == 8) hitboxFixPos = 12.5;
 			if (Note.maniaKeys == 9) hitboxFixPos = 15;
 
-			if (Note.maniaKeys >= 1 && hitbox.getButtonFromName('buttonNote1') != null)
-				hitbox.getButtonFromName('buttonNote1').x = strumGroup.members[0].x - hitboxFixPos;
-			if (Note.maniaKeys >= 2 && hitbox.getButtonFromName('buttonNote2') != null)
-				hitbox.getButtonFromName('buttonNote2').x = strumGroup.members[1].x - hitboxFixPos;
-			if (Note.maniaKeys >= 3 && hitbox.getButtonFromName('buttonNote3') != null)
-				hitbox.getButtonFromName('buttonNote3').x = strumGroup.members[2].x - hitboxFixPos;
-			if (Note.maniaKeys >= 4 && hitbox.getButtonFromName('buttonNote4') != null)
-				hitbox.getButtonFromName('buttonNote4').x = strumGroup.members[3].x - hitboxFixPos;
-			if (Note.maniaKeys >= 5 && hitbox.getButtonFromName('buttonNote5') != null)
-				hitbox.getButtonFromName('buttonNote5').x = strumGroup.members[4].x - hitboxFixPos;
-			if (Note.maniaKeys >= 6 && hitbox.getButtonFromName('buttonNote6') != null)
-				hitbox.getButtonFromName('buttonNote6').x = strumGroup.members[5].x - hitboxFixPos;
-			if (Note.maniaKeys >= 7 && hitbox.getButtonFromName('buttonNote7') != null)
-				hitbox.getButtonFromName('buttonNote7').x = strumGroup.members[6].x - hitboxFixPos;
-			if (Note.maniaKeys >= 8 && hitbox.getButtonFromName('buttonNote8') != null)
-				hitbox.getButtonFromName('buttonNote8').x = strumGroup.members[7].x - hitboxFixPos;
-			if (Note.maniaKeys == 9 && hitbox.getButtonFromName('buttonNote9') != null)
-				hitbox.getButtonFromName('buttonNote9').x = strumGroup.members[8].x - hitboxFixPos;
+			for (i in 0...9) {
+				if (strumGroup.members[i] != null)
+					hitboxPositions[i] = strumGroup.members[i].x - hitboxFixPos;
+			}
 		}
 	}
 
@@ -2503,7 +2463,7 @@ class PlayState extends MusicBeatState
 
 		var file:String = Paths.json(songName + '/events' + songSuffix);
 		#if MODS_ALLOWED
-		if (FileSystem.exists(Paths.modsJson(songName + '/events' + songSuffix)) || FileSystem.exists(file)) {
+		if (FunkinFileSystem.exists(Paths.modsJson(songName + '/events' + songSuffix)) || FunkinFileSystem.exists(file)) {
 		#else
 		if (OpenFlAssets.exists(file)) {
 		#end
@@ -2921,9 +2881,20 @@ class PlayState extends MusicBeatState
 		}
 
 		if (ClientPrefs.data.noteUnderlayOpacity > 0 && strumGroup == getPlayerStrums() && ClientPrefs.data.noteUnderlayType == 'All-In-One') {
+			var vsliceControlFix:Float = 1;
+			if (ClientPrefs.data.VSliceControl && Note.maniaKeys != 20 && Note.maniaKeys != 55) {
+				switch (Note.maniaKeys) {
+					case 4: vsliceControlFix = 6.5 / 3.5;
+					case 5: vsliceControlFix = 6.5 / 5;
+					case 6: vsliceControlFix = 6.5 / 4.8;
+					case 7: vsliceControlFix = 6.5 / 4.6;
+					case 8: vsliceControlFix = 6.5 / 4.8;
+					case 9: vsliceControlFix = 6.5 / 4.5;
+				}
+			}
 			var underlay = new FlxSprite().makeGraphic(1, FlxG.width * 2, FlxColor.BLACK);
 			underlay.alpha = ClientPrefs.data.noteUnderlayOpacity;
-			underlay.scale.x = Note.swagScaledWidth * Note.maniaKeys - (Note.getNoteOffsetX() * (Note.maniaKeys - 1));
+			underlay.scale.x = (Note.swagScaledWidth * Note.maniaKeys - (Note.getNoteOffsetX() * (Note.maniaKeys - 1))) * vsliceControlFix;
 			underlay.updateHitbox();
 			noteUnderlays.add(underlay);
 		}
@@ -3132,7 +3103,7 @@ class PlayState extends MusicBeatState
 			// }
 
 			if (cpuControlled) {
-				var shiftMult = (mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+				var shiftMult = (mobileManager.mobilePad?.getButtonFromName('buttonX')?.pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
 				if (controls.UI_LEFT) {
 					if (playbackRate - elapsed * 0.25 * shiftMult > 0)
 						playbackRate -= elapsed * 0.25 * shiftMult;
@@ -3148,7 +3119,7 @@ class PlayState extends MusicBeatState
 					}
 					botplayTxt.text = "BOTPLAY\n" + '(${CoolUtil.floorDecimal(playbackRate, 2)}x)';
 				}
-				else if (mobilePad.getButtonFromName('buttonY').justPressed || controls.RESET) {
+				else if (mobileManager.mobilePad?.getButtonFromName('buttonY')?.justPressed || controls.RESET) {
 					playbackRate = 1;
 					botplayTxt.text = "BOTPLAY";
 				}
@@ -3406,6 +3377,43 @@ class PlayState extends MusicBeatState
 
 								if(cpuControlled && !daNote.blockHit && daNote.canBeHit && (daNote.isSustainNote || daNote.strumTime <= Conductor.songPosition))
 									goodNoteHit(daNote);
+								else if(OnlineTweaks.simulateBotplay && !daNote.wasGoodHit && !daNote.blockHit && daNote.canBeHit)
+								{
+									var errorRange:Float = OnlineTweaks.botPlayAccuracy - 100;
+									var jitter:Float = flixel.FlxG.random.float(-errorRange, errorRange);
+
+									if (daNote.strumTime <= Conductor.songPosition + jitter) 
+									{
+										simulatedBotPlayHold[daNote.noteData] = true;
+										callOnScripts('onButtonPressPre', [daNote.noteData]);
+										keyPressed(daNote.noteData); 
+										callOnScripts('onButtonPress', [daNote.noteData]);
+										if (replayRecorder != null) {
+											var dirName = replayRecorder.getDirectionNameFromData(daNote.noteData);
+											replayRecorder.data.inputs.push([Conductor.songPosition, dirName, 0]);
+										}
+
+										var releaseTime:Float = 0.1;
+										if(daNote.isSustainNote) releaseTime = (daNote.sustainLength / 1000);
+										
+										flixel.util.FlxTimer.wait(releaseTime, function() {
+											callOnScripts('onButtonReleasePre', [daNote.noteData]);
+											keyReleased(daNote.noteData);
+											callOnScripts('onButtonRelease', [daNote.noteData]);
+											simulatedBotPlayHold[daNote.noteData] = false;
+											if (replayRecorder != null) {
+												var dirName = replayRecorder.getDirectionNameFromData(daNote.noteData);
+												if (daNote.isSustainNote) {
+													if (!replayRecorder.data.inputs.contains([daNote.strumTime + daNote.sustainLength, dirName, 1])) {
+														replayRecorder.data.inputs.push([daNote.strumTime + daNote.sustainLength, dirName, 1]);
+													}
+												}
+												else
+													replayRecorder.data.inputs.push([Conductor.songPosition, dirName, 1]);
+											}
+										});
+									}
+								}
 							}
 							else if (daNote.wasGoodHit && !daNote.hitByOpponent && !daNote.ignoreNote && (!GameClient.isConnected() || playOtherSide))
 								opponentNoteHit(daNote);
@@ -3569,7 +3577,7 @@ class PlayState extends MusicBeatState
 
 	function pause() {
 		FlxG.camera.followLerp = 0;
-		mobilePad.visible = persistentUpdate = false;
+		mobileManager.mobilePad.visible = persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
 
@@ -3584,7 +3592,7 @@ class PlayState extends MusicBeatState
 		if (forcePause)
 			return;
 
-		mobilePad.visible = true;
+		mobileManager.mobilePad.visible = true;
 
 		if (FlxG.sound.music != null && !startingSong) {
 			resyncVocals();
@@ -4221,7 +4229,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
-		hitbox.visible = #if !android mobilePad.visible = #end false;
+		mobileManager.hitbox.visible = #if !android mobileManager.mobilePad.visible = #end false;
 		if (redditMod) {
 			health = 0;
 			doDeathCheck();
@@ -5100,13 +5108,12 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
-	private function onButtonPress(button:MobileButton, ids:Array<String>):Void
+	private function onButtonPress(button:MobileButton, ids:Array<String>, unique:Int):Void
 	{
 		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith(Note.maniaKeys + "K_NOTE")).length > 0)
 		{
-			var buttonCodeStr:String = ids[0];
-			var buttonCodeStrFixed = StringTools.replace(buttonCodeStr, " ", "");
-			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
+			var buttonCode:Int = (unique == -1 ? 0 : unique);
+			trace(buttonCode);
 
 			callOnScripts('onButtonPressPre', [buttonCode]);
 			if (button.justPressed) keyPressed(buttonCode);
@@ -5114,13 +5121,12 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	private function onButtonRelease(button:MobileButton, ids:Array<String>):Void
+	private function onButtonRelease(button:MobileButton, ids:Array<String>, unique:Int):Void
 	{
 		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith(Note.maniaKeys + "K_NOTE")).length > 0)
 		{
-			var buttonCodeStr:String = ids[0];
-			var buttonCodeStrFixed = StringTools.replace(buttonCodeStr, " ", "");
-			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
+			var buttonCode:Int = (unique == -1 ? 0 : unique);
+			trace(buttonCode);
 
 			callOnScripts('onButtonReleasePre', [buttonCode]);
 			if(buttonCode > -1) keyReleased(buttonCode);
@@ -5128,12 +5134,21 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var simulatedBotPlayHold:Array<Bool> = [];
 	// Hold notes
 	@:unreflective
 	private function keysCheck():Void
 	{
 		if (!canInput())
 			return;
+
+		//null safety
+		if (simulatedBotPlayHold == []) {
+			for (key in keysArray)
+			{
+				simulatedBotPlayHold.push(false);
+			}
+		}
 
 		// HOLDING
 		var holdArray:Array<Bool> = [];
@@ -5159,6 +5174,9 @@ class PlayState extends MusicBeatState
 			{
 				notes.forEachAlive(function(daNote:Note)
 				{
+					if (OnlineTweaks.simulateBotplay && holdArray[daNote.noteData] == false) {
+						holdArray[daNote.noteData] = simulatedBotPlayHold[daNote.noteData];
+					}
 					// hold note functions
 					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData] && daNote.canBeHit
 					&& isPlayerNote(daNote) && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
@@ -5553,8 +5571,9 @@ class PlayState extends MusicBeatState
 			hscriptArray.pop();
 		#end
 
-		if (luaMobilePad != null)
-			luaMobilePad = FlxDestroyUtil.destroy(luaMobilePad);
+		//destroy manager
+		for (managerName => manager in customManagers)
+			manager.destroy();
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
@@ -5709,10 +5728,10 @@ class PlayState extends MusicBeatState
 	{
 		#if MODS_ALLOWED
 		var luaToLoad:String = Paths.modFolders(luaFile);
-		if(!FileSystem.exists(luaToLoad))
+		if(!FunkinFileSystem.exists(luaToLoad))
 			luaToLoad = Paths.getPreloadPath(luaFile);
 
-		if(FileSystem.exists(luaToLoad))
+		if(FunkinFileSystem.exists(luaToLoad))
 		#elseif sys
 		var luaToLoad:String = Paths.getPreloadPath(luaFile);
 		if(OpenFlAssets.exists(luaToLoad))
@@ -5732,10 +5751,10 @@ class PlayState extends MusicBeatState
 	public function startHScriptsNamed(scriptFile:String)
 	{
 		var scriptToLoad:String = Paths.modFolders(scriptFile);
-		if(!FileSystem.exists(scriptToLoad))
+		if(!FunkinFileSystem.exists(scriptToLoad))
 			scriptToLoad = Paths.getPreloadPath(scriptFile);
 		
-		if(FileSystem.exists(scriptToLoad))
+		if(FunkinFileSystem.exists(scriptToLoad))
 		{
 			if (SScript.global.exists(scriptToLoad)) return false;
 	
@@ -6096,21 +6115,21 @@ class PlayState extends MusicBeatState
 		
 		for (folder in foldersToCheck)
 		{
-			if(FileSystem.exists(folder))
+			if(FunkinFileSystem.exists(folder))
 			{
 				var frag:String = folder + name + '.frag';
 				var vert:String = folder + name + '.vert';
 				var found:Bool = false;
-				if(FileSystem.exists(frag))
+				if(FunkinFileSystem.exists(frag))
 				{
-					frag = File.getContent(frag);
+					frag = FunkinFileSystem.getText(frag);
 					found = true;
 				}
 				else frag = null;
 
-				if(FileSystem.exists(vert))
+				if(FunkinFileSystem.exists(vert))
 				{
-					vert = File.getContent(vert);
+					vert = FunkinFileSystem.getText(vert);
 					found = true;
 				}
 				else vert = null;
@@ -6613,97 +6632,90 @@ class PlayState extends MusicBeatState
 		return camGame.scroll.y = value - FlxG.height / 2;
 	}
 
-	public var luaMobilePad:MobilePad;
-	public var luaMpadCam:FlxCamera;
-	public function makeLuaMobilePad(DPad:String, Action:String)
-	{
-		if(members.contains(luaMobilePad)) return;
-
-		if(!variables.exists("luaMobilePad"))
-			variables.set("luaMobilePad", luaMobilePad);
-
-		luaMobilePad = new MobilePad(DPad, Action);
-		luaMobilePad.alpha = ClientPrefs.data.mobilePadAlpha;
-	}
-
-	public function addLuaMobilePad() {
-		if(luaMobilePad == null || members.contains(luaMobilePad)) return;
-
-		var target:Dynamic = isDead ? GameOverSubstate.instance : PlayState.instance;
-		target.insert(target.members.length + 1, luaMobilePad);
-	}
-
-	public function addLuaMobilePadCamera()
-		if(luaMobilePad != null) luaMobilePad.cameras = [luaMpadCam];
-
-	public function removeLuaMobilePad()
-	{
-		if (luaMobilePad != null) {
-			luaMobilePad.kill();
-			luaMobilePad.destroy();
-			remove(luaMobilePad);
-			luaMobilePad = null;
+	public var customManagers:Map<String, MobileControlManager> = [];
+	public var lastGettedManager:MobileControlManager;
+	public var lastGettedManagerName:String;
+	public static inline function checkManager(managerName:String):MobileControlManager {
+		if (managerName == null || managerName == '') {
+			instance.lastGettedManagerName = 'default';
+			instance.lastGettedManager = MusicBeatState.getState().mobileManager;
 		}
+		else if (instance.lastGettedManagerName != managerName) {
+			instance.lastGettedManagerName = managerName;
+			instance.lastGettedManager = instance.customManagers.get(managerName);
+		}
+		return instance.lastGettedManager;
 	}
 
-	public static function checkMPadPress(buttonName:String, type = 'justPressed') {
-		var button = PlayState.instance.luaMobilePad.getButtonFromName(buttonName); //Access Spesific Button Name From Array
-		return Reflect.getProperty(button, type);
+	public function createNewManager(name:String) {
+		var mobileManagerNew = new MobileControlManager(this);
+		customManagers.set(name, mobileManagerNew);
+		if(!variables.exists(name))
+			variables.set(name, mobileManagerNew);
+		if(!variables.exists(name + '_mobilePad'))
+			variables.set(name + '_mobilePad', mobileManagerNew.mobilePad);
+		if(!variables.exists(name + '_hitbox'))
+			variables.set(name + '_hitbox', mobileManagerNew.hitbox);
+		if(!variables.exists(name + '_joyStick'))
+			variables.set(name + '_joyStick', mobileManagerNew.joyStick);
+	}
+
+	public static function checkMPadPress(buttonName:String, type = 'justPressed', ?managerName:String) {
+		var manager = checkManager(managerName);
+
+		var button:MobileButton = null;
+		if (manager.mobilePad != null) button = manager.mobilePad.getButtonFromName(buttonName);
+		if (button != null) return Reflect.getProperty(button, type);
 		return false;
 	}
 
-	//I don't need this anymore because Hitboxes can returnable to any keys
-	public static function checkHBoxPress(button:String, type = 'justPressed') {
+	//for lua shit
+	public static function checkHBoxPress(button:String, type = 'justPressed', ?managerName:String) {
+		var manager = checkManager(managerName);
+
 		var buttonObject:MobileButton = null;
-		if (MusicBeatState.getState().hitbox != null) buttonObject = MusicBeatState.getState().hitbox.getButtonFromName(button);
+		if (manager.hitbox != null) buttonObject = manager.hitbox.getButtonFromName(button);
 		if (buttonObject != null) return Reflect.getProperty(buttonObject, type);
 		return false;
 	}
 
 	//Lua Stuff for Mobile Controls
-	public function reloadControls(?mode:String)
+	public function reloadPlayStateHitbox(?mode:String)
 	{
-		hitbox.forEachAlive((button) ->
-		{
-			button.deadZones = [];
-		});
-		removeMobileControls();
-		addMobileControls(mode);
-		if (replayData == null) {
-			hitbox.onButtonDown.add(onButtonPress);
-			hitbox.onButtonUp.add(onButtonRelease);
-			hitbox.onButtonDown.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 0));
-			hitbox.onButtonUp.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 1));
+		removePlayStateHitbox();
+		addPlayStateHitbox(mode);
+	}
+
+	public function addPlayStateHitbox(?mode:String)
+	{
+		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxhint);
+		mobileManager.addHitboxCamera();
+		if (replayData == null && !cpuControlled) {
+			mobileManager.hitbox?.onButtonDown?.add(onButtonPress);
+			mobileManager.hitbox?.onButtonUp?.add(onButtonRelease);
+			mobileManager.hitbox?.onButtonDown?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 0));
+			mobileManager.hitbox?.onButtonUp?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 1));
+		} else {
+			mobileManager.hitbox.visible = false;
 		}
-		hitbox.forEachAlive((button) ->
+		mobileManager.hitbox.forEachAlive((button) ->
 		{
-			if (mobilePad.getButtonFromName('buttonT') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonT'));
-			if (mobilePad.getButtonFromName('buttonC') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonC'));
-			if (mobilePad.getButtonFromName('buttonP') != null)
-				button.deadZones.push(mobilePad.getButtonFromName('buttonP'));
+			if (mobileManager.mobilePad.getButtonFromName('buttonT') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonT'));
+			if (mobileManager.mobilePad.getButtonFromName('buttonC') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonC'));
+			if (mobileManager.mobilePad.getButtonFromName('buttonP') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonP'));
 		});
 	}
 
-	public function addControls(?mode:String)
+	public function removePlayStateHitbox()
 	{
-		addMobileControls(mode);
-		if (replayData == null) {
-			hitbox.onButtonDown.add(onButtonPress);
-			hitbox.onButtonUp.add(onButtonRelease);
-			hitbox.onButtonDown.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 0));
-			hitbox.onButtonUp.add((button:MobileButton, ids:Array<String>) -> replayRecorder.recordKeyMobileC(Conductor.songPosition, ids, 1));
-		}
-	}
-
-	public function removeControls()
-	{
-		hitbox.forEachAlive((button) ->
+		mobileManager.hitbox.forEachAlive((button) ->
 		{
 			button.deadZones = [];
 		});
-		removeMobileControls();
+		mobileManager.removeHitbox();
 	}
 }
 

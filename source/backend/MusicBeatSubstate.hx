@@ -9,6 +9,7 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		instance = this;
+		mobileManager = new MobileControlManager(this);
 		//controls.isInSubstate = true;
 		super();
 	}
@@ -29,76 +30,10 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return Controls.instance;
 
-	public var mobilePad:MobilePad;
-	public var mobilePadCam:FlxCamera;
-	public var hitbox:Hitbox;
-	public var hitboxCam:FlxCamera;
-
-	public function addMobilePad(DPad:String, Action:String)
-	{
-		mobilePad = new MobilePad(DPad, Action, ClientPrefs.data.mobilePadAlpha);
-		add(mobilePad);
-	}
-
-	public function removeMobilePad()
-	{
-		if (mobilePad != null)
-		{
-			remove(mobilePad);
-			mobilePad = FlxDestroyUtil.destroy(mobilePad);
-		}
-
-		if(mobilePadCam != null)
-		{
-			FlxG.cameras.remove(mobilePadCam);
-			mobilePadCam = FlxDestroyUtil.destroy(mobilePadCam);
-		}
-	}
-
-	public function addMobileControls(?mode:String, defaultDrawTarget:Bool = false) {
-		if (mode != null || mode != "NONE") hitbox = new Hitbox(mode);
-		else hitbox = new Hitbox();
-
-		hitboxCam = new FlxCamera();
-		hitboxCam.bgColor.alpha = 0;
-		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
-		hitbox.buttonCameras = [hitboxCam];
-
-		add(hitbox);
-	}
-
-	public function removeMobileControls()
-	{
-		if (hitbox != null)
-		{
-			remove(hitbox);
-			hitbox = FlxDestroyUtil.destroy(hitbox);
-			hitbox = null;
-		}
-
-		if (hitboxCam != null)
-		{
-			FlxG.cameras.remove(hitboxCam);
-			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
-		}
-	}
-
-	public function addMobilePadCamera(defaultDrawTarget:Bool = false):Void
-	{
-		if (mobilePad != null)
-		{
-			mobilePadCam = new FlxCamera();
-			mobilePadCam.bgColor.alpha = 0;
-			FlxG.cameras.add(mobilePadCam, defaultDrawTarget);
-			mobilePad.buttonCameras = [mobilePadCam];
-		}
-	}
-
+	public var mobileManager:MobileControlManager;
 	override function destroy()
 	{
-		//controls.isInSubstate = false;
-		removeMobilePad();
-		removeMobileControls();
+		if (mobileManager != null) mobileManager.destroy();
 
 		super.destroy();
 	}

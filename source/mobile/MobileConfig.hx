@@ -65,7 +65,7 @@ class MobileConfig {
 		trace('' + folder);
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
 
-		#if mobile_controls_file_support if (FileSystem.exists(folder)) #end
+		#if mobile_controls_file_support if (FunkinFileSystem.exists(folder)) #end
 		for (file in readDirectoryPart2(folder))
 		{
 			if (Path.extension(file) == 'json')
@@ -74,8 +74,8 @@ class MobileConfig {
 
 				var str:String;
 				#if mobile_controls_file_support
-				if (FileSystem.exists(file))
-					str = File.getContent(file);
+				if (FunkinFileSystem.exists(file))
+					str = FunkinFileSystem.getText(file);
 				else #end
 					str = Assets.getText(file);
 
@@ -98,7 +98,7 @@ class MobileConfig {
 		var dirs:Array<String> = [];
 
 		#if mobile_controls_file_support
-		return FileSystem.readDirectory(directory);
+		return FunkinFileSystem.readDirectory(directory);
 		#else
 		var dirs:Array<String> = [];
 		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))
@@ -149,6 +149,7 @@ typedef HitboxData =
 {
 	button:String, // what Hitbox Button should be used, must be a valid Hitbox Button var from Hitbox as a string.
 	buttonIDs:Array<String>, // what Hitbox Button Iad should be used, If you're using a the library for PsychEngine 0.7 Versions, This is useful.
+	buttonUniqueID:Dynamic, // the button's special ID for button
 	//if custom ones isn't setted these will be used
 	x:Dynamic, // the button's X position on screen.
 	y:Dynamic, // the button's Y position on screen.
@@ -187,6 +188,7 @@ typedef ButtonsData =
 {
 	button:String, // what MobileButton should be used, must be a valid MobileButton var from MobilePad as a string.
 	buttonIDs:Array<String>, // what MobileButton Button Iad should be used, If you're using a the library for PsychEngine 0.7 Versions, This is useful.
+	buttonUniqueID:Dynamic, // the button's special ID for button
 	graphic:String, // the graphic of the button, usually can be located in the MobilePad xml.
 	x:Float, // the button's X position on screen.
 	y:Float, // the button's Y position on screen.

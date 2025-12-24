@@ -147,10 +147,11 @@ class EditorPlayState extends MusicBeatSubstate
 		add(tipText);
 		FlxG.mouse.visible = false;
 
-		addMobileControls();
-		hitbox.visible = true;
-		hitbox.onButtonDown.add(onButtonPress);
-		hitbox.onButtonUp.add(onButtonRelease);
+		mobileManager.addHitbox(null, ClientPrefs.data.hitboxhint);
+		mobileManager.addHitboxCamera();
+		mobileManager.hitbox.visible = true;
+		mobileManager.hitbox.onButtonDown.add(onButtonPress);
+		mobileManager.hitbox.onButtonUp.add(onButtonRelease);
 		
 		generateSong(PlayState.SONG.song);
 
@@ -163,8 +164,8 @@ class EditorPlayState extends MusicBeatSubstate
 		#end
 
 		#if !android
-		addMobilePad("NONE", "P");
-		addMobilePadCamera();
+		mobileManager.addMobilePad("NONE", "P");
+		mobileManager.addMobilePadCamera();
 		#end
 
 		RecalculateRating();
@@ -172,9 +173,9 @@ class EditorPlayState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if(#if android FlxG.android.justReleased.BACK #else mobilePad.getButtonFromName('buttonP').justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE)
+		if(#if android FlxG.android.justReleased.BACK #else mobileManager.mobilePad.getButtonFromName('buttonP').justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE)
 		{
-			hitbox.visible = false;
+			mobileManager.hitbox.visible = false;
 			endSong();
 			super.update(elapsed);
 			return;
@@ -755,24 +756,20 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 	}
 
-	private function onButtonPress(button:MobileButton, ids:Array<String>):Void
+	private function onButtonPress(button:MobileButton, ids:Array<String>, intID:Int):Void
 	{
 		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith("HITBOX")).length > 0 || ids.filter(id -> id.startsWith("EXTRA")).length > 0)
 		{
-			var buttonCodeStr:String = ids[0];
-			var buttonCodeStrFixed = buttonCodeStr.replace(" ", "");
-			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
+			var buttonCode:Int = (intID == -1 ? 0 : intID);
 			if (button.justPressed) keyPressed(buttonCode);
 		}
 	}
 
-	private function onButtonRelease(button:MobileButton, ids:Array<String>):Void
+	private function onButtonRelease(button:MobileButton, ids:Array<String>, intID:Int):Void
 	{
 		if (ids.filter(id -> id.startsWith("NOTE")).length > 0 || ids.filter(id -> id.startsWith("HITBOX")).length > 0 || ids.filter(id -> id.startsWith("EXTRA")).length > 0)
 		{
-			var buttonCodeStr:String = ids[0];
-			var buttonCodeStrFixed = buttonCodeStr.replace(" ", "");
-			var buttonCode:Int = Std.parseInt(buttonCodeStrFixed.split("=")[1]);
+			var buttonCode:Int = (intID == -1 ? 0 : intID);
 			if(buttonCode > -1) keyReleased(buttonCode);
 		}
 	}

@@ -1,41 +1,40 @@
 package mobile.objects;
 
-import mobile.Hitbox as OGHitbox;
+import mobile.Hitbox;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import openfl.geom.Matrix;
 import flixel.util.FlxColor;
 import objects.Note;
 
-class FunkinHitbox extends OGHitbox {
-	public function new(?mode:String, ?globalAlpha:Float = 0.7):Void
+class FunkinHitbox extends Hitbox {
+	public var currentMode:String;
+	public var showHints:Bool;
+	public function new(?mode:String, ?showHints:Bool, ?globalAlpha:Float = 0.7):Void
 	{
-		super(mode, globalAlpha, true); //true means basically-mobilecontrols's hitbox creation is disabled
-		if ((ClientPrefs.data.hitboxmode == 'V Slice' && mode == null) || mode == 'V Slice')
+		super(mode, globalAlpha, true); //true means mobile-controls's hitbox creation is disabled.
+		currentMode = mode; //use this there.
+		this.showHints = showHints;
+
+		if (mode == 'V Slice') //override this name.
 		{
 			var mania = Note.maniaKeys;
 			if (mania == 4) {
-				addHint('"buttonNote1', ["NOTE_LEFT = 0"], 0, 0, 140, Std.int(FlxG.height), 0xFFC24B99);
-				addHint('"buttonNote2', ["NOTE_DOWN = 1"], 0, 0, 140, Std.int(FlxG.height), 0xFF00FFFF);
-				addHint('"buttonNote3', ["NOTE_UP = 2"], 0, 0, 140, Std.int(FlxG.height), 0xFF12FA05);
-				addHint('"buttonNote4', ["NOTE_RIGHT = 3"], 0, 0, 140, Std.int(FlxG.height), 0xFFF9393F);
+				addHint('"buttonNote1', ["NOTE_LEFT"], 0, PlayState.hitboxPositions[0], 0, 140, Std.int(FlxG.height), 0xFFC24B99);
+				addHint('"buttonNote2', ["NOTE_DOWN"], 1, PlayState.hitboxPositions[1], 0, 140, Std.int(FlxG.height), 0xFF00FFFF);
+				addHint('"buttonNote3', ["NOTE_UP"], 2, PlayState.hitboxPositions[2], 0, 140, Std.int(FlxG.height), 0xFF12FA05);
+				addHint('"buttonNote4', ["NOTE_RIGHT"], 3, PlayState.hitboxPositions[3], 0, 140, Std.int(FlxG.height), 0xFFF9393F);
 			} else {
-				if (mania >= 1) addHint('"buttonNote1', ["NOTE_1 = 0", "${mania}K_NOTE_1 = 0"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 2) addHint('"buttonNote2', ["NOTE_2 = 1", "${mania}K_NOTE_2 = 1"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 3) addHint('"buttonNote3', ["NOTE_3 = 2", "${mania}K_NOTE_3 = 2"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 4) addHint('"buttonNote4', ["NOTE_4 = 3", "${mania}K_NOTE_4 = 3"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 5) addHint('"buttonNote5', ["NOTE_5 = 4", "${mania}K_NOTE_5 = 4"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 6) addHint('"buttonNote6', ["NOTE_6 = 5", "${mania}K_NOTE_6 = 5"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 7) addHint('"buttonNote7', ["NOTE_7 = 6", "${mania}K_NOTE_7 = 6"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 8) addHint('"buttonNote8', ["NOTE_8 = 7", "${mania}K_NOTE_8 = 7"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
-				if (mania >= 9) addHint('"buttonNote9', ["NOTE_9 = 8", "${mania}K_NOTE_9 = 8"], 0, 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
+				for (i in 0...mania+1) {
+					addHint('buttonNote${i+1}', ['${mania}K_NOTE_${i+1}'], i, PlayState.hitboxPositions[i], 0, 110, Std.int(FlxG.height), 0xFFFFFFFF);
+				}
 			}
 		}
 		else
 		{
 			var Custom:String = mode != null ? mode : ClientPrefs.data.hitboxmode;
 			if (!MobileConfig.hitboxModes.exists(Custom))
-				throw 'The Custom Hitbox File doesn\'t exists.';
+				throw 'The ${Custom} Hitbox File doesn\'t exists.';
 
 			var currentHint = MobileConfig.hitboxModes.get(Custom).hints;
 			if (MobileConfig.hitboxModes.get(Custom).none != null)
@@ -77,6 +76,9 @@ class FunkinHitbox extends OGHitbox {
 
 			for (buttonData in currentHint)
 			{
+				var buttonName:String = buttonData.button;
+				var buttonIDs:Array<String> = buttonData.buttonIDs;
+				var buttonUniqueID:Int = buttonData.buttonUniqueID;
 				var buttonX:Float = buttonData.x;
 				var buttonY:Float = buttonData.y;
 				var buttonWidth:Int = buttonData.width;
@@ -85,6 +87,7 @@ class FunkinHitbox extends OGHitbox {
 				var buttonReturn = buttonData.returnKey;
 				var location = ClientPrefs.data.hitboxLocation;
 				var addButton:Bool = false;
+				if (buttonData.buttonUniqueID == null) buttonUniqueID = -1; // -1 means not setted.
 
 				switch (location) {
 					case 'Top':
@@ -114,20 +117,19 @@ class FunkinHitbox extends OGHitbox {
 				   ClientPrefs.data.extraKeys == 1 && buttonData.extraKeyMode == 1 ||
 				   ClientPrefs.data.extraKeys == 2 && buttonData.extraKeyMode == 2 ||
 				   ClientPrefs.data.extraKeys == 3 && buttonData.extraKeyMode == 3 ||
-				   ClientPrefs.data.extraKeys == 4 && buttonData.extraKeyMode == 4)
+				   ClientPrefs.data.extraKeys == 4 && buttonData.extraKeyMode == 4 ||
+				   buttonData.extraKeyMode == null)
 				{
 					addButton = true;
 				}
-				else if(buttonData.extraKeyMode == null)
-					addButton = true;
 
-				for (i in 1...9) {
+				for (i in 1...5) {
 					var buttonString = 'buttonExtra${i}';
 					if (buttonData.button == buttonString && buttonReturn == null)
 						buttonReturn = Reflect.getProperty(ClientPrefs.data, 'extraKeyReturn${i}');
 				}
 				if (addButton)
-					addHint(buttonData.button, buttonData.buttonIDs, buttonX, buttonY, buttonWidth, buttonHeight, Util.colorFromString(buttonColor), buttonReturn);
+					addHint(buttonName, buttonIDs, buttonUniqueID, buttonX, buttonY, buttonWidth, buttonHeight, Util.colorFromString(buttonColor), buttonReturn);
 			}
 		}
 
@@ -175,25 +177,26 @@ class FunkinHitbox extends OGHitbox {
 		return bitmap;
 	}
 
-	override public function createHint(Name:Array<String>, X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF, ?Return:String, ?Map:String):MobileButton
+	override public function createHint(name:Array<String>, uniqueID:Int, x:Float, y:Float, width:Int, height:Int, color:Int = 0xFFFFFF, ?returned:String):MobileButton
 	{
-		var hint:MobileButton = new MobileButton(X, Y);
-		hint.loadGraphic(createHintGraphic(Width, Height, Color));
+		var hint:MobileButton = new MobileButton(x, y, returned);
+		hint.loadGraphic(createHintGraphic(width, height, color));
+		var VSliceAllowed:Bool = (currentMode == 'V Slice' && Note.maniaKeys != 20 && Note.maniaKeys != 55);
 
-		if (ClientPrefs.data.hitboxhint && !ClientPrefs.data.VSliceControl) {
+		if (showHints && !VSliceAllowed) {
 			var doHeightFix:Bool = false;
-			if (Height == 144) doHeightFix = true;
+			if (height == 144) doHeightFix = true;
 
 			//Up Hint
 			hint.hintUp = new FlxSprite();
-			hint.hintUp.loadGraphic(createHintGraphic(Width, Math.floor(Height * (doHeightFix ? 0.060 : 0.020)), Color, true));
-			hint.hintUp.x = X;
+			hint.hintUp.loadGraphic(createHintGraphic(width, Math.floor(height * (doHeightFix ? 0.060 : 0.020)), color, true));
+			hint.hintUp.x = x;
 			hint.hintUp.y = hint.y;
 
 			//Down Hint
 			hint.hintDown = new FlxSprite();
-			hint.hintDown.loadGraphic(createHintGraphic(Width, Math.floor(Height * (doHeightFix ? 0.060 : 0.020)), Color, true));
-			hint.hintDown.x = X;
+			hint.hintDown.loadGraphic(createHintGraphic(width, Math.floor(height * (doHeightFix ? 0.060 : 0.020)), color, true));
+			hint.hintDown.x = x;
 			hint.hintDown.y = hint.y + hint.height / (doHeightFix ? 1.060 : 1.020);
 		}
 
@@ -201,27 +204,27 @@ class FunkinHitbox extends OGHitbox {
 		hint.immovable = true;
 		hint.scrollFactor.set();
 		hint.alpha = 0.00001;
-		hint.IDs = Name;
+		hint.IDs = name;
+		hint.uniqueID = uniqueID;
 		hint.onDown.callback = function()
 		{
-			onButtonDown.dispatch(hint, Name);
-			if (hint.alpha != globalAlpha)
+			onButtonDown?.dispatch(hint, name, uniqueID);
+			if (hint.alpha != globalAlpha && !VSliceAllowed)
 				hint.alpha = globalAlpha;
-			if ((hint.hintUp?.alpha != 0.00001 || hint.hintDown?.alpha != 0.00001) && hint.hintUp != null && hint.hintDown != null)
+			if ((hint.hintUp?.alpha != 0.00001 || hint.hintDown?.alpha != 0.00001) && hint.hintUp != null && hint.hintDown != null && !VSliceAllowed)
 				hint.hintUp.alpha = hint.hintDown.alpha = 0.00001;
 		}
 		hint.onOut.callback = hint.onUp.callback = function()
 		{
-			onButtonUp.dispatch(hint, Name);
-			if (hint.alpha != 0.00001)
+			onButtonUp?.dispatch(hint, name, uniqueID);
+			if (hint.alpha != 0.00001 && !VSliceAllowed)
 				hint.alpha = 0.00001;
-			if ((hint.hintUp?.alpha != globalAlpha || hint.hintDown?.alpha != globalAlpha) && hint.hintUp != null && hint.hintDown != null)
+			if ((hint.hintUp?.alpha != globalAlpha || hint.hintDown?.alpha != globalAlpha) && hint.hintUp != null && hint.hintDown != null && !VSliceAllowed)
 				hint.hintUp.alpha = hint.hintDown.alpha = globalAlpha;
 		}
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
 		#end
-		if (Return != null) hint.returnedKey = Return;
 		return hint;
 	}
 }

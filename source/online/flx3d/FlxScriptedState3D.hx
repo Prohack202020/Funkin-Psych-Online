@@ -59,10 +59,10 @@ class FlxScriptedState3D extends FlxState3D {
 
 	function setupScript(file:String) {
 		var scriptToLoad:String = Paths.modFolders(file);
-		if (!FileSystem.exists(scriptToLoad))
+		if (!FunkinFileSystem.exists(scriptToLoad))
 			scriptToLoad = Paths.getPreloadPath(file);
 
-		if (FileSystem.exists(scriptToLoad)) {
+		if (FunkinFileSystem.exists(scriptToLoad)) {
 			initScript(scriptToLoad);
 			return true;
 		}

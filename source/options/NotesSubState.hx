@@ -179,11 +179,11 @@ class NotesSubState extends MusicBeatSubstate
 		controllerPointer.visible = controls.controllerMode;
 		_lastControllerMode = controls.controllerMode;
 
-		addMobilePad('NONE', 'B_C');
+		mobileManager.addMobilePad('NONE', 'B_C');
 		controls.isInSubstate = true;
-		mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
-		mobilePad.getButtonFromName('buttonC').x = 0;
-		mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
+		mobileManager.mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
+		mobileManager.mobilePad.getButtonFromName('buttonC').x = 0;
+		mobileManager.mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
 	}
 
 	function updateTip()
@@ -201,18 +201,18 @@ class NotesSubState extends MusicBeatSubstate
 		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
 
 	override function closeSubState() {
-		removeMobilePad();
+		mobileManager.removeMobilePad();
 		super.closeSubState();
-		addMobilePad('NONE', 'B_C');
-		addMobilePadCamera();
+		mobileManager.addMobilePad('NONE', 'B_C');
+		mobileManager.addMobilePadCamera();
 		controls.isInSubstate = true;
-		mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
-		mobilePad.getButtonFromName('buttonC').x = 0;
-		mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
+		mobileManager.mobilePad.getButtonFromName('buttonB').x = FlxG.width - 132;
+		mobileManager.mobilePad.getButtonFromName('buttonC').x = 0;
+		mobileManager.mobilePad.getButtonFromName('buttonC').y = FlxG.height - 135;
 	}
 
 	override function update(elapsed:Float) {
-		if (controls.BACK || mobilePad?.getButtonFromName('buttonB')?.justPressed) {
+		if (controls.BACK || mobileManager.mobilePad?.getButtonFromName('buttonB')?.justPressed) {
 			if (GameClient.isConnected()) {
 				GameClient.send('updateArrColors', ClientPrefs.getArrowRGBCompleteMaps());
 			}
@@ -498,7 +498,7 @@ class NotesSubState extends MusicBeatSubstate
 				}
 			} 
 		}
-		else if(mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET && hexTypeNum < 0)
+		else if(mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET && hexTypeNum < 0)
 		{
 			if(FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER))
 			{

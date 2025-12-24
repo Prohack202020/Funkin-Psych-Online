@@ -55,7 +55,7 @@ class ReplayRecorder extends FlxBasic {
 		misses: 0,
 		points: 0,
 		score: 0,
-        inputs: [],
+		inputs: [],
 		note_offset: 0,
 		gameplay_modifiers: [],
 		ghost_tapping: true,
@@ -64,9 +64,9 @@ class ReplayRecorder extends FlxBasic {
 		version: 4,
 		mod_url: '',
 		keys: 4
-    };
+	};
 
-    var state:PlayState;
+	var state:PlayState;
 
 	var keyboardIds:Map<FlxKey, Array<String>> = [];
 	var controllerIds:Map<FlxGamepadInputID, Array<String>> = [];
@@ -137,7 +137,7 @@ class ReplayRecorder extends FlxBasic {
 		// nvm
 		// @:privateAccess FlxG.gamepads.getFirstActiveGamepad()._device.__gamepad.onButtonDown.add(onPadDown);
 		// @:privateAccess FlxG.gamepads.getFirstActiveGamepad()._device.__gamepad.onButtonUp.add(onPadUp);
-    }
+	}
 
 	override function destroy() {
 		super.destroy();
@@ -148,7 +148,7 @@ class ReplayRecorder extends FlxBasic {
 
 	function onKeyDown(e:KeyboardEvent) {
 		recordKey(Conductor.songPosition, keyboardIds.get(e.keyCode), e.keyCode, 0, true);
-    }
+	}
 
 	function onKeyUp(e:KeyboardEvent) {
 		recordKey(Conductor.songPosition, keyboardIds.get(e.keyCode), e.keyCode, 1, true);
@@ -189,7 +189,7 @@ class ReplayRecorder extends FlxBasic {
 					data.inputs.push([time, 'KEY:SPACE', move]);
 			}
 		}
-		
+
 		if (ids == null)
 			return;
 
@@ -201,58 +201,69 @@ class ReplayRecorder extends FlxBasic {
 	}
 
 	public function recordKeyMobileC(time:Float, IDs:Array<String>, move:Int) {
-		if (IDs == null || IDs.length < 0)
-			return;
-
-		var fixedID:String = IDs[0].toLowerCase().replace(" ", "").split("=")[0];
-		if(IDs.length == 1 && !REGISTER_BINDS.contains(fixedID))
-		{
-			switch(IDs[0])
+		trace(time + ' | ' + IDs + ' | ' + move);
+		if (IDs != null || IDs.length >= 0) {
+			var fixedID:String = IDs[0].toLowerCase().replace(" ", "").split("=")[0];
+			if(IDs.length == 1 && !REGISTER_BINDS.contains(fixedID))
 			{
-				case 'EXTRA_1':
-					if (state.hitbox.getButtonFromName('buttonExtra1') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra1').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_2':
-					if (state.hitbox.getButtonFromName('buttonExtra2') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra2').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_3':
-					if (state.hitbox.getButtonFromName('buttonExtra3') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra3').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_4':
-					if (state.hitbox.getButtonFromName('buttonExtra4') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra4').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_5':
-					if (state.hitbox.getButtonFromName('buttonExtra5') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra5').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_6':
-					if (state.hitbox.getButtonFromName('buttonExtra6') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra6').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_7':
-					if (state.hitbox.getButtonFromName('buttonExtra7') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra7').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_8':
-					if (state.hitbox.getButtonFromName('buttonExtra8') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra8').returnedKey.toUpperCase(), move]);
-				case 'EXTRA_9':
-					if (state.hitbox.getButtonFromName('buttonExtra9') != null)
-						data.inputs.push([time, 'KEY:' + state.hitbox.getButtonFromName('buttonExtra9').returnedKey.toUpperCase(), move]);
-				default:
-					// nothing
+				switch(IDs[0])
+				{
+					case 'EXTRA_1':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra1') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra1').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_2':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra2') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra2').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_3':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra3') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra3').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_4':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra4') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra4').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_5':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra5') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra5').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_6':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra6') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra6').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_7':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra7') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra7').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_8':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra8') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra8').returnedKey.toUpperCase(), move]);
+					case 'EXTRA_9':
+						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra9') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra9').returnedKey.toUpperCase(), move]);
+					default:
+						// nothing
+				}
+				return;
 			}
-			return;
+
+			for (id in IDs)
+			{
+				var idName:String = id.toLowerCase();
+
+				if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
+					continue;
+
+				data.inputs.push([time, idName, move]);
+			}
 		}
+	}
 
-		for (id in IDs)
-		{
-			var idName:String = id.toLowerCase();
-			var buttonCodeStr:String = idName.replace(" ", "");
-			idName = buttonCodeStr.split("=")[0];
-
-			if (idName == null || state.paused || !REGISTER_BINDS.contains(idName))
-				continue;
-
-			data.inputs.push([time, idName, move]);
+	//TODO: add extra key support
+	public function getDirectionNameFromData(noteData:Dynamic)
+	{
+		var directions = ["note_left", "note_down", "note_up", "note_right"];
+		if (Note.maniaKeys != 4) {
+			directions = [];
+			for (key in 0...Note.maniaKeys) {
+				directions.push('${Note.maniaKeys}k_note_${key + 1}');
+			}
 		}
+		return directions[noteData];
 	}
 
 	public function save():Float {
@@ -285,7 +296,7 @@ class ReplayRecorder extends FlxBasic {
 		trace("Saved a replay!");
 
 		return upload();
-    }
+	}
 
 	public function upload():Float {
 		if (!Note.rankedManiaKeysList.contains(data.keys) || ClientPrefs.data.disableSubmiting) {

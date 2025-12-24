@@ -76,8 +76,8 @@ class ResetScoreSubState extends MusicBeatSubstate
 		add(noText);
 		updateOptions();
 
-		addMobilePad('LEFT_RIGHT', 'A_B');
-		addMobilePadCamera();
+		mobileManager.addMobilePad('LEFT_RIGHT', 'A_B');
+		mobileManager.addMobilePadCamera();
 	}
 
 	override function update(elapsed:Float)

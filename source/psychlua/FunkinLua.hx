@@ -1293,14 +1293,14 @@ class FunkinLua {
 			var path:String;
 			#if MODS_ALLOWED
 			path = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
-			if(!FileSystem.exists(path))
+			if(!FunkinFileSystem.exists(path))
 			#end
 				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 
 			luaTrace('startDialogue: Trying to load dialogue: ' + path);
 
 			#if MODS_ALLOWED
-			if(FileSystem.exists(path))
+			if(FunkinFileSystem.exists(path))
 			#else
 			if(Assets.exists(path))
 			#end
@@ -1325,7 +1325,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
-			if(FileSystem.exists(Paths.video(videoFile))) {
+			if(FunkinFileSystem.exists(Paths.video(videoFile))) {
 				game.startVideo(videoFile);
 				return true;
 			} else {
@@ -1698,12 +1698,12 @@ class FunkinLua {
 		var preloadPath:String = Paths.getPreloadPath(scriptFile);
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(scriptFile);
-		if(FileSystem.exists(scriptFile))
+		if(FunkinFileSystem.exists(scriptFile))
 			return scriptFile;
-		else if(FileSystem.exists(path))
+		else if(FunkinFileSystem.exists(path))
 			return path;
 	
-		if(FileSystem.exists(preloadPath))
+		if(FunkinFileSystem.exists(preloadPath))
 		#else
 		if(Assets.exists(preloadPath))
 		#end
@@ -1770,21 +1770,21 @@ class FunkinLua {
 		
 		for (folder in foldersToCheck)
 		{
-			if(FileSystem.exists(folder))
+			if(FunkinFileSystem.exists(folder))
 			{
 				var frag:String = folder + name + '.frag';
 				var vert:String = folder + name + '.vert';
 				var found:Bool = false;
-				if(FileSystem.exists(frag))
+				if(FunkinFileSystem.exists(frag))
 				{
 					frag = File.getContent(frag);
 					found = true;
 				}
 				else frag = null;
 
-				if(FileSystem.exists(vert))
+				if(FunkinFileSystem.exists(vert))
 				{
-					vert = File.getContent(vert);
+					vert = FunkinFileSystem.getText(vert);
 					found = true;
 				}
 				else vert = null;

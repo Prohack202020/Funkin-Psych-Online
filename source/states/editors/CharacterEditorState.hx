@@ -226,8 +226,8 @@ class CharacterEditorState extends MusicBeatState {
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
 
-		addMobilePad('FULL', 'CHARACTER_EDITOR');
-		addMobilePadCamera();
+		mobileManager.addMobilePad('FULL', 'CHARACTER_EDITOR');
+		mobileManager.addMobilePadCamera();
 
 		super.create();
 	}
@@ -1173,10 +1173,10 @@ class CharacterEditorState extends MusicBeatState {
 			directories.push(Paths.mods(mod + '/characters/'));
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
-			if (FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
+			if (FunkinFileSystem.exists(directory)) {
+				for (file in FunkinFileSystem.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
+					if (file.endsWith('.json')) {
 						var charToCheck:String = file.substr(0, file.length - 5);
 						if (!charsLoaded.exists(charToCheck)) {
 							characterList.push(charToCheck);
@@ -1239,7 +1239,7 @@ class CharacterEditorState extends MusicBeatState {
 		ClientPrefs.toggleVolumeKeys(true);
 
 		if (!charDropDown.dropPanel.visible) {
-			if (mobilePad.getButtonFromName('buttonB').justPressed || FlxG.keys.justPressed.ESCAPE) {
+			if (mobileManager.mobilePad.getButtonFromName('buttonB').justPressed || FlxG.keys.justPressed.ESCAPE) {
 				if (goToSkins) {
 					FlxG.switchState(() -> new SkinsState());
 				}
@@ -1254,48 +1254,48 @@ class CharacterEditorState extends MusicBeatState {
 				return;
 			}
 
-			if (mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.R) {
+			if (mobileManager.mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.R) {
 				FlxG.camera.zoom = 1;
 				updateCamPointerZoom();
 			}
 
-			if (mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
+			if (mobileManager.mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
 				FlxG.camera.zoom += elapsed * FlxG.camera.zoom;
 				if (FlxG.camera.zoom > 3)
 					FlxG.camera.zoom = 3;
 				updateCamPointerZoom();
 			}
-			if (mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
+			if (mobileManager.mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
 				FlxG.camera.zoom -= elapsed * FlxG.camera.zoom;
 				if (FlxG.camera.zoom < 0.1)
 					FlxG.camera.zoom = 0.1;
 				updateCamPointerZoom();
 			}
 
-			if ((mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonUp').pressed)
+			if ((mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonUp').pressed)
 				|| FlxG.keys.pressed.I
-				|| (mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonLeft').pressed)
+				|| (mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonLeft').pressed)
 				|| FlxG.keys.pressed.J
-				|| (mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonDown').pressed)
+				|| (mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonDown').pressed)
 				|| FlxG.keys.pressed.K
-				|| (mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonRight').pressed)
+				|| (mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonRight').pressed)
 				|| FlxG.keys.pressed.L) {
 				var addToCam:Float = 500 * elapsed;
 				if (FlxG.keys.pressed.SHIFT)
 					addToCam *= 4;
 
-				if (mobilePad.getButtonFromName('buttonUp').pressed || FlxG.keys.pressed.I)
+				if (mobileManager.mobilePad.getButtonFromName('buttonUp').pressed || FlxG.keys.pressed.I)
 					camFollow.y -= addToCam;
-				else if (mobilePad.getButtonFromName('buttonDown').pressed || FlxG.keys.pressed.K)
+				else if (mobileManager.mobilePad.getButtonFromName('buttonDown').pressed || FlxG.keys.pressed.K)
 					camFollow.y += addToCam;
 
-				if (mobilePad.getButtonFromName('buttonLeft').pressed || FlxG.keys.pressed.J)
+				if (mobileManager.mobilePad.getButtonFromName('buttonLeft').pressed || FlxG.keys.pressed.J)
 					camFollow.x -= addToCam;
-				else if (mobilePad.getButtonFromName('buttonRight').pressed || FlxG.keys.pressed.L)
+				else if (mobileManager.mobilePad.getButtonFromName('buttonRight').pressed || FlxG.keys.pressed.L)
 					camFollow.x += addToCam;
 			}
 
-			mobilePad.forEachAlive((button:MobileButton) ->
+			mobileManager.mobilePad.forEachAlive((button:MobileButton) ->
 			{
 				if (button.justPressed || button.pressed)
 					overlapsToButton = true;
@@ -1304,11 +1304,11 @@ class CharacterEditorState extends MusicBeatState {
 			});
 
 			if (char.animationsArray.length > 0) {
-				if (mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.W) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.W) {
 					curAnim -= 1;
 				}
 
-				if (mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.S) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.S) {
 					curAnim += 1;
 				}
 
@@ -1318,11 +1318,11 @@ class CharacterEditorState extends MusicBeatState {
 				if (curAnim >= char.animationsArray.length)
 					curAnim = 0;
 
-				if (mobilePad.getButtonFromName('buttonV').justPressed || mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonV').justPressed || mobileManager.mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
 					char.playAnim(char.animationsArray[curAnim].anim, true);
 					genBoyOffsets();
 				}
-				if (mobilePad.getButtonFromName('buttonA').justPressed || FlxG.keys.justPressed.T) {
+				if (mobileManager.mobilePad.getButtonFromName('buttonA').justPressed || FlxG.keys.justPressed.T) {
 					char.animationsArray[curAnim].offsets = [0, 0];
 
 					char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
@@ -1332,17 +1332,17 @@ class CharacterEditorState extends MusicBeatState {
 
 				var controlArray:Array<Bool> = [
 					FlxG.keys.justPressed.LEFT
-					|| (!mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonLeft').justPressed),
+					|| (!mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed),
 					FlxG.keys.justPressed.RIGHT
-					|| (!mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonRight').justPressed),
+					|| (!mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed),
 					FlxG.keys.justPressed.UP
-					|| (!mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonUp').justPressed),
+					|| (!mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonUp').justPressed),
 					FlxG.keys.justPressed.DOWN
-					|| (!mobilePad.getButtonFromName('buttonG').pressed && mobilePad.getButtonFromName('buttonDown').justPressed)];
+					|| (!mobileManager.mobilePad.getButtonFromName('buttonG').pressed && mobileManager.mobilePad.getButtonFromName('buttonDown').justPressed)];
 
 				for (i in 0...controlArray.length) {
 					if (controlArray[i]) {
-						var holdShift = (mobilePad.getButtonFromName('buttonC').pressed || FlxG.keys.pressed.SHIFT);
+						var holdShift = (mobileManager.mobilePad.getButtonFromName('buttonC').pressed || FlxG.keys.pressed.SHIFT);
 						var multiplier = 1;
 						if (holdShift)
 							multiplier = 10;

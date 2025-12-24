@@ -93,8 +93,10 @@ class Note extends FlxSprite
 	}
 	public static var noteScale(get, default):Float = 0.7;
 	static function get_noteScale() {
-		if (ClientPrefs.data.VSliceControl) return (swagWidth * 4) / (swagWidth * 4) + (0.055 * (4 - 4));
-		else return (swagWidth * 4) / (swagWidth * Math.max(4, maniaKeys)) * (1 + (0.1 * (Math.min(9, Math.max(4, maniaKeys)) - 4)));
+		if (ClientPrefs.data.VSliceControl && Note.maniaKeys != 20 && Note.maniaKeys != 55)
+			return (swagWidth * 4) / (swagWidth * 4) + (0.055 * (4 - 4));
+		else
+			return (swagWidth * 4) / (swagWidth * Math.max(4, maniaKeys)) * (1 + (0.1 * (Math.min(9, Math.max(4, maniaKeys)) - 4)));
 	}
 
 	public static function getNoteOffsetX() {

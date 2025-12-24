@@ -17,8 +17,8 @@ class VUtil {
 		var semen = path.replace("\\", "/").split("/");
 		var songID = semen[semen.length - 1].split("-chart")[0];
 
-		var song:SongChartData = new JsonParser<SongChartData>().fromJson(File.getContent(path));
-		var meta:SongMetaData = new JsonParser<SongMetaData>().fromJson(File.getContent(path.replace("-chart", "-metadata")));
+		var song:SongChartData = new JsonParser<SongChartData>().fromJson(FunkinFileSystem.getText(path));
+		var meta:SongMetaData = new JsonParser<SongMetaData>().fromJson(FunkinFileSystem.getText(path.replace("-chart", "-metadata")));
 
 		var fileDialog = new FileDialog();
 		fileDialog.onSelect.add(exportPath -> {

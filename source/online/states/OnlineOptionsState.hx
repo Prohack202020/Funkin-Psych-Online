@@ -367,7 +367,7 @@ class OnlineOptionsState extends MusicBeatState {
 
 		changeSelection(0);
 
-		addMobilePad('UP_DOWN', 'A_B');
+		mobileManager.addMobilePad('UP_DOWN', 'A_B');
 	}
 
 	override function update(elapsed) {

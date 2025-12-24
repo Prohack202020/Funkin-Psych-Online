@@ -78,8 +78,8 @@ class MobileExtraControl extends MusicBeatSubstate
 
 		updateTitle(titleNum + 1, true, 0);
 
-		addMobilePad("UP_DOWN", "OptionsC");
-		addMobilePadCamera();
+		mobileManager.addMobilePad("UP_DOWN", "OptionsC");
+		mobileManager.addMobilePadCamera();
 
 		super.create();
 	}
@@ -95,7 +95,7 @@ class MobileExtraControl extends MusicBeatSubstate
 		var up = controls.UI_UP_P;
 		var down = controls.UI_DOWN_P;
 		var back = controls.BACK;
-		var reset = controls.RESET || (mobilePad != null && mobilePad.getButtonFromName('buttonC').justPressed);
+		var reset = controls.RESET || (mobileManager.mobilePad != null && mobileManager.mobilePad.getButtonFromName('buttonC').justPressed);
 
 		if (left || right){
 			if (isMain){

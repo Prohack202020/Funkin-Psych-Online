@@ -77,7 +77,7 @@ class SelectStageSubstate extends MusicBeatSubstate {
         }
 
         coolCam.setScrollBounds(FlxG.width, FlxG.width, 0, endScrollY > FlxG.height ? endScrollY : FlxG.height);
-		addMobilePad('NONE', 'B');
+		mobileManager.addMobilePad('NONE', 'B');
         controls.isInSubstate = true;
     }
 
@@ -104,12 +104,12 @@ class SelectStageSubstate extends MusicBeatSubstate {
             holdDown = 0;
 
         if (controls.UI_UP_P || FlxG.mouse.wheel == 1) {
-            curSelected -= (mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+            curSelected -= (mobileManager.mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
             updateSelection();
         }
 
         if (controls.UI_DOWN_P || FlxG.mouse.wheel == -1) {
-            curSelected += (mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+            curSelected += (mobileManager.mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
             updateSelection();
         }
 

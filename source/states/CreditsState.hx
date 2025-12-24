@@ -45,7 +45,7 @@ class CreditsState extends MusicBeatState
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Mobile Porters'],
-			['KralOyuncu 2010x',	 'KralOyuncuV3',	'Porter of Psych Online',					'https://youtube.com/@kraloyuncurbx',		'378FC7'],
+			['ArkoseLabs',	 'arkoselabs',	'Porter of Psych Online Mobile',					'https://youtube.com/@arkoselabsofficial',		'95240E'],
 			[''],
 			['Psych Online'],
 			['Snirozu', 'snirozu', 'Developer', 'https://sniro.boo', 'FFCC33'],
@@ -134,7 +134,7 @@ class CreditsState extends MusicBeatState
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
 		changeSelection();
-		addMobilePad('UP_DOWN', 'A_B');
+		mobileManager.addMobilePad('UP_DOWN', 'A_B');
 		super.create();
 	}
 
@@ -277,9 +277,9 @@ class CreditsState extends MusicBeatState
 		if(folder != null && folder.trim().length > 0) creditsFile = Paths.mods(folder + '/data/credits.txt');
 		else creditsFile = Paths.mods('data/credits.txt');
 
-		if (FileSystem.exists(creditsFile))
+		if (FunkinFileSystem.exists(creditsFile))
 		{
-			var firstarray:Array<String> = File.getContent(creditsFile).split('\n');
+			var firstarray:Array<String> = FunkinFileSystem.getText(creditsFile).split('\n');
 			for(i in firstarray)
 			{
 				var arr:Array<String> = i.replace('\\n', '\n').split("::");

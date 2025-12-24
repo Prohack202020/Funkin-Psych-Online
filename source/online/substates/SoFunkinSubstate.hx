@@ -80,8 +80,8 @@ class SoFunkinSubstate extends MusicBeatSubstate {
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 
-		addMobilePad("FULL", "A_B_S");
-		addMobilePadCamera();
+		mobileManager.addMobilePad("FULL", "A_B_S");
+		mobileManager.addMobilePadCamera();
 
 		super.create();
 	}
@@ -211,7 +211,7 @@ class SoFunkinSubstate extends MusicBeatSubstate {
 
 		updateScrollable(groupTitle, elapsed);
 
-		if (!searchInputWait && (mobilePad.getButtonFromName('buttonS').justPressed || FlxG.keys.justPressed.F)) {
+		if (!searchInputWait && (mobileManager.mobilePad.getButtonFromName('buttonS').justPressed || FlxG.keys.justPressed.F)) {
 			searchInputWait = true;
 			searchString = searchString;
 		}

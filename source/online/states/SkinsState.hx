@@ -238,7 +238,7 @@ class SkinsState extends MusicBeatState {
 				Mods.loadTopMod();
 				characters = 'assets/characters/';
 				charactersWeeks = 'assets/characters_weeks/';
-				for (file in FileSystem.readDirectory(characters)) {
+				for (file in FunkinFileSystem.readDirectory(characters)) {
 					var path = Path.join([characters, file]);
 					if (file.endsWith('.json')) {
 						var character:String = file.substr(0, file.length - 5);
@@ -246,14 +246,14 @@ class SkinsState extends MusicBeatState {
 					continue;
 				}
 
-						if (!hardList.contains(character) && FileSystem.exists(Path.join([
+						if (!hardList.contains(character) && FunkinFileSystem.exists(Path.join([
 							characters,
 							(!flipped ? character + "-player" : character.substring(0, character.length - "-player".length)) + ".json"
 						]))) {
 							if (name == null)
 								hardList.push(character);
 
-							if (FileSystem.exists(Path.join([
+							if (FunkinFileSystem.exists(Path.join([
 								charactersWeeks,
 								(flipped ? character.substring(0, character.length - "-player".length) : character) + ".json"
 							]))) {
@@ -280,10 +280,10 @@ class SkinsState extends MusicBeatState {
 				Mods.currentModDirectory = name;
 				characters = Paths.mods(name + '/characters/');
 				charactersWeeks = Paths.mods(name + '/characters_weeks/');
-				if (FileSystem.exists(characters)) {
-					for (file in FileSystem.readDirectory(characters)) {
+				if (FunkinFileSystem.exists(characters)) {
+					for (file in FunkinFileSystem.readDirectory(characters)) {
 						var path = Path.join([characters, file]);
-						if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
+						if (file.endsWith('.json')) {
 							var character:String = file.substr(0, file.length - 5);
 							if (!flipped ? character.endsWith("-player") : !character.endsWith("-player")) {
 								continue;
@@ -430,8 +430,8 @@ class SkinsState extends MusicBeatState {
 		
 		CustomFadeTransition.nextCamera = hud; // wat
 
-		addMobilePad('FULL', 'A_B_C_D_V_X_Y_Z');
-		addMobilePadCamera();
+		mobileManager.addMobilePad('FULL', 'A_B_C_D_V_X_Y_Z');
+		mobileManager.addMobilePadCamera();
 
 		GameClient.send("status", "Selects their skin");
     }
@@ -472,7 +472,7 @@ class SkinsState extends MusicBeatState {
 			Conductor.songPosition = music.time;
 		}
 
-        if (mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.SHIFT) {
+        if (mobileManager.mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.SHIFT) {
 			if (character.members[0] != null) {
 				if (controls.NOTE_UP) {
 					character.members[0].playAnim("singUP");
@@ -501,11 +501,11 @@ class SkinsState extends MusicBeatState {
 			}
         }
 
-		if (mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.CONTROL) {
+		if (mobileManager.mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.CONTROL) {
 			if (selectTimer != null)
 				selectTimer.active = false;
 
-			mobilePad.visible = false;
+			mobileManager.mobilePad.visible = false;
 
 			var daCopy = charactersName.copy();
 			daCopy[0] = "Default";
@@ -513,7 +513,7 @@ class SkinsState extends MusicBeatState {
 				if (selectTimer != null)
 					selectTimer.active = true;
 				setCharacter(i - curCharacter);
-				removeMobilePad();
+				mobileManager.removeMobilePad();
 				return true;
 			}, (i, leText) -> {
 				Mods.currentModDirectory = charactersMod.get(charactersName[i]);
@@ -574,18 +574,18 @@ class SkinsState extends MusicBeatState {
 			});
 		}
 
-		if (mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.EIGHT) {
+		if (mobileManager.mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.EIGHT) {
 			Mods.currentModDirectory = charactersMod.get(charactersName[curCharacter]);
 			switchState(() -> new CharacterEditorState(charactersName[curCharacter], false, true));
 		}
 
-		if (mobilePad.getButtonFromName('buttonC').justPressed || FlxG.keys.justPressed.TAB) {
+		if (mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || FlxG.keys.justPressed.TAB) {
 			flipped = !flipped;
 			skipStaticDestroy = true;
 			LoadingState.loadAndSwitchState(new SkinsState());
 		}
 
-		if (mobilePad.getButtonFromName('buttonY').justPressed || FlxG.keys.justPressed.F1) {
+		if (mobileManager.mobilePad.getButtonFromName('buttonY').justPressed || FlxG.keys.justPressed.F1) {
 			switch (Main.repoHost) {
 				case 'github':
 					RequestSubstate.requestURL("https://github.com/Snirozu/Funkin-Psych-Online/wiki#skins", true);
@@ -596,7 +596,7 @@ class SkinsState extends MusicBeatState {
 			}
 		}
 
-		if (mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.F2) {
+		if (mobileManager.mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.F2) {
 			switchState(() -> new DownloaderState('collection:110039'));
 		}
 
@@ -674,10 +674,10 @@ class SkinsState extends MusicBeatState {
 		persistentUpdate = true;
 
 		super.closeSubState();
-		if (mobilePad != null)
-			removeMobilePad();
-		addMobilePad('FULL', 'A_B_C_D_V_X_Y_Z');
-		addMobilePadCamera();
+		if (mobileManager.mobilePad != null)
+			mobileManager.removeMobilePad();
+		mobileManager.addMobilePad('FULL', 'A_B_C_D_V_X_Y_Z');
+		mobileManager.addMobilePadCamera();
 	}
 
 	override function destroy() {
