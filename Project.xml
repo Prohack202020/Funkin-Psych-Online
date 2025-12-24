@@ -7,10 +7,10 @@
 	<architecture exclude="arm64" if="ONLY_ARMV7" />
 	<architecture exclude="arm64-v8a" if="ONLY_ARMV7" />
 
-	<app title="FNF': Psych Online Basic" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonlinebasic" package="com.snirozu.psychonlinebasic" company="Snirozu" />
+	<app title="FNF': Psych Online Mobile" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonlinebasic" package="com.snirozu.psychonlinebasic" company="Snirozu" />
 
 	<section if="ios">
-		<app title="FNF Psych Online" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
+		<app title="FNF Psych Online Mobile" file="PsychOnline" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 	</section>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
@@ -131,7 +131,7 @@
 	<haxelib name="extension-androidtools" if="legacy_lime"/>
 	<haxelib name="mobile-controls"/>
 	<haxedef name="mobile_controls_file_support"/>
-	<!-- <haxedef name="mobile_controls_allow_mouse_clicks"/> --> <!-- Buggy For Now -->
+	<haxedef name="mobile_controls_allow_mouse_clicks"/>
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
