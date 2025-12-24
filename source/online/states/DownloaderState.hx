@@ -335,6 +335,7 @@ class DownloaderState extends MusicBeatState {
 
 					if (FlxG.mouse.overlaps(searchBg)) {
 						curSelected = -1;
+						FlxG.stage.window.textInputEnabled = true;
 					}
 				}
 			}
@@ -353,7 +354,6 @@ class DownloaderState extends MusicBeatState {
 			if (controls.ACCEPT || FlxG.mouse.justPressed) {
 				if (curSelected == -1) {
 					searchInput.hasFocus = true;
-					FlxG.stage.window.textInputEnabled = true;
 				}
 				else if (curSelected >= 0 && items.length - 1 >= curSelected) {
 					if (FlxG.mouse.justPressed) {

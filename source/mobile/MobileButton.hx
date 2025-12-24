@@ -389,6 +389,9 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	#if mobile_controls_allow_mouse_clicks
 	function checkMouseOverlap():Bool
 	{
+		if (_point == null)
+			return false;
+
 		var overlap = false;
 		for (camera in cameras)
 		{
@@ -415,8 +418,10 @@ class TypedMobileButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 	function checkTouchOverlap():Bool
 	{
-		var overlap = false;
+		if (_point == null)
+			return false;
 
+		var overlap = false;
 		for (camera in cameras) {
 			for (touch in FlxG.touches.list) {
 				final worldPos:FlxPoint = touch.getWorldPosition(camera, _point);
