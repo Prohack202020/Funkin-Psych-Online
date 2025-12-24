@@ -2,8 +2,11 @@ name: Build Psych Online Mobile + Release
 on:
   workflow_dispatch:
     inputs:
+      name:
+        description: "Release name (e.g. many fixes or daily update)"
+        required: true
       tag_name:
-        description: "Release name (e.g. v0.13.3 or bugfix)"
+        description: "Release tag (e.g. v0.13.3 or bugfix)"
         required: true
       prerelease:
         description: "Is this a prerelease?"
@@ -20,6 +23,7 @@ permissions:
 env:
   PROJECT_NAME: PsychOnline
   TAG_NAME: ${{ github.event.inputs.tag_name }}
+  NAME: ${{ github.event.inputs.name }}
 
 jobs:
   ensure-tag:
@@ -114,8 +118,8 @@ jobs:
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ env.TAG_NAME }}
-          tag_name: "0.13.2-bugfix-mobile"
+          name: ${{ env.NAME }}
+          tag_name: ${{ env.TAG_NAME }}
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
           files: |
             /home/runner/*.apk
