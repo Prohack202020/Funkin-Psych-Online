@@ -140,6 +140,7 @@ import states.TitleState;
 	public var verticalRatingPos:Bool = false;
 	public var midSongCommentsOpacity:Float = 0.5;
 	public var friendOnlineNotification:Bool = false;
+	public var newFPPreview:Bool = false;
 
 	public function new()
 	{

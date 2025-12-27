@@ -150,8 +150,10 @@
     },
     {
       "name": "yagp",
-      "type": "haxelib",
-      "version": "1.1.4"
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/Snirozu/yagp"
     },
     {
       "name": "funkin.vis",
@@ -161,6 +163,7 @@
       "url": "https://github.com/FunkinCrew/funkVis"
     },
     {
+<<<<<<< HEAD
       "name": "mobile-controls",
       "type": "git",
       "dir": null,
@@ -173,6 +176,11 @@
       "dir": null,
       "ref": "main",
       "url": "https://github.com/MAJigsaw77/extension-androidtools"
+=======
+      "name": "tink_await",
+      "type": "haxelib",
+      "version": "0.6.0"
+>>>>>>> upstream/main
     }
   ]
 }

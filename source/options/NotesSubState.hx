@@ -57,6 +57,7 @@ class NotesSubState extends MusicBeatSubstate
 		ClientPrefs.reloadKeyColors();
 
 		isOpened = true;
+		onPixel = PlayState.isPixelStage;
 		
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFEA71FD;
@@ -737,7 +738,7 @@ class NotesSubState extends MusicBeatSubstate
 			var newAnim:String = curSelectedNote == note.ID ? 'confirm' : 'pressed';
 			note.alpha = (curSelectedNote == note.ID) ? 1 : 0.6;
 			if(note.animation.curAnim == null || note.animation.curAnim.name != newAnim) note.playAnim(newAnim, true);
-			if(instant) note.animation.curAnim.finish();
+			if(note.animation.curAnim != null && instant) note.animation.curAnim.finish();
 		}
 		bigNote.animation.play('note$curSelectedNote', true);
 		updateColors();
