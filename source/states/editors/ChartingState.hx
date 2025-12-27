@@ -1710,7 +1710,6 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
-<<<<<<< HEAD
 		if (controls.mobileControls) {
 			for (touch in FlxG.touches.list)
 			{
