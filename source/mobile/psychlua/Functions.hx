@@ -12,9 +12,14 @@ class MobileFunctions
 		#if LUA_ALLOWED
 		var lua:State = funk.lua;
 
-		Lua_helper.add_callback(lua, 'createNewMobileManager', function(name:String):Void
+		Lua_helper.add_callback(lua, 'createNewMobileManager', function(name:String, ?keyDetectionAllowed:Bool):Void
 		{
-			PlayState.instance.createNewManager(name);
+			PlayState.instance.createNewManager(name, keyDetectionAllowed);
+		});
+
+		Lua_helper.add_callback(lua, 'connectControlToNotes', function(?managerName:String, ?control:String):Void
+		{
+			PlayState.instance.connectControlToNotes(managerName, control);
 		});
 
 		//JoyStick

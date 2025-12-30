@@ -6657,7 +6657,7 @@ class PlayState extends MusicBeatState
 		return camGame.scroll.y = value - FlxG.height / 2;
 	}
 
-	public var customManagers:Map<String, MobileControlManager> = [];
+	public var customManagers:Map<String, Array<Dynamic>> = [];
 	public var lastGettedManager:MobileControlManager;
 	public var lastGettedManagerName:String;
 	public static inline function checkManager(managerName:String):MobileControlManager {
@@ -6667,14 +6667,15 @@ class PlayState extends MusicBeatState
 		}
 		else if (instance.lastGettedManagerName != managerName) {
 			instance.lastGettedManagerName = managerName;
-			instance.lastGettedManager = instance.customManagers.get(managerName);
+			instance.lastGettedManager = instance.customManagers.get(managerName)[0];
 		}
 		return instance.lastGettedManager;
 	}
 
-	public function createNewManager(name:String) {
+	public function createNewManager(name:String, keyDetectionAllowed:Bool) {
 		var mobileManagerNew = new MobileControlManager(this);
-		customManagers.set(name, mobileManagerNew);
+		var managerShit:Array<Dynamic> = [mobileManagerNew, keyDetectionAllowed];
+		customManagers.set(name, managerShit);
 		if(!variables.exists(name))
 			variables.set(name, mobileManagerNew);
 		if(!variables.exists(name + '_mobilePad'))
@@ -6713,25 +6714,40 @@ class PlayState extends MusicBeatState
 
 	public function addPlayStateHitbox(?mode:String)
 	{
-		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxhint);
+		mobileManager.addHitbox(mode, ClientPrefs.hitboxhint);
 		mobileManager.addHitboxCamera();
-		if (replayData == null && !cpuControlled) {
-			mobileManager.hitbox?.onButtonDown?.add(onButtonPress);
-			mobileManager.hitbox?.onButtonUp?.add(onButtonRelease);
-			mobileManager.hitbox?.onButtonDown?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 0));
-			mobileManager.hitbox?.onButtonUp?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 1));
-		} else {
-			mobileManager.hitbox.visible = false;
-		}
-		mobileManager.hitbox.forEachAlive((button) ->
+		if if (replayData == null && !cpuControlled) connectControlToNotes(null, 'hitbox');
+		else mobileManager.hitbox.visible = false;
+		addHitboxDeadZone(null, ['buttonT', 'buttonC', 'buttonP']);
+	}
+
+	public function addHitboxDeadZone(?managerName:String, deadZoneButtons:Array<String>) {
+		var manager = checkManager(managerName);
+		manager.hitbox.forEachAlive((button) ->
 		{
-			if (mobileManager.mobilePad.getButton('buttonT') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButton('buttonT'));
-			if (mobileManager.mobilePad.getButton('buttonC') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButton('buttonC'));
-			if (mobileManager.mobilePad.getButton('buttonP') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButton('buttonP'));
+			for (deadButton in deadZoneButtons) {
+				if (manager.mobilePad.getButton(deadButton) != null)
+					button.deadZones.push(manager.mobilePad.getButton(deadButton));
+			}
 		});
+	}
+
+	public function connectControlToNotes(?managerName:String, ?control:String) {
+		var manager = checkManager(managerName);
+		var currentControl:MobileButton;
+
+		switch(control) {
+			case 'mobilePad':
+				manager.mobilePad?.onButtonDown?.add(onButtonPress);
+				manager.mobilePad?.onButtonUp?.add(onButtonRelease);
+				manager.mobilePad?.onButtonDown?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 0));
+				manager.mobilePad?.onButtonUp?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 1));
+			case 'hitbox':
+				manager.hitbox?.onButtonDown?.add(onButtonPress);
+				manager.hitbox?.onButtonUp?.add(onButtonRelease);
+				mobileManager.hitbox?.onButtonDown?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 0));
+				mobileManager.hitbox?.onButtonUp?.add((button:MobileButton, ids:Array<String>, unique:Int) -> replayRecorder?.recordKeyMobileC(Conductor?.songPosition, ids, 1));
+		}
 	}
 
 	public function removePlayStateHitbox()

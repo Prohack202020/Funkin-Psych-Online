@@ -141,9 +141,13 @@ class HScript extends SScript
 		// For adding your own callbacks
 
 		//Mobile Control Shit
-		set('createNewMobileManager', function(name:String):Void
+		set('createNewMobileManager', function(name:String, ?keyDetectionAllowed:Bool):Void
 		{
-			PlayState.instance.createNewManager(name);
+			PlayState.instance.createNewManager(name, keyDetectionAllowed);
+		});
+		set('connectControlToNotes', function(?managerName:String, ?control:String):Void
+		{
+			PlayState.instance.connectControlToNotes(managerName, control);
 		});
 		set('getMobileManager', function(name:String)
 		{
