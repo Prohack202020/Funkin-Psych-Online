@@ -41,7 +41,6 @@ class MusicBeatSubstate extends FlxSubState
 	public inline function mobileButtonJustReleased(buttons:Dynamic):Bool {
 		return mobileManager.mobilePad.justReleased(buttons);
 	}
-	}
 	public inline function mobileButtonReleased(buttons:Dynamic):Bool {
 		return mobileManager.mobilePad.released(buttons);
 	}
