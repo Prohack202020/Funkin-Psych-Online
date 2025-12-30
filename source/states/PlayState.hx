@@ -6714,7 +6714,7 @@ class PlayState extends MusicBeatState
 
 	public function addPlayStateHitbox(?mode:String)
 	{
-		mobileManager.addHitbox(mode, ClientPrefs.hitboxhint);
+		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxhint);
 		mobileManager.addHitboxCamera();
 		if if (replayData == null && !cpuControlled) connectControlToNotes(null, 'hitbox');
 		else mobileManager.hitbox.visible = false;
