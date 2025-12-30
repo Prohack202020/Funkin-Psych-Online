@@ -438,7 +438,7 @@ class WeekEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.ESCAPE || mobileManager.mobilePad.getButtonFromName('buttonB').justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE || mobileButtonJustPressed('B')) {
 				FlxG.switchState(() -> new MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 			}
@@ -802,7 +802,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 			}
 		} else {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.ESCAPE || mobileManager.mobilePad.getButtonFromName('buttonB').justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE || mobileButtonJustPressed('B')) {
 				FlxG.switchState(() -> new MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 			}

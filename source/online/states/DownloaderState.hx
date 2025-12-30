@@ -305,10 +305,10 @@ class DownloaderState extends MusicBeatState {
 			}
 
 			if (!LoadingScreen.loading) {
-				if (FlxG.mouse.wheel == 1 || (mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed || FlxG.keys.justPressed.Q)) {
+				if (FlxG.mouse.wheel == 1 || (mobileButtonJustPressed('LEFT') || FlxG.keys.justPressed.Q)) {
 					loadNextPage(-1);
 				}
-				if (FlxG.mouse.wheel == -1 || (mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed || FlxG.keys.justPressed.E)) {
+				if (FlxG.mouse.wheel == -1 || (mobileButtonJustPressed('RIGHT') || FlxG.keys.justPressed.E)) {
 					loadNextPage(1);
 				}
 				

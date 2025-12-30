@@ -209,32 +209,32 @@ class ReplayRecorder extends FlxBasic {
 				switch(IDs[0])
 				{
 					case 'EXTRA_1':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra1') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra1').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra1') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra1').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_2':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra2') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra2').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra2') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra2').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_3':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra3') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra3').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra3') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra3').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_4':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra4') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra4').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra4') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra4').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_5':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra5') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra5').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra5') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra5').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_6':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra6') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra6').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra6') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra6').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_7':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra7') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra7').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra7') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra7').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_8':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra8') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra8').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra8') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra8').returnedKey.toUpperCase(), move]);
 					case 'EXTRA_9':
-						if (state.mobileManager.hitbox.getButtonFromName('buttonExtra9') != null)
-							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButtonFromName('buttonExtra9').returnedKey.toUpperCase(), move]);
+						if (state.mobileManager.hitbox.getButton('buttonExtra9') != null)
+							data.inputs.push([time, 'KEY:' + state.mobileManager.hitbox.getButton('buttonExtra9').returnedKey.toUpperCase(), move]);
 					default:
 						// nothing
 				}

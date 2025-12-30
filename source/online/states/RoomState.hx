@@ -558,7 +558,7 @@ class RoomState extends MusicBeatState /*#if interpret implements interpret.Inte
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		mobileManager.mobilePad.getButtonFromName('buttonLeft').visible = mobileManager.mobilePad.getButtonFromName('buttonRight').visible = mobileManager.mobilePad.getButtonFromName('buttonUp').visible = mobileManager.mobilePad.getButtonFromName('buttonDown').visible = mobileManager.mobilePad.getButtonFromName('buttonT').visible = mobileManager.mobilePad.getButtonFromName('buttonM').visible = mobileManager.mobilePad.getButtonFromName('buttonY').pressed;
+		mobileManager.mobilePad.getButton('buttonLeft').visible = mobileManager.mobilePad.getButton('buttonRight').visible = mobileManager.mobilePad.getButton('buttonUp').visible = mobileManager.mobilePad.getButton('buttonDown').visible = mobileManager.mobilePad.getButton('buttonT').visible = mobileManager.mobilePad.getButton('buttonM').visible = mobileButtonPressed('Y');
 
 		if (FlxG.keys.justPressed.F11) {
 			GameClient.reconnect();
@@ -677,18 +677,18 @@ class RoomState extends MusicBeatState /*#if interpret implements interpret.Inte
 
 			// trace('playerHold = ' + playerHold + ', oppHold = ' + oppHold);
 
-			if (mobileManager.mobilePad.getButtonFromName('buttonY').pressed || FlxG.keys.pressed.ALT) { // useless, but why not?
-				var suffix = (mobileManager.mobilePad.getButtonFromName('buttonM').pressed || FlxG.keys.pressed.CONTROL) ? 'miss' : '';
-				if (mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed || controls.NOTE_LEFT_P) {
+			if (mobileButtonPressed('Y') || FlxG.keys.pressed.ALT) { // useless, but why not?
+				var suffix = (mobileButtonPressed('M') || FlxG.keys.pressed.CONTROL) ? 'miss' : '';
+				if (mobileButtonJustPressed('LEFT') || controls.NOTE_LEFT_P) {
 					playerAnim('singLEFT' + suffix);
 				}
-				if (mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed || controls.NOTE_RIGHT_P) {
+				if (mobileButtonJustPressed('RIGHT') || controls.NOTE_RIGHT_P) {
 					playerAnim('singRIGHT' + suffix);
 				}
-				if (mobileManager.mobilePad.getButtonFromName('buttonUp').justPressed || controls.NOTE_UP_P) {
+				if (mobileButtonJustPressed('UP') || controls.NOTE_UP_P) {
 					playerAnim('singUP' + suffix);
 				}
-				if (mobileManager.mobilePad.getButtonFromName('buttonDown').justPressed || controls.NOTE_DOWN_P) {
+				if (mobileButtonJustPressed('DOWN') || controls.NOTE_DOWN_P) {
 					playerAnim('singDOWN' + suffix);
 				}
 				if (controls.TAUNT) {
@@ -718,7 +718,7 @@ class RoomState extends MusicBeatState /*#if interpret implements interpret.Inte
 				}
 			}
 			
-			if (((!FlxG.keys.pressed.ALT || !mobileManager.mobilePad.getButtonFromName('buttonY').pressed) && controls.ACCEPT) || FlxG.mouse.justPressed) {
+			if (((!FlxG.keys.pressed.ALT || !mobileButtonPressed('Y')) && controls.ACCEPT) || FlxG.mouse.justPressed) {
 				switch (curSelected) {
 					case 0:
 						openSubState(new RoomSettingsSubstate());

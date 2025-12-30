@@ -472,7 +472,7 @@ class SkinsState extends MusicBeatState {
 			Conductor.songPosition = music.time;
 		}
 
-        if (mobileManager.mobilePad.getButtonFromName('buttonX').pressed || FlxG.keys.pressed.SHIFT) {
+        if (mobileButtonPressed('X') || FlxG.keys.pressed.SHIFT) {
 			if (character.members[0] != null) {
 				if (controls.NOTE_UP) {
 					character.members[0].playAnim("singUP");
@@ -501,7 +501,7 @@ class SkinsState extends MusicBeatState {
 			}
         }
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.CONTROL) {
+		if (mobileButtonJustPressed('V') || FlxG.keys.justPressed.CONTROL) {
 			if (selectTimer != null)
 				selectTimer.active = false;
 
@@ -574,18 +574,18 @@ class SkinsState extends MusicBeatState {
 			});
 		}
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonD').justPressed || FlxG.keys.justPressed.EIGHT) {
+		if (mobileButtonJustPressed('D') || FlxG.keys.justPressed.EIGHT) {
 			Mods.currentModDirectory = charactersMod.get(charactersName[curCharacter]);
 			switchState(() -> new CharacterEditorState(charactersName[curCharacter], false, true));
 		}
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || FlxG.keys.justPressed.TAB) {
+		if (mobileButtonJustPressed('C') || FlxG.keys.justPressed.TAB) {
 			flipped = !flipped;
 			skipStaticDestroy = true;
 			LoadingState.loadAndSwitchState(new SkinsState());
 		}
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonY').justPressed || FlxG.keys.justPressed.F1) {
+		if (mobileButtonJustPressed('Y') || FlxG.keys.justPressed.F1) {
 			switch (Main.repoHost) {
 				case 'github':
 					RequestSubstate.requestURL("https://github.com/Snirozu/Funkin-Psych-Online/wiki#skins", true);
@@ -596,7 +596,7 @@ class SkinsState extends MusicBeatState {
 			}
 		}
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonZ').justPressed || FlxG.keys.justPressed.F2) {
+		if (mobileButtonJustPressed('Z') || FlxG.keys.justPressed.F2) {
 			switchState(() -> new DownloaderState('collection:110039'));
 		}
 

@@ -453,7 +453,7 @@ class NoteOffsetState extends MusicBeatState
 				}
 			}
 
-			if(mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET)
+			if(mobileButtonJustPressed('C') || controls.RESET)
 			{
 				for (i in 0...getComboOffset().length)
 				{
@@ -491,7 +491,7 @@ class NoteOffsetState extends MusicBeatState
 				updateNoteDelay();
 			}
 
-			if(mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET)
+			if(mobileButtonJustPressed('C') || controls.RESET)
 			{
 				holdTime = 0;
 				barPercent = 0;

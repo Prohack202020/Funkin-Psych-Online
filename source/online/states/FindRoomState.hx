@@ -81,7 +81,7 @@ class FindRoomState extends MusicBeatState {
 		else if (controls.UI_DOWN_P)
 			selected++;
 
-		if (mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || FlxG.keys.justPressed.R) {
+		if (mobileButtonJustPressed('C') || FlxG.keys.justPressed.R) {
 			@:privateAccess refreshTimer._timeCounter = 0;
 			refreshRooms();
         }

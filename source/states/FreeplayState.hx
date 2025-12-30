@@ -873,7 +873,7 @@ class FreeplayState extends MusicBeatState
 			return;
 		}
 
-		if (!searchInputWait && (mobileManager.mobilePad.getButtonFromName('buttonS').justPressed || FlxG.keys.justPressed.F)) {
+		if (!searchInputWait && (mobileButtonJustPressed('S') || FlxG.keys.justPressed.F)) {
 			FlxG.stage.window.textInputEnabled = true;
 			searchInputWait = true;
 			searchString = searchString;
@@ -886,7 +886,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		var shiftMult:Int = 1;
-		if(mobileManager.mobilePad.getButtonFromName('buttonZ').pressed || FlxG.keys.pressed.SHIFT) shiftMult = 3;
+		if(mobileButtonPressed('Z') || FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
 		if (!selected) {
 			if(songs.length > 0)
@@ -914,7 +914,7 @@ class FreeplayState extends MusicBeatState
 					holdTime = 0;
 				}
 
-				if ((mobileManager.mobilePad.getButtonFromName('buttonF').justPressed || controls.FAV) && curSelected != -1) {
+				if ((mobileButtonJustPressed('F') || controls.FAV) && curSelected != -1) {
 					var songId = songs[curSelected].songName + '-' + songs[curSelected].folder;
 					if (ClientPrefs.data.favSongs.contains(songId)) {
 						ClientPrefs.data.favSongs.remove(songId);
@@ -932,7 +932,7 @@ class FreeplayState extends MusicBeatState
 					search();
 				}
 
-				if (((mobileManager.mobilePad.getButtonFromName('buttonR').justReleased && resetTotalHeld <= 3.5) || controls.RESET) && curSelected != -1 && !FlxG.keys.pressed.ALT) {
+				if (((mobileButtonJustReleased('R') && resetTotalHeld <= 3.5) || controls.RESET) && curSelected != -1 && !FlxG.keys.pressed.ALT) {
 					var songId = songs[curSelected].songName + '-' + songs[curSelected].folder;
 					if (ClientPrefs.data.hiddenSongs.contains(songId)) {
 						ClientPrefs.data.hiddenSongs.remove(songId);
@@ -973,15 +973,15 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 
-			if (mobileManager.mobilePad.getButtonFromName('buttonR').pressed && resetTotalHeld <= 3.5)
+			if (mobileButtonPressed('R') && resetTotalHeld <= 3.5)
 			{
 				resetTotalHeld += elapsed;
 				if (resetTotalHeld >= 3.5)
 					doSongReset = true;
-			} else if (mobileManager.mobilePad.getButtonFromName('buttonR').released)
+			} else if (mobileButtonReleased('R1'))
 				resetTotalHeld = 0;
 
-			if ((mobileManager.mobilePad.getButtonFromName('buttonR').pressed && doSongReset) || (controls.RESET && FlxG.keys.pressed.ALT)) {
+			if ((mobileButtonPressed('R') && doSongReset) || (controls.RESET && FlxG.keys.pressed.ALT)) {
 				doSongReset = false;
 				ClientPrefs.data.hiddenSongs = [];
 				ClientPrefs.saveSettings();
@@ -1000,7 +1000,7 @@ class FreeplayState extends MusicBeatState
 					updateGroupTitle();
 				}
 
-				if (mobileManager.mobilePad.getButtonFromName('buttonG').justPressed || FlxG.keys.justPressed.CONTROL) {
+				if (mobileButtonJustPressed('G') || FlxG.keys.justPressed.CONTROL) {
 					persistentUpdate = false;
 					var daCopy = searchGroupVList.copy();
 					for (i => item in daCopy)
@@ -1069,7 +1069,7 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 
-			if(mobileManager.mobilePad.getButtonFromName('buttonX').justPressed || FlxG.keys.justPressed.SPACE)
+			if(mobileButtonJustPressed('X') || FlxG.keys.justPressed.SPACE)
 			{
 				if (curSelected == -1) {
 					var newSel = FlxG.random.int(0, songs.length - 1);
@@ -1102,7 +1102,7 @@ class FreeplayState extends MusicBeatState
 				leaderboardTimer = 0;
 			}
 
-			if (chatBox == null && mobileManager.mobilePad.getButtonFromName('buttonY').justPressed || FlxG.keys.justPressed.TAB) {
+			if (chatBox == null && mobileButtonJustPressed('Y') || FlxG.keys.justPressed.TAB) {
 				persistentUpdate = false;
 				FlxG.switchState(() -> new online.states.SkinsState());
 			}
@@ -1301,7 +1301,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		updateTexts(elapsed);
-		if (mobileManager.mobilePad.getButtonFromName('buttonZ').pressed || FlxG.keys.pressed.SHIFT && !selected) {
+		if (mobileButtonPressed('Z') || FlxG.keys.pressed.SHIFT && !selected) {
 			itemsCameraZoom = FlxMath.lerp(itemsCameraZoom, 0.65, elapsed * 10);
 			itemsCameraScrollX = FlxMath.lerp(itemsCameraScrollX, 150, elapsed * 10);
 		}

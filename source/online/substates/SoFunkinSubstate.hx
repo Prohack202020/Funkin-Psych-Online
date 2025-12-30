@@ -211,7 +211,7 @@ class SoFunkinSubstate extends MusicBeatSubstate {
 
 		updateScrollable(groupTitle, elapsed);
 
-		if (!searchInputWait && (mobileManager.mobilePad.getButtonFromName('buttonS').justPressed || FlxG.keys.justPressed.F)) {
+		if (!searchInputWait && (mobileButtonJustPressed('S') || FlxG.keys.justPressed.F)) {
 			searchInputWait = true;
 			searchString = searchString;
 		}

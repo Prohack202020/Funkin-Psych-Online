@@ -31,6 +31,20 @@ class MusicBeatSubstate extends FlxSubState
 		return Controls.instance;
 
 	public var mobileManager:MobileControlManager;
+	//makes code less messy & easier to write
+	public inline function mobileButtonJustPressed(buttons:Dynamic):Bool {
+		return mobileManager.mobilePad.justPressed(buttons);
+	}
+	public inline function mobileButtonPressed(buttons:Dynamic):Bool {
+		return mobileManager.mobilePad.pressed(buttons);
+	}
+	public inline function mobileButtonJustReleased(buttons:Dynamic):Bool {
+		return mobileManager.mobilePad.justReleased(buttons);
+	}
+	}
+	public inline function mobileButtonReleased(buttons:Dynamic):Bool {
+		return mobileManager.mobilePad.released(buttons);
+	}
 	override function destroy()
 	{
 		if (mobileManager != null) mobileManager.destroy();

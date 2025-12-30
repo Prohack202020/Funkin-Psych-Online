@@ -3119,7 +3119,7 @@ class PlayState extends MusicBeatState
 			// }
 
 			if (cpuControlled) {
-				var shiftMult = (mobileManager.mobilePad?.getButtonFromName('buttonX')?.pressed || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+				var shiftMult = (mobileButtonPressed('X') || FlxG.keys.pressed.SHIFT) ? 3 : 1;
 				if (controls.UI_LEFT) {
 					if (playbackRate - elapsed * 0.25 * shiftMult > 0)
 						playbackRate -= elapsed * 0.25 * shiftMult;
@@ -3135,7 +3135,7 @@ class PlayState extends MusicBeatState
 					}
 					botplayTxt.text = "BOTPLAY\n" + '(${CoolUtil.floorDecimal(playbackRate, 2)}x)';
 				}
-				else if (mobileManager.mobilePad?.getButtonFromName('buttonY')?.justPressed || controls.RESET) {
+				else if (mobileButtonJustPressed('Y') || controls.RESET) {
 					playbackRate = 1;
 					botplayTxt.text = "BOTPLAY";
 				}
@@ -6689,7 +6689,7 @@ class PlayState extends MusicBeatState
 		var manager = checkManager(managerName);
 
 		var button:MobileButton = null;
-		if (manager.mobilePad != null) button = manager.mobilePad.getButtonFromName(buttonName);
+		if (manager.mobilePad != null) button = manager.mobilePad.getButton(buttonName);
 		if (button != null) return Reflect.getProperty(button, type);
 		return false;
 	}
@@ -6699,7 +6699,7 @@ class PlayState extends MusicBeatState
 		var manager = checkManager(managerName);
 
 		var buttonObject:MobileButton = null;
-		if (manager.hitbox != null) buttonObject = manager.hitbox.getButtonFromName(button);
+		if (manager.hitbox != null) buttonObject = manager.hitbox.getButton(button);
 		if (buttonObject != null) return Reflect.getProperty(buttonObject, type);
 		return false;
 	}
@@ -6725,12 +6725,12 @@ class PlayState extends MusicBeatState
 		}
 		mobileManager.hitbox.forEachAlive((button) ->
 		{
-			if (mobileManager.mobilePad.getButtonFromName('buttonT') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonT'));
-			if (mobileManager.mobilePad.getButtonFromName('buttonC') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonC'));
-			if (mobileManager.mobilePad.getButtonFromName('buttonP') != null)
-				button.deadZones.push(mobileManager.mobilePad.getButtonFromName('buttonP'));
+			if (mobileManager.mobilePad.getButton('buttonT') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButton('buttonT'));
+			if (mobileManager.mobilePad.getButton('buttonC') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButton('buttonC'));
+			if (mobileManager.mobilePad.getButton('buttonP') != null)
+				button.deadZones.push(mobileManager.mobilePad.getButton('buttonP'));
 		});
 	}
 

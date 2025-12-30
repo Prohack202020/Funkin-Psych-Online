@@ -129,7 +129,7 @@ class SetupModsState extends MusicBeatState {
 				changeSelection(1);
 
 			if (controls.BACK || (!controls.mobileControls && FlxG.mouse.justPressedRight)) {
-				if (!mobileManager.mobilePad.getButtonFromName('buttonC').pressed || !FlxG.keys.pressed.SHIFT) {
+				if (!mobileButtonPressed('C') || !FlxG.keys.pressed.SHIFT) {
 					var i = 0;
 					for (mod in swagMods) {
 						OnlineMods.saveModURL(mod, modsInput[i]);

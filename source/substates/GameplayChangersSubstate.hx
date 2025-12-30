@@ -340,7 +340,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if(mobileManager.mobilePad.getButtonFromName('buttonC').justPressed || controls.RESET)
+			if(mobileButtonJustPressed('C') || controls.RESET)
 			{
 				for (i in 0...optionsArray.length)
 				{

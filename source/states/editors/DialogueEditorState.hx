@@ -349,17 +349,17 @@ class DialogueEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.SPACE || mobileManager.mobilePad.getButtonFromName('buttonY').justPressed) {
+			if(FlxG.keys.justPressed.SPACE || mobileButtonJustPressed('Y')) {
 				reloadText(false);
 			}
-			if(FlxG.keys.justPressed.ESCAPE || mobileManager.mobilePad.getButtonFromName('buttonB').justPressed) {
+			if(FlxG.keys.justPressed.ESCAPE || mobileButtonJustPressed('B')) {
 				FlxG.switchState(() -> new states.editors.MasterEditorMenu());
 				states.TitleState.playFreakyMusic();
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];
-			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobileManager.mobilePad.getButtonFromName('buttonUp').justPressed, FlxG.keys.justPressed.S || mobileManager.mobilePad.getButtonFromName('buttonDown').justPressed];
-			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed, FlxG.keys.justPressed.A || mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed];
+			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || mobileButtonJustPressed('UP'), FlxG.keys.justPressed.S || mobileButtonJustPressed('DOWN')];
+			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || mobileButtonJustPressed('RIGHT'), FlxG.keys.justPressed.A || mobileButtonJustPressed('LEFT')];
 			for (i in 0...controlAnim.length) {
 				if(controlAnim[i] && character.jsonFile.animations.length > 0) {
 					curAnim -= negaMult[i];
@@ -382,7 +382,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 			}
 
-			if(FlxG.keys.justPressed.O || mobileManager.mobilePad.getButtonFromName('buttonA').justPressed ) {
+			if(FlxG.keys.justPressed.O || mobileButtonJustPressed('A')) {
 				dialogueFile.dialogue.remove(dialogueFile.dialogue[curSelected]);
 				if(dialogueFile.dialogue.length < 1) //You deleted everything, dumbo!
 				{
@@ -391,7 +391,7 @@ class DialogueEditorState extends MusicBeatState
 					];
 				}
 				changeText();
-			} else if(FlxG.keys.justPressed.P || mobileManager.mobilePad.getButtonFromName('buttonX').justPressed) {
+			} else if(FlxG.keys.justPressed.P || mobileButtonJustPressed('X')) {
 				dialogueFile.dialogue.insert(curSelected + 1, copyDefaultLine());
 				changeText(1);
 			}

@@ -2040,7 +2040,7 @@ class ChartingState extends MusicBeatState
 
 		if (!blockInput)
 		{
-			if ((FlxG.keys.justPressed.ESCAPE || mobileManager.mobilePad.getButtonFromName('buttonC').justPressed) && false)
+			if ((FlxG.keys.justPressed.ESCAPE || mobileButtonJustPressed('C')) && false)
 			if (FlxG.keys.justPressed.ESCAPE && false)
 			{
 				FlxG.sound.music.pause();
@@ -2056,7 +2056,7 @@ class ChartingState extends MusicBeatState
 				mobileManager.mobilePad.active = mobileManager.mobilePad.visible = false;
 				openSubState(new states.editors.EditorPlayState(playbackSpeed));
 			}
-			if (FlxG.keys.justPressed.ENTER || mobileManager.mobilePad.getButtonFromName('buttonA').justPressed)
+			if (FlxG.keys.justPressed.ENTER || mobileButtonJustPressed('A'))
 			{
 				autosaveSong();
 				FlxG.mouse.visible = false;
@@ -2073,18 +2073,18 @@ class ChartingState extends MusicBeatState
 			}
 
 			if(curSelectedNote != null && curSelectedNote[1] > -1) {
-				if (mobileManager.mobilePad.getButtonFromName('buttonDown2').justPressed || FlxG.keys.justPressed.E)
+				if (mobileButtonJustPressed('DOWN2') || FlxG.keys.justPressed.E)
 				{
 					changeNoteSustain(Conductor.stepCrochet);
 				}
-				if (mobileManager.mobilePad.getButtonFromName('buttonUp2').justPressed || FlxG.keys.justPressed.Q)
+				if (mobileButtonJustPressed('UP2') || FlxG.keys.justPressed.Q)
 				{
 					changeNoteSustain(-Conductor.stepCrochet);
 				}
 			}
 
 
-			if (FlxG.keys.justPressed.BACKSPACE || mobileManager.mobilePad.getButtonFromName('buttonB').justPressed) {
+			if (FlxG.keys.justPressed.BACKSPACE || mobileButtonJustPressed('B')) {
 				// Protect against lost data when quickly leaving the chart editor.
 				autosaveSong();
 				PlayState.chartingMode = false;
@@ -2094,15 +2094,15 @@ class ChartingState extends MusicBeatState
 				return;
 			}
 
-			if(mobileManager.mobilePad.getButtonFromName('buttonV').justPressed || FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
+			if(mobileButtonJustPressed('V') || FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
 				undo();
 			}
 
-			if(FlxG.keys.justPressed.Z || mobileManager.mobilePad.getButtonFromName('buttonZ').justPressed && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
+			if(FlxG.keys.justPressed.Z || mobileButtonJustPressed('Z') && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
 				updateZoom();
 			}
-			if(FlxG.keys.justPressed.X || mobileManager.mobilePad.getButtonFromName('buttonD').justPressed && curZoom < zoomList.length-1) {
+			if(FlxG.keys.justPressed.X || mobileButtonJustPressed('D') && curZoom < zoomList.length-1) {
 				curZoom++;
 				updateZoom();
 			}
@@ -2123,7 +2123,7 @@ class ChartingState extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.SPACE || mobileManager.mobilePad.getButtonFromName('buttonX').justPressed)
+			if (FlxG.keys.justPressed.SPACE || mobileButtonJustPressed('X'))
 			{
 				if (FlxG.sound.music.playing)
 				{
@@ -2187,17 +2187,17 @@ class ChartingState extends MusicBeatState
 
 
 
-			if ((FlxG.keys.pressed.W || FlxG.keys.pressed.S) || (mobileManager.mobilePad.getButtonFromName('buttonUp').pressed || mobileManager.mobilePad.getButtonFromName('buttonDown').pressed))
+			if ((FlxG.keys.pressed.W || FlxG.keys.pressed.S) || (mobileButtonPressed('UP') || mobileButtonPressed('DOWN')))
 			{
 				FlxG.sound.music.pause();
 
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
-				else if (FlxG.keys.pressed.SHIFT || mobileManager.mobilePad.getButtonFromName('buttonY').pressed) holdingShift = 4;
+				else if (FlxG.keys.pressed.SHIFT || mobileButtonPressed('Y')) holdingShift = 4;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 
-				if (FlxG.keys.pressed.W || mobileManager.mobilePad.getButtonFromName('buttonUp').pressed)
+				if (FlxG.keys.pressed.W || mobileButtonPressed('UP'))
 				{
 					FlxG.sound.music.time -= daTime;
 				}
@@ -2233,7 +2233,7 @@ class ChartingState extends MusicBeatState
 
 			var style = currentType;
 
-			if (FlxG.keys.pressed.SHIFT || mobileManager.mobilePad.getButtonFromName('buttonY').pressed){
+			if (FlxG.keys.pressed.SHIFT || mobileButtonPressed('Y')){
 				style = 3;
 			}
 
@@ -2329,12 +2329,12 @@ class ChartingState extends MusicBeatState
 				}
 			}
 			var shiftThing:Int = 1;
-			if (FlxG.keys.pressed.SHIFT || mobileManager.mobilePad.getButtonFromName('buttonY').pressed)
+			if (FlxG.keys.pressed.SHIFT || mobileButtonPressed('Y'))
 				shiftThing = 4;
 
-			if (FlxG.keys.justPressed.D || mobileManager.mobilePad.getButtonFromName('buttonRight').justPressed)
+			if (FlxG.keys.justPressed.D || mobileButtonJustPressed('RIGHT'))
 				changeSection(curSec + shiftThing);
-			if (FlxG.keys.justPressed.A || mobileManager.mobilePad.getButtonFromName('buttonLeft').justPressed) {
+			if (FlxG.keys.justPressed.A || mobileButtonJustPressed('LEFT')) {
 				if(curSec <= 0) {
 					changeSection(_song.notes.length-1);
 				} else {
@@ -2379,7 +2379,7 @@ class ChartingState extends MusicBeatState
 			playbackSpeed -= 0.01;
 		if (!holdingShift && pressedRB || holdingShift && holdingRB)
 			playbackSpeed += 0.01;
-		if (mobileManager.mobilePad.getButtonFromName('buttonG').justPressed || (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB)))
+		if (mobileButtonJustPressed('G') || (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB)))
 			playbackSpeed = 1;
 		//
 
