@@ -44,17 +44,17 @@ class MobileFunctions
 
 		Lua_helper.add_callback(lua, 'joyStickPressed', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickPressed(position);
+			return PlayState.checkManager(managerName).joyStick.pressed(position);
 		});
 
 		Lua_helper.add_callback(lua, 'joyStickJustPressed', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickJustPressed(position);
+			return PlayState.checkManager(managerName).joyStick.justPressed(position);
 		});
 
 		Lua_helper.add_callback(lua, 'joyStickJustReleased', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickJustReleased(position);
+			return PlayState.checkManager(managerName).joyStick.justReleased(position);
 		});
 
 		//Hitbox

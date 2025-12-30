@@ -177,17 +177,17 @@ class HScript extends SScript
 
 		set('joyStickPressed', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickPressed(position);
+			return PlayState.checkManager(managerName).joyStick.pressed(position);
 		});
 
 		set('joyStickJustPressed', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickJustPressed(position);
+			return PlayState.checkManager(managerName).joyStick.justPressed(position);
 		});
 
 		set('joyStickJustReleased', function(?managerName:String, ?position:String):Bool
 		{
-			return PlayState.checkManager(managerName).joyStick.joyStickJustReleased(position);
+			return PlayState.checkManager(managerName).joyStick.justReleased(position);
 		});
 
 		//Hitbox

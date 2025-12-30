@@ -12,7 +12,7 @@ class FunkinHitbox extends Hitbox {
 	public var showHints:Bool;
 	public function new(?mode:String, ?showHints:Bool, ?globalAlpha:Float = 0.7):Void
 	{
-		super(mode, globalAlpha, true); //true means mobile-controls's hitbox creation is disabled.
+		super(mode, globalAlpha, false); //false means library's hitbox creation is disabled.
 		currentMode = mode; //use this there.
 		this.showHints = showHints;
 

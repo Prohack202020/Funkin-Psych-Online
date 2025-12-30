@@ -339,32 +339,46 @@ class ExtraFunctions
 		}
 
 		//Custom return thing
-		if (MusicBeatState.getState().mobileManager.hitbox != null) {
+		if (MusicBeatState.getState().mobileManager.hitbox != null)
+		{
 			var hitbox:FunkinHitbox = MusicBeatState.getState().mobileManager.hitbox;
-			for (num in 0...hitbox.hints.length+1) {
-				var hitboxButton:Dynamic = hitbox.hints[num];
-				if (key.toUpperCase() == hitboxButton.returnedKey)
-					if (Reflect.getProperty(hitboxButton, type))
-						return true;
-			}
+			for (num in 0...hitbox.hints.length+1) if (checkHitboxPress(hitbox.hints[num], key, type)) return true;
 		}
 
 		if (MusicBeatState.getState().mobileManager.mobilePad != null) {
-			var mobilePad:FunkinMobilePad = MusicBeatState.getState().mobileManager.mobilePad;
-			for (num in 0...mobilePad.dpads.length+1) {
-				var mobilePadButton:Dynamic = mobilePad.dpads[num];
-				if (key.toUpperCase() == mobilePadButton.returnedKey)
-					if (Reflect.getProperty(mobilePadButton, type))
-						return true;
-			}
+			var mobilePadDPad = MusicBeatState.getState().mobileManager.mobilePad.buttons[0];
+			var mobilePadAction = MusicBeatState.getState().mobileManager.mobilePad.buttons[1];
+			for (num in 0...mobilePadDPad.length+1) if (checkMobilePadPress(mobilePadDPad[num], key, type)) return true;
+			for (num in 0...mobilePadAction.length+1) if (checkMobilePadPress(mobilePadAction[num], key, type)) return true;
+		}
+		if (PlayState.instance.customManagers != null && PlayState.instance.customManagers.keys().hasNext()) {
+			for (managerArray in PlayState.instance.customManagers) {
+				var manager:MobileControlManager = managerArray[0];
+				if (managerArray[1] == false) continue;
 
-			for (num in 0...mobilePad.actions.length+1) {
-				var mobilePadButton:Dynamic = mobilePad.actions[num];
-				if (key.toUpperCase() == mobilePadButton.returnedKey)
-					if (Reflect.getProperty(mobilePadButton, type))
-						return true;
+				if (manager.hitbox != null)
+					for (num in 0...manager.hitbox.hints.length+1) if (checkHitboxPress(manager.hitbox.hints[num], key, type)) return true;
+
+				if (manager.mobilePad != null) {
+					var mobilePadDPad = manager.mobilePad.buttons[0];
+					var mobilePadAction = manager.mobilePad.buttons[1];
+					for (num in 0...mobilePadDPad.length+1) if (checkMobilePadPress(mobilePadDPad[num], key, type)) return true;
+					for (num in 0...mobilePadAction.length+1) if (checkMobilePadPress(mobilePadAction[num], key, type)) return true;
+				}
 			}
 		}
+		return false;
+	}
+	public static function checkMobilePadPress(mobilePad:MobileButton, key:String, type:String) {
+		if (key.toUpperCase() == Reflect.field(mobilePad, 'returnedKey'))
+			if (Reflect.getProperty(mobilePad, type))
+				return true;
+		return false;
+	}
+	public static function checkHitboxPress(hitbox:MobileButton, key:String, type:String) {
+		if (key.toUpperCase() == Reflect.field(hitbox, 'returnedKey'))
+			if (Reflect.getProperty(hitbox, type))
+				return true;
 		return false;
 	}
 }

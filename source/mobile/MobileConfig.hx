@@ -186,13 +186,13 @@ typedef HitboxData =
 
 typedef ButtonsData =
 {
-	button:String, // what MobileButton should be used, must be a valid MobileButton var from MobilePad as a string.
+	button:String, // the button's name for checking pressed directly.
 	buttonIDs:Array<String>, // what MobileButton Button Iad should be used, If you're using a the library for PsychEngine 0.7 Versions, This is useful.
 	buttonUniqueID:Dynamic, // the button's special ID for button
 	graphic:String, // the graphic of the button, usually can be located in the MobilePad xml.
 	x:Float, // the button's X position on screen.
 	y:Float, // the button's Y position on screen.
 	color:String, // the button color, default color is white.
-	bg:String, // the button background for MobilePad, default background is `bg`.
-	scale:Null<Float> // the button scale, default scale is 1.
+	scale:Null<Float>, //the button scale, default scale is 1.
+	returnKey:String // the button return, default return is nothing but If you're game using a lua scripting this will be useful.
 }
