@@ -5598,7 +5598,7 @@ class PlayState extends MusicBeatState
 
 		//destroy manager
 		for (managerName => manager in customManagers)
-			manager.destroy();
+			manager[0].destroy();
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
