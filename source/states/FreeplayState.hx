@@ -978,7 +978,7 @@ class FreeplayState extends MusicBeatState
 				resetTotalHeld += elapsed;
 				if (resetTotalHeld >= 3.5)
 					doSongReset = true;
-			} else if (mobileButtonReleased('R1'))
+			} else if (mobileButtonReleased('R'))
 				resetTotalHeld = 0;
 
 			if ((mobileButtonPressed('R') && doSongReset) || (controls.RESET && FlxG.keys.pressed.ALT)) {

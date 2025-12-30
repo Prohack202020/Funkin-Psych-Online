@@ -560,7 +560,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 				var moved:Bool = false;
 				var animShit:DialogueAnimArray = character.dialogueAnimations.get(curSelectedAnim);
 				var controlArrayLoop:Array<Bool> = [FlxG.keys.justPressed.A || mobileButtonJustPressed('LEFT2'), FlxG.keys.justPressed.W || mobileButtonJustPressed('UP2'), FlxG.keys.justPressed.D || mobileButtonJustPressed('RIGHT2'), FlxG.keys.justPressed.S || mobileButtonJustPressed('DOWN2')];
-				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT || mobileButtonJustPressed('LEFT'), FlxG.keys.justPressed.UP || mobileButtonJustPressed('UP'), FlxG.keys.justPressed.RIGHT || mobileButtonJustPressed('RIGHT'), FlxG.keys.justPressed.DOWN || mobileButtonJustPressed('')];
+				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT || mobileButtonJustPressed('LEFT'), FlxG.keys.justPressed.UP || mobileButtonJustPressed('UP'), FlxG.keys.justPressed.RIGHT || mobileButtonJustPressed('RIGHT'), FlxG.keys.justPressed.DOWN || mobileButtonJustPressed('DOWN')];
 				for (i in 0...controlArrayLoop.length) {
 					if(controlArrayLoop[i]) {
 						if(i % 2 == 1) {

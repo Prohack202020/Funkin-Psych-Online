@@ -1338,7 +1338,7 @@ class CharacterEditorState extends MusicBeatState {
 					FlxG.keys.justPressed.UP
 					|| (!mobileButtonPressed('G') && mobileButtonJustPressed('UP')),
 					FlxG.keys.justPressed.DOWN
-					|| (!mobileButtonPressed('G') && mobileButtonJustPressed('DOWN')];
+					|| (!mobileButtonPressed('G') && mobileButtonJustPressed('DOWN'))];
 
 				for (i in 0...controlArray.length) {
 					if (controlArray[i]) {
