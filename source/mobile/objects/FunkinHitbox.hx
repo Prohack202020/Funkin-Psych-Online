@@ -126,7 +126,7 @@ class FunkinHitbox extends Hitbox {
 				for (i in 1...5) {
 					var buttonString = 'buttonExtra${i}';
 					if (buttonData.button == buttonString && buttonReturn == null)
-						buttonReturn = ClientPrefs.mobileExtraKeyReturns[i-1];
+						buttonReturn = ClientPrefs.data.mobileExtraKeyReturns[i-1];
 				}
 				if (addButton)
 					addHint(buttonName, buttonIDs, buttonUniqueID, buttonX, buttonY, buttonWidth, buttonHeight, Util.colorFromString(buttonColor), buttonReturn);
