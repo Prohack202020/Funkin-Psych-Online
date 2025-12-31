@@ -34,7 +34,7 @@ import states.TitleState;
 	public var hitboxType:String = 'Gradient';
 	public var hitboxLocation:String = 'Bottom';
 	public var hitboxMode:String = 'Normal (New)';
-	public static var mobileExtraKeyReturns:Array<String> = ['SHIFT', 'SPACE', 'Q', 'E'];
+	public var mobileExtraKeyReturns:Array<String> = ['SHIFT', 'SPACE', 'Q', 'E'];
 
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
