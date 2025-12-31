@@ -124,25 +124,12 @@ typedef MobileButtonsData =
 
 typedef CustomHitboxData =
 {
-	hints:Array<HitboxData>, //support old jsons
-	//Shitty but works (as said, if it works don't touch)
+	hints:Array<HitboxData>, //support library's jsons
 	none:Array<HitboxData>,
 	single:Array<HitboxData>,
 	double:Array<HitboxData>,
 	triple:Array<HitboxData>,
-	quad:Array<HitboxData>,
-	mania1:Array<HitboxData>,
-	mania2:Array<HitboxData>,
-	mania3:Array<HitboxData>,
-	mania4:Array<HitboxData>,
-	mania5:Array<HitboxData>,
-	mania6:Array<HitboxData>,
-	mania7:Array<HitboxData>,
-	mania8:Array<HitboxData>,
-	mania9:Array<HitboxData>,
-	mania20:Array<HitboxData>,
-	mania55:Array<HitboxData>,
-	test:Array<HitboxData>
+	quad:Array<HitboxData>
 }
 
 typedef HitboxData =

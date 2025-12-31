@@ -32,6 +32,10 @@ class FunkinHitbox extends Hitbox {
 		}
 		else
 		{
+			//Use Seperated Mania File like in JS Engine Shaggy Mod
+			if (MobileConfig.hitboxModes.exists('Mania $Note.maniaKeys') && Note.maniaKeys != 4)
+				mode = 'Mania $Note.maniaKeys';
+
 			var Custom:String = mode != null ? mode : ClientPrefs.data.hitboxMode;
 			if (!MobileConfig.hitboxModes.exists(Custom))
 				throw 'The ${Custom} Hitbox File doesn\'t exists.';
@@ -49,30 +53,6 @@ class FunkinHitbox extends Hitbox {
 				currentHint = MobileConfig.hitboxModes.get(Custom).quad;
 			if (ClientPrefs.data.extraKeys != 0 && MobileConfig.hitboxModes.get(Custom).hints != null)
 				currentHint = MobileConfig.hitboxModes.get(Custom).hints;
-
-			//Extra Key Stuff
-			if (Note.maniaKeys == 1 && MobileConfig.hitboxModes.get(Custom).mania1 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania1;
-			if (Note.maniaKeys == 2 && MobileConfig.hitboxModes.get(Custom).mania2 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania2;
-			if (Note.maniaKeys == 3 && MobileConfig.hitboxModes.get(Custom).mania3 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania3;
-			if (Note.maniaKeys == 4 && MobileConfig.hitboxModes.get(Custom).mania4 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania4;
-			if (Note.maniaKeys == 5 && MobileConfig.hitboxModes.get(Custom).mania5 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania5;
-			if (Note.maniaKeys == 6 && MobileConfig.hitboxModes.get(Custom).mania6 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania6;
-			if (Note.maniaKeys == 7 && MobileConfig.hitboxModes.get(Custom).mania7 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania7;
-			if (Note.maniaKeys == 8 && MobileConfig.hitboxModes.get(Custom).mania8 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania8;
-			if (Note.maniaKeys == 9 && MobileConfig.hitboxModes.get(Custom).mania9 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania9;
-			if (Note.maniaKeys == 20 && MobileConfig.hitboxModes.get(Custom).mania20 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania20;
-			if (Note.maniaKeys == 55 && MobileConfig.hitboxModes.get(Custom).mania55 != null)
-				currentHint = MobileConfig.hitboxModes.get(Custom).mania55;
 
 			for (buttonData in currentHint)
 			{
