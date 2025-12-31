@@ -20,29 +20,21 @@ import states.TitleState;
 
 	/* Mobile Controls */
 	/* Bool Options */
-	public var hitboxhint:Bool = false;
-	public var VSliceControl:Bool = false; //There we go
+	public var disableOnlineShaders:Bool = false;
+	public var hitboxHint:Bool = false;
+	public var ogGameControls:Bool = false; //There we go
 	public var showTweakMenu:Bool = false;
 
 	/* Int/Float Options */
 	public var extraKeys:Int = 2;
-	public var hitboxalpha:Float = #if mobile 0.7 #else 0 #end;
+	public var hitboxAlpha:Float = #if mobile 0.7 #else 0 #end;
 	public var mobilePadAlpha:Float = #if mobile 0.6 #else 0 #end;
 
 	/* String Options */
-	public var hitboxtype:String = 'Gradient';
+	public var hitboxType:String = 'Gradient';
 	public var hitboxLocation:String = 'Bottom';
-	public var hitboxmode:String = 'Normal (New)';
-
-	public var extraKeyReturn1:String = 'SHIFT';
-	public var extraKeyReturn2:String = 'SPACE';
-	public var extraKeyReturn3:String = 'Q';
-	public var extraKeyReturn4:String = 'E';
-
-	// Mobile Releated
-	public var screensaver:Bool = false;
-	public var vsync:Bool = false;
-	public var disableOnlineShaders:Bool = false;
+	public var hitboxMode:String = 'Normal (New)';
+	public static var mobileExtraKeyReturns:Array<String> = ['SHIFT', 'SPACE', 'Q', 'E'];
 
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;

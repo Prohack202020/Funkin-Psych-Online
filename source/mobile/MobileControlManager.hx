@@ -64,7 +64,7 @@ class MobileControlManager {
 
 	public function makeHitbox(?mode:String, ?hints:Bool) {
 		if (hitbox != null) removeHitbox();
-		hitbox = new FunkinHitbox(mode, hints);
+		hitbox = new FunkinHitbox(mode, hints, ClientPrefs.data.hitboxAlpha);
 	}
 
 	public function addHitbox(?mode:String, ?hints:Bool) {

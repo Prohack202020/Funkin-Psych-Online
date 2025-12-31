@@ -1420,6 +1420,12 @@ class PlayState extends MusicBeatState
 
 			setOnScripts('isDuel', isDuel);
 			setOnScripts('duoOpponentSID', duoOpponentSID);
+
+			mobileManager.addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE',
+										(GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
+			mobileManager.addMobilePadCamera();
+			addPlayStateHitbox();
+			mobileManager.hitbox.visible = false;
 		});
 
 		var loaderGroup = new online.objects.LoadingSprite(preloadTasks.length, camLoading);
@@ -1465,11 +1471,6 @@ class PlayState extends MusicBeatState
 		loaderGroup.add(asyncLoop);
 
 		orderOffset = 2;
-
-		mobileManager.addMobilePad((replayData != null || cpuControlled) ? 'LEFT_RIGHT' : 'NONE',
-										(GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
-		mobileManager.addMobilePadCamera();
-		addPlayStateHitbox();
 
 		super.create();
 	}
@@ -1996,7 +1997,7 @@ class PlayState extends MusicBeatState
 			// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 		}
 
-		if (ClientPrefs.data.VSliceControl && Note.maniaKeys != 20 && Note.maniaKeys != 55) enableVSliceControls();
+		if (ClientPrefs.data.ogGameControls && Note.maniaKeys != 20 && Note.maniaKeys != 55) enableVSliceControls();
 	}
 
 	public var defaultPlayerNotePositions:Array<Dynamic> = [-360, -140, 140, 360];
@@ -2011,6 +2012,7 @@ class PlayState extends MusicBeatState
 
 		seenCutscene = true;
 		inCutscene = false;
+		mobileManager.hitbox.visible = true;
 		var ret:Dynamic = callOnScripts('onStartCountdown', null, true);
 		if(ret != FunkinLua.Function_Stop) {
 			if (!canStart) {
@@ -2895,7 +2897,7 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.data.noteUnderlayOpacity > 0 && strumGroup == getPlayerStrums() && ClientPrefs.data.noteUnderlayType == 'All-In-One') {
 			var vsliceControlFix:Float = 1;
-			if (ClientPrefs.data.VSliceControl && Note.maniaKeys != 20 && Note.maniaKeys != 55) {
+			if (ClientPrefs.data.ogGameControls && Note.maniaKeys != 20 && Note.maniaKeys != 55) {
 				switch (Note.maniaKeys) {
 					case 4: vsliceControlFix = 6.5 / 3.5;
 					case 5: vsliceControlFix = 6.5 / 5;
@@ -4254,7 +4256,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
-		mobileManager.hitbox.visible = #if !android mobileManager.mobilePad.visible = #end false;
+		mobileManager.hitbox.visible = mobileManager.mobilePad.visible = false;
 		if (redditMod) {
 			health = 0;
 			doDeathCheck();
@@ -6660,7 +6662,7 @@ class PlayState extends MusicBeatState
 	public var customManagers:Map<String, Array<Dynamic>> = [];
 	public var lastGettedManager:MobileControlManager;
 	public var lastGettedManagerName:String;
-	public static inline function checkManager(managerName:String):MobileControlManager {
+	public static function checkManager(?managerName:String):MobileControlManager {
 		if (managerName == null || managerName == '') {
 			instance.lastGettedManagerName = 'default';
 			instance.lastGettedManager = MusicBeatState.getState().mobileManager;
@@ -6714,7 +6716,7 @@ class PlayState extends MusicBeatState
 
 	public function addPlayStateHitbox(?mode:String)
 	{
-		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxhint);
+		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxHint);
 		mobileManager.addHitboxCamera();
 		if (replayData == null && !cpuControlled) connectControlToNotes(null, 'hitbox');
 		else mobileManager.hitbox.visible = false;

@@ -32,7 +32,7 @@ class FunkinHitbox extends Hitbox {
 		}
 		else
 		{
-			var Custom:String = mode != null ? mode : ClientPrefs.data.hitboxmode;
+			var Custom:String = mode != null ? mode : ClientPrefs.data.hitboxMode;
 			if (!MobileConfig.hitboxModes.exists(Custom))
 				throw 'The ${Custom} Hitbox File doesn\'t exists.';
 
@@ -126,7 +126,7 @@ class FunkinHitbox extends Hitbox {
 				for (i in 1...5) {
 					var buttonString = 'buttonExtra${i}';
 					if (buttonData.button == buttonString && buttonReturn == null)
-						buttonReturn = Reflect.getProperty(ClientPrefs.data, 'extraKeyReturn${i}');
+						buttonReturn = ClientPrefs.mobileExtraKeyReturns[i-1];
 				}
 				if (addButton)
 					addHint(buttonName, buttonIDs, buttonUniqueID, buttonX, buttonY, buttonWidth, buttonHeight, Util.colorFromString(buttonColor), buttonReturn);
@@ -144,7 +144,7 @@ class FunkinHitbox extends Hitbox {
 		var guh:Float = globalAlpha;
 		var shape:Shape = new Shape();
 		shape.graphics.beginFill(Color);
-		switch (ClientPrefs.data.hitboxtype) {
+		switch (ClientPrefs.data.hitboxType) {
 			case "No Gradient":
 				var matrix:Matrix = new Matrix();
 				matrix.createGradientBox(Width, Height, 0, 0, 0);

@@ -249,7 +249,6 @@ class Main extends Sprite
 		#end
 
 		#if mobile
-		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
 		ScreenUtil.wideScreen.enabled = ClientPrefs.data.wideScreen;
 		#end
 

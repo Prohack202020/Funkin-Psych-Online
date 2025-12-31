@@ -67,7 +67,7 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 		
 		option = new Option('Hitbox Design',
 			'Choose how your hitbox should look like.',
-			'hitboxtype',
+			'hitboxType',
 			'string',
 			['Gradient', 'No Gradient' , 'No Gradient (Old)']
 		);
@@ -75,19 +75,19 @@ class MobileOptionsSubState extends BaseOptionsMenu {
 
 		option = new Option('Hitbox Hint',
 			'Hitbox Hint',
-			'hitboxhint',
+			'hitboxHint',
 			'bool');
 		addOption(option);
 
 		option = new Option('V Slice Controls',
 			'If checked, The game\'s control will be like original Friday Night Funkin\': Mobile.\n(WARNING: This Option can break the some mechanics, please use for simple mods)',
-			'VSliceControl',
+			'ogGameControls',
 			'bool');
 		addOption(option);
 
 		option = new Option('Hitbox Opacity',
 			'Selects the opacity for the hitbox buttons.',
-			'hitboxalpha',
+			'hitboxAlpha',
 			'percent'
 		);
 		option.scrollSpeed = 1;
