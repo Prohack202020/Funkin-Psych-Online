@@ -2041,7 +2041,6 @@ class ChartingState extends MusicBeatState
 		if (!blockInput)
 		{
 			if ((FlxG.keys.justPressed.ESCAPE || mobileButtonJustPressed('C')) && false)
-			if (FlxG.keys.justPressed.ESCAPE && false)
 			{
 				FlxG.sound.music.pause();
 				for (v in [vocals, opponentVocals]) {
@@ -2094,11 +2093,11 @@ class ChartingState extends MusicBeatState
 				return;
 			}
 
-			if(mobileButtonJustPressed('V') || FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
+			if(mobileButtonJustPressed('Z') || FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
 				undo();
 			}
 
-			if(FlxG.keys.justPressed.Z || mobileButtonJustPressed('Z') && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
+			if(FlxG.keys.justPressed.Z || mobileButtonJustPressed('V') && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
 				updateZoom();
 			}

@@ -1425,7 +1425,6 @@ class PlayState extends MusicBeatState
 										(GameClient.isConnected()) ? 'P_C_T' : (replayData != null || cpuControlled) ? 'P_X_Y' : 'P_T');
 			mobileManager.addMobilePadCamera();
 			addPlayStateHitbox();
-			mobileManager.hitbox.visible = false;
 		});
 
 		var loaderGroup = new online.objects.LoadingSprite(preloadTasks.length, camLoading);
@@ -2012,7 +2011,7 @@ class PlayState extends MusicBeatState
 
 		seenCutscene = true;
 		inCutscene = false;
-		mobileManager.hitbox.visible = true;
+		if (replayData == null && !cpuControlled) mobileManager.hitbox.visible = true;
 		var ret:Dynamic = callOnScripts('onStartCountdown', null, true);
 		if(ret != FunkinLua.Function_Stop) {
 			if (!canStart) {
@@ -4256,7 +4255,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
-		mobileManager.hitbox.visible = mobileManager.mobilePad.visible = false;
+		mobileManager.hitbox.visible = false;
 		if (redditMod) {
 			health = 0;
 			doDeathCheck();
@@ -6719,7 +6718,7 @@ class PlayState extends MusicBeatState
 		mobileManager.addHitbox(mode, ClientPrefs.data.hitboxHint);
 		mobileManager.addHitboxCamera();
 		if (replayData == null && !cpuControlled) connectControlToNotes(null, 'hitbox');
-		else mobileManager.hitbox.visible = false;
+		mobileManager.hitbox.visible = false;
 		addHitboxDeadZone(null, ['buttonT', 'buttonC', 'buttonP']);
 	}
 
