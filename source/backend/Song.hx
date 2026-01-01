@@ -247,7 +247,7 @@ class Song
 			}
 		}
 
-		if (keys == null && songData.keyCount != null)
+		if (keys == null && songData?.keyCount != null)
 			keys = songData.keyCount;
 
 		if (noUpdate)
