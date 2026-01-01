@@ -225,7 +225,7 @@ class Song
 	public static function updateManiaKeys(songData:SwagSong, ?noUpdate:Bool = false):Int {
 		var keys = null;
 
-		if (songData.mania != null) {
+		if (songData?.mania != null) {
 			if ((songData.format ?? '').startsWith('psych_v1') || (songData.splashSkin != null) || songData.cutsceneType != null) {
 				keys = songData.mania + 1;
 			}
